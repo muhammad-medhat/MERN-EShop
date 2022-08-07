@@ -6,9 +6,9 @@ import { Link, useParams } from "react-router-dom";
 import Rating from "../rating";
 const ProductSceen = () => {
   const pid = useParams().id;
-  console.log(pid);
-  const url = `http://localhost:5000/api/products/${pid}`;
-  console.log(url);
+  // console.log(pid);
+  const url = `/api/products/${pid}`;
+  // console.log(url);
 //   debugger;
 
   const [product, setProduct] = useState({});
@@ -19,7 +19,7 @@ const ProductSceen = () => {
       .then((data) => setProduct(data))
       .catch((err) => console.log(err));
   }, []);
-  console.log(product);
+  // console.log(product);
 
   return (
     <>
@@ -42,7 +42,7 @@ const ProductSceen = () => {
             <ListGroup.Item>
               <Rating
                 value={product.rating}
-                text={`Avarage: ${product.rating} from ${product.numReviews} reviews`}
+                text={`Average: ${product.rating} from ${product.numReviews} reviews`}
               />
             </ListGroup.Item>
             <ListGroup.Item>
