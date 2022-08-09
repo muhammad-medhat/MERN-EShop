@@ -3,7 +3,10 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import colors from 'colors'
 import connectDB from './config/db.js'
-import products from './data/products.js'
+// import products from './data/products.js'
+
+import productRoutes from './routes/productRoutes.js'
+
 
 const app = express();
 
@@ -17,16 +20,7 @@ const corsOptions = {
   
 //   app.use(cors(corsOptions));
 
-//routes
-app.get('/api/products', (req, res) => {
-    return res.json(products);
-})
-
-app.get('/api/products/:id', (req, res) => {
-    const id = req.params.id;
-    const product = products.find(product => product._id === id);
-    return res.json(product);
-})
+app.use('/api/products', productRoutes);
 
 
 const port = process.env.PORT || 5000;
