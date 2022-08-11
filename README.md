@@ -36,9 +36,11 @@ This project requires Nodejs to be installed on your system
 Clone the repo and install the dependencies.
 
 - Install backend dependencies -> go to root directory
+
 `npm install`
 
 - Install frontend dependencies -> go to projectDir/frontend
+
 `npm install`
 
 ### Set Env variables
@@ -58,18 +60,20 @@ STRIPE_SECRET_KEY=
 ```
 
 ## Starting application
+Before starting the application we have to run the seeding script to bring sample data
+### Seed Script
+In the seeding process, there are two main steps: deleting existing data and creating new data. To do both of these operations from root directory execute the following just once:
+`npm run destroy`
+`npm run import`
+### Backend Server
+- to run the backend server only execute from the root directory
+ `npm run server`
 
-- Run backend  -> go to root directory
-``
-npm run server
-``
+### Frontend Server
 
-- Run frontend  -> go to projectDir/frontend
-``
-npm start
-``
+- to run the frontend server only execute from projectDir/frontend
+`npm start`
+### Development Server
 
-- you can run both servers -> go to root directory
-``
-npm run dev
-``
+- development server means to run both servers, execute from the root directory
+`npm run dev`
