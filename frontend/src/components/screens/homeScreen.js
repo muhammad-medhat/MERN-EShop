@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 // import products from '../../products';
 import Product from '../product/product';
 import { ListProducts } from '../../actions/productActions';
+import Loader from '../loader';
+import Message from '../message';
 
 
 
@@ -12,6 +14,7 @@ const HomeScreen = () => {
     const productList = useSelector(state => state.productList)
     console.log(productList);
     const{loading, products, error} = productList;
+    console.log(loading, products, error);
 
     // const [products, setProducts] = useState([]);
     useEffect(() => {
@@ -23,14 +26,14 @@ const HomeScreen = () => {
 
     }
     , [dispatch])
-
+console.log(error);
     return ( 
         <>   
         {
             loading 
-            ? (<div>Loading...</div> )
+            ? <Loader text="Loading products..." /> 
             : error
-            ? (<h3>{error}</h3>)
+            ? <Message variant="danger" text={error} />
             : (<>
                 <h2>Latest Products</h2>
                 <Row>
