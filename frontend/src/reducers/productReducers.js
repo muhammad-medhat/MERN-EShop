@@ -2,6 +2,9 @@ import {
   PRODUCTS_LIST_SUCCESS,
   PRODUCTS_LIST_FAIL,
   PRODUCTS_LIST_REQUEST,
+  PRODUCTS_DETAILS_SUCCESS,
+  PRODUCTS_DETAILS_FAIL,
+  PRODUCTS_DETAILS_REQUEST,
 } from "../const/constants.js";
 /**
  * 
@@ -38,6 +41,25 @@ export const productListReducer = (state = { products: [] }, action) => {
   }
 };
 
-export default productListReducer;
+
+export const productDetailsReducer = (state = { product: {reviews:[]} }, action) => {
+  switch (action.type) {
+
+    case PRODUCTS_DETAILS_REQUEST:
+      return { loading: true, ...state };
+
+
+    case PRODUCTS_DETAILS_SUCCESS:
+      return { loading: false, product: action.payload };
+
+    case PRODUCTS_DETAILS_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+// export default productListReducer;
 
 /** */

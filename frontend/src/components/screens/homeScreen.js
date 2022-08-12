@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-// import products from '../../products';
 import Product from '../product/product';
 import { ListProducts } from '../../actions/productActions';
 import Loader from '../loader';
@@ -16,14 +15,9 @@ const HomeScreen = () => {
     const{loading, products, error} = productList;
     console.log(loading, products, error);
 
-    // const [products, setProducts] = useState([]);
     useEffect(() => {
-        // fetch('/api/products')
-        //     .then(res => res.json())
-        //     .then(data => setProducts(data))
-        //     .catch(err => console.log(err));
-        dispatch(ListProducts());
 
+        dispatch(ListProducts());
     }
     , [dispatch])
 console.log(error);
@@ -32,7 +26,7 @@ console.log(error);
         {
             loading 
             ? <Loader text="Loading products..." /> 
-            : error
+            : error 
             ? <Message variant="danger" text={error} />
             : (<>
                 <h2>Latest Products</h2>

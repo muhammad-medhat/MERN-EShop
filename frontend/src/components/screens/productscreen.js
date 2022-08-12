@@ -1,27 +1,40 @@
-import React, { useState, useEffect } from "react";
+import React, {  useEffect } from "react";
 import { Card, Row, Col, Image, ListGroup } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+import { DetailsProduct } from "../../actions/productActions";
+import Loader from "../loader";
+import Message from "../message";
 
-// import products from '../../products';
+
 import Rating from "../rating";
-const ProductSceen = () => {
+const ProductScreen = () => {
   const pid = useParams().id;
-  // console.log(pid);
   const url = `/api/products/${pid}`;
-  // console.log(url);
-//   debugger;
 
-  const [product, setProduct] = useState({});
+  const dispatch = useDispatch()
+
+  const productDetails = useSelector(state => state.productDetails)
+  const { product, loading, error } = productDetails;
+  console.log('product details',productDetails)
 
   useEffect(() => {
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => setProduct(data))
-      .catch((err) => console.log(err));
-  }, []);
+
+    dispatch(DetailsProduct(pid))
+
+  }, [dispatch, pid]);
   // console.log(product);
 
   return (
+    <>
+
+    
+    {
+      loading 
+      ? <Loader text="Loading product..." /> 
+      : error 
+      ? <Message variant="danger" text={error} /> 
+      : (
     <>
       <Link to="/" className="p-3">
         <span>
@@ -73,7 +86,9 @@ const ProductSceen = () => {
         </Col>
       </Row>
     </>
+    )}
+    </>
   );
 };
 
-export default ProductSceen;
+export default ProductScreen;
