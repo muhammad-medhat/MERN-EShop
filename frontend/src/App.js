@@ -5,7 +5,7 @@ import Footer from './components/partials/footer';
 import HomeScreen from './components/screens/homeScreen';
 import {Container} from 'react-bootstrap';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import ProductSceen from './components/screens/productscreen';
+import ProductScreen from './components/screens/productscreen';
 import CartScreen from './components/screens/cartScreen';
 import LoginScreen from './components/screens/loginScreen';
 function App() {
@@ -17,8 +17,10 @@ function App() {
               <h1>MERN Shop</h1>
               <Routes>
                   <Route path='/' exact element={<HomeScreen />} />
-                  <Route path='/products/:id' element={<ProductSceen />} />
+                  <Route path='/products/:id' element={<ProductScreen />} />
                   <Route path='/cart' element={<CartScreen />} />
+                  <Route path='/cart/:id' element={<CartScreen />} />
+                  <Route path='/cart/:id/?qty=:' element={<CartScreen />} />
                   <Route path='/login' element={<LoginScreen />} />
               </Routes>
             </main>
