@@ -13,7 +13,7 @@ CART_ADD_ITEM,CART_REMOVE_ITEM,CART_FAIL,
                 payload: {
                     product: data._id,
                     name: data.name,
-                    Image: data.image,
+                    image: data.image,
                     price: data.price,
                     countInStock: data.countInStock,
                     qty: qty
