@@ -20,6 +20,7 @@ CART_ADD_ITEM,CART_REMOVE_ITEM,CART_FAIL,
                 }
             });
             localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
+            
 
 
             
@@ -32,4 +33,12 @@ CART_ADD_ITEM,CART_REMOVE_ITEM,CART_FAIL,
             });
         }   
     }
+export const removeFromCart = (id) => (dispatch, getState) => {
+    dispatch({ type: CART_REMOVE_ITEM, payload: id });
+    localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
+}
+// export const clearCart = () => (dispatch) => {
+//     dispatch({ type: CART_REMOVE_ITEM });
+//     localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
+// }
 

@@ -10,9 +10,9 @@ import {
   ListGroupItem,
 } from "react-bootstrap";
 import Image from "react-bootstrap/Image";
-import { addToCart } from "../../actions/cartActions";
+import { addToCart, removeFromCart } from "../../actions/cartActions";
 import Message from "../message";
-import './cartScreen.css'
+import "./cartScreen.css";
 const CartScreen = () => {
   const pid = useParams().id;
   const location = useLocation();
@@ -24,6 +24,7 @@ const CartScreen = () => {
   console.log("qty", qty);
 
   const dispatch = useDispatch();
+  // debugger
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
 
@@ -33,8 +34,10 @@ const CartScreen = () => {
     }
   }, [dispatch, pid, qty]);
   console.log(cartItems);
-  const removeFromCart = (id) => {
+
+  const removeFromCart1 = (id) => {
     console.log(`remove ${id}`);
+    dispatch(removeFromCart(id));
   };
   const checkoutHandler = () => {
     console.log(`checkoutHandler `);
@@ -50,13 +53,17 @@ const CartScreen = () => {
           <ListGroup>
             {cartItems.map((item) => {
               return (
-                <Row key={item.product}>
+                <Row key={item.product} className="cart-product">
                   {/* { JSON.stringify(item)} */}
                   <Col>
                     <Image src={item.image} alt={item.name} fluid rounded />
                   </Col>
-                  <Col>
-                    <Link to={`product/${item.product}`}>{item.name}</Link>
+                  <Col className="p-title">
+                    <Link 
+                      to={`/products/${item.product}`} 
+                      title={item.name}>
+                      {item.name}
+                    </Link>
                   </Col>
                   <Col>
                     <Form.Control
@@ -76,14 +83,12 @@ const CartScreen = () => {
                       ))}
                     </Form.Control>
                   </Col>
-                  <Col>
-                    $ {item.price}
-                  </Col>
+                  <Col>$ {item.price}</Col>
                   <Col>
                     <Button
                       type="button"
                       className="danger"
-                      onClick={() => removeFromCart(item.product)}
+                      onClick={() => removeFromCart1(item.product)}
                     >
                       <i className="fas fa-trash"></i>
                     </Button>
@@ -97,36 +102,30 @@ const CartScreen = () => {
       <Col md={4}>
         <ListGroup variant="flush">
           <ListGroupItem>
-            <Col  className="text-center">
-                <h2>
-                    order summery
-                </h2>
-                
+            <Col className="text-center">
+              <h2>order summery</h2>
             </Col>
-            <Col>subtotal (
-                {
-                    cartItems.reduce((acc, item) => acc + item.qty, 0)
-                }
-            ) items</Col>
+            <Col>
+              subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
+              items
+            </Col>
           </ListGroupItem>
           <ListGroupItem>
-            <Col className='font-bold'>
-                total $ 
-                {
-                    cartItems.reduce((acc, item) => acc + item.qty * item.price, 0)
-                }
-
+            <Col className="font-bold">
+              total $
+              {cartItems.reduce((acc, item) => acc + item.qty * item.price, 0)}
             </Col>
           </ListGroupItem>
           <listGroupItem>
-            <Col md={12} className='text-center'>
-            <Button  
-                className="btn-block" 
-                type="button" 
-                disabled={cartItems.length<=0} 
-                onClick={checkoutHandler}>
+            <Col md={12} className="text-center">
+              <Button
+                className="btn-block"
+                type="button"
+                disabled={cartItems.length <= 0}
+                onClick={checkoutHandler}
+              >
                 proceed to checkout
-            </Button>
+              </Button>
             </Col>
           </listGroupItem>
         </ListGroup>

@@ -17,6 +17,8 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
        */
 
       const existItem = state.cartItems.find((x) => x.product === item.product);
+    
+
 
       // if there is already a product matching the item in the state.cartItems array
       if (existItem) {
@@ -27,7 +29,7 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
           // and replace the matching product with the new item
           // leave the rest products as they were
           cartItems: state.cartItems.map((x) =>
-            x.product._id === existItem.product._id ? item : x
+            x.product === existItem.product ? item : x
           ),
         };
         // otherwise if the item is NOT already a product matching the item in the state.cartItems array
@@ -39,6 +41,16 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
           cartItems: [...state.cartItems, item],
         };
       }
+    case CART_REMOVE_ITEM:
+      // debugger
+      // return the existing state with adjusted cardItems
+      return {
+        ...state,
+        // return a new cardItems array with the previous products spread and remove the item
+        cartItems: state.cartItems.filter(
+          (x) => x.product !== action.payload
+        ),
+      };
     default:
       return state;
   }
