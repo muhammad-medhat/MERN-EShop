@@ -10,7 +10,7 @@ import {
   ListGroupItem,
 } from "react-bootstrap";
 import Image from "react-bootstrap/Image";
-import { addToCart, removeFromCart } from "../../actions/cartActions";
+import { addToCart, removeFromCart, updateCartItem } from "../../actions/cartActions";
 import Message from "../message";
 import "./cartScreen.css";
 const CartScreen = () => {
@@ -42,6 +42,7 @@ const CartScreen = () => {
   const checkoutHandler = () => {
     console.log(`checkoutHandler `);
   };
+  
   return (
     <Row>
       <Col md={8}>
@@ -70,9 +71,9 @@ const CartScreen = () => {
                       as="select"
                       value={item.qty}
                       onChange={(e) => {
-                        //calling add to cart
+                        //calling update cart
                         dispatch(
-                          addToCart(item.product, Number(e.target.value))
+                          updateCartItem(item.product, Number(e.target.value))
                         );
                       }}
                     >
@@ -99,22 +100,25 @@ const CartScreen = () => {
           </ListGroup>
         )}
       </Col>
+
       <Col md={4}>
-        <ListGroup variant="flush">
-          <ListGroupItem>
-            <Col className="text-center">
-              <h2>order summery</h2>
-            </Col>
-            <Col>
-              subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
-              items
-            </Col>
+          <ListGroup variant="flush">
+            <ListGroupItem>
+              <Row>
+                <Col xs={12} className="text-center font-bold">
+                    <h2>order summery</h2>
+                </Col>
+                <Col>
+                  subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
+                  items
+                </Col>
+              </Row>
           </ListGroupItem>
+
           <ListGroupItem>
             <Col className="font-bold">
               total $
-              {cartItems.reduce((acc, item) => acc + item.qty * item.price, 0)}
-            </Col>
+              {cartItems.reduce((acc, item) => acc + item.qty * item.price, 0).toFixed(2)}            </Col>
           </ListGroupItem>
           <listGroupItem>
             <Col md={12} className="text-center">

@@ -1,4 +1,8 @@
-import { CART_ADD_ITEM, CART_REMOVE_ITEM } from "../const/constants.js";
+import {
+  CART_ADD_ITEM,
+  CART_REMOVE_ITEM,
+  CART_UPDATE_ITEM,
+} from "../const/constants.js";
 
 export const cartReducer = (state = { cartItems: [] }, action) => {
   switch (action.type) {
@@ -17,8 +21,6 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
        */
 
       const existItem = state.cartItems.find((x) => x.product === item.product);
-    
-
 
       // if there is already a product matching the item in the state.cartItems array
       if (existItem) {
@@ -28,9 +30,16 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
           // map through the cardItems array
           // and replace the matching product with the new item
           // leave the rest products as they were
+          // and increase the quantity of the matching product by 1
           cartItems: state.cartItems.map((x) =>
-            x.product === existItem.product ? item : x
+            x.product === existItem.product
+              ? { ...x, qty: x.qty + item.qty }
+              : x
           ),
+
+          // cartItems: state.cartItems.map((x) =>
+          //   x.product === existItem.product ? item : x
+          // ),
         };
         // otherwise if the item is NOT already a product matching the item in the state.cartItems array
       } else {
@@ -41,15 +50,23 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
           cartItems: [...state.cartItems, item],
         };
       }
+      case CART_UPDATE_ITEM:
+        return {
+          ...state,
+          cartItems: state.cartItems.map((x) =>
+            x.product === action.payload.product
+              ? { ...x, qty: action.payload.qty }
+              : x
+          ),
+        };
+        
     case CART_REMOVE_ITEM:
       // debugger
       // return the existing state with adjusted cardItems
       return {
         ...state,
         // return a new cardItems array with the previous products spread and remove the item
-        cartItems: state.cartItems.filter(
-          (x) => x.product !== action.payload
-        ),
+        cartItems: state.cartItems.filter((x) => x.product !== action.payload),
       };
     default:
       return state;
