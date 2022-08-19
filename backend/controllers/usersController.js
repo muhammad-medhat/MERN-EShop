@@ -88,7 +88,7 @@ export const userLogin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (!user) {
-    return res.status(404).json({ msg: "User not found" });
+    return res.status(404).json({ message: "User not found" });
   } else {
     const isMatch = await user.matchPassword(password);
     if (isMatch) {
@@ -100,7 +100,7 @@ export const userLogin = asyncHandler(async (req, res) => {
         token: generateTokenForUser(user.id),
       });
     } else {
-      res.status(400);
+      res.status(401);
       throw new Error("Invalid credentials");
     }
   }
