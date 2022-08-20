@@ -17,57 +17,13 @@ export const createUser = asyncHandler(async (req, res) => {
         const user = await User.create({ name, email, password });
         const token = generateTokenForUser(user);
         res.status(201).json({
-            user,
+          ...displayFriendly(user),
             token,
         });
         }
 });
 
-/**
- * @route DELETE /api/users
- * @desc Delete user
- * it is not supposed to be public
- * just for testing purposes
- * @access Public
- */
-export const deleteUser = asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const user = await User.findByIdAndDelete(id);
-    if (!user) {
-        res.status(404)
-        throw new Error("User not found");
-    } else {
-        res.status(200).json({
-            message: "User deleted successfully",
-        });
-    }
-})
-/**
- * @route GET /api/users
- * @desc Get all users
- * @access Private Admin
- */
-export const getUsers = asyncHandler(async (req, res) => {
-  const users = await User.find({});
-  return res.json(users);
-});
-/**
- * @route GET /api/users/:id
- * @desc Get user by id
- * @access Private
- * @param {string} id - user id
- */
 
-export const getUserById = asyncHandler(async (req, res) => {
-  const id = req.params.id;
-  const user = await User.findById(id);
-  // console.log(`user: ${user}`.green)
-  if (!user) {
-    return res.status(404).json({ msg: "User not found" });
-  } else {
-    return res.json(user);
-  }
-});
 
 /**
  * @route GET /api/users/profile
@@ -76,7 +32,36 @@ export const getUserById = asyncHandler(async (req, res) => {
  */
 
 export const getUserProfile = asyncHandler(async (req, res) => {
-  res.json(req.user);
+  const user = await User.findById(req.user.id).select("-password");
+  if (!user) {
+    throw new Error("User not found");
+  } else {
+    return res.json({
+      ...displayFriendly(user),
+      token: generateTokenForUser(user.id),
+    });
+  }
+});
+/**
+ * @route PUT /api/users/profile
+ * @desc update user profile
+ * @access Private
+ */
+
+export const updateUserProfile = asyncHandler(async (req, res) => {
+  const { name, email, password } = req.body;
+  const user = await User.findById(req.user.id)
+  user.name = name || user.name;
+  user.email = email || user.email; 
+  user.password = password || user.password
+  const updatedUser = await user.save();
+  if (!updatedUser) {
+    throw new Error("User not found");
+  } else {
+    return res.json({
+      ...displayFriendly(updatedUser),
+      token: generateTokenForUser(updatedUser.id),
+    });  }
 });
 
 /**
@@ -93,10 +78,7 @@ export const userLogin = asyncHandler(async (req, res) => {
     const isMatch = await user.matchPassword(password);
     if (isMatch) {
       return res.json({
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        isAdmin: user.isAdmin,
+        ...displayFriendly(user),
         token: generateTokenForUser(user.id),
       });
     } else {
@@ -104,4 +86,65 @@ export const userLogin = asyncHandler(async (req, res) => {
       throw new Error("Invalid credentials");
     }
   }
+});
+const displayFriendly = (user) =>{
+  return {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    isAdmin: user.isAdmin,
+  }
+}
+
+
+
+
+
+/******
+ * not used yet
+ */
+/**
+ * @route DELETE /api/users
+ * @desc Delete user
+ * it is not supposed to be public
+ * just for testing purposes
+ * @access Public
+ */
+ export const deleteUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findByIdAndDelete(id);
+  if (!user) {
+      res.status(404)
+      throw new Error("User not found");
+  } else {
+      res.status(200).json({
+          message: "User deleted successfully",
+      });
+  }
+})
+/**
+* @route GET /api/users
+* @desc Get all users
+* @access Private Admin
+*/
+export const getUsers = asyncHandler(async (req, res) => {
+const users = await User.find({});
+return res.json(users);
+});
+/**
+* @route GET /api/users/:id
+* @desc Get user by id
+* @access Private
+* @param {string} id - user id
+*/
+
+export const getUserById = asyncHandler(async (req, res) => {
+const id = req.params.id;
+const user = await User.findById(id);
+// console.log(`user: ${user}`.green)
+if (!user) {
+  return res.status(404).json({ msg: "User not found" });
+} else {
+  return res.json(user);
+}
 });
