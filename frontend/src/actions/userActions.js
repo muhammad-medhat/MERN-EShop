@@ -9,6 +9,10 @@ import {
   USER_DETAILS_FAIL,
   USER_DETAILS_SUCCESS,
   USER_DETAILS_REQUEST,
+  USER_DETAILS_UPDATE_REQUEST,
+  USER_DETAILS_UPDATE_SUCCESS,
+  USER_DETAILS_UPDATE_FAIL,
+  USER_DETAILS_UPDATE_RESET,
 } from "../const/constants.js";
 export const login = (email, password) => async (dispatch) => {
   try {
@@ -24,10 +28,18 @@ export const login = (email, password) => async (dispatch) => {
     };
 
     const response = await fetch("/api/users/login", config);
-    const data = await response.json();
 
-    dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
-    localStorage.setItem("userInfo", JSON.stringify(data));
+    // console.log("login res", response);
+    // console.log('login req data', data);
+
+    if (response.status >= 400) {
+      throw new Error(response.statusText);
+    } else {
+      const data = await response.json();
+
+      dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
+      localStorage.setItem("userInfo", JSON.stringify(data));
+    }
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAIL,
@@ -116,6 +128,44 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: USER_DETAILS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const updateUserDetails = (user) => async (dispatch, getState) => {
+  try {
+    // console.log('st', st);
+    dispatch({
+      type: USER_DETAILS_UPDATE_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+      method: "put",
+      body: JSON.stringify(user),
+    };
+
+    const response = await fetch(`/api/users/profile`, config);
+    const data = await response.json();
+    dispatch({
+      type: USER_DETAILS_UPDATE_SUCCESS,
+      payload: data,
+    });
+
+    // localStorage.setItem("userInfo", JSON.stringify(data));
+  } catch (error) {
+    dispatch({
+      type: USER_DETAILS_UPDATE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

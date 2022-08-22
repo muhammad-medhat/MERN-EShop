@@ -28,9 +28,9 @@ const LoginScreen = () => {
         dispatch(login(email, password));      
     }
     useEffect(()=>{
-        if(userInfo){
+        if(userInfo&& userInfo.id){
             console.log('userInfo', userInfo);
-            localStorage.setItem('userInfo', JSON.stringify(userInfo));
+            // localStorage.setItem('userInfo', JSON.stringify(userInfo));
             nav('/profile')
         }
     } , [dispatch, userInfo]);
@@ -60,7 +60,7 @@ const LoginScreen = () => {
                                 <Form.Check type="checkbox" label="Remember me" />
                             </FormGroup>
                             <FormGroup>
-                                <Form.Control type="submit" value="Login" />
+                                <Form.Control variant='primary' type="submit" value="Login" />
                             </FormGroup>
                         </Form>
                         <Row className='py-3'>
