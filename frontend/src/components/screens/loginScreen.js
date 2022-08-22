@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Form, Row, Col, FormControl, FormGroup } from 'react-bootstrap';
 import FormContainer from '../formContainer';
-import {Link}  from 'react-router-dom';
+import {Link, useNavigate}  from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux';
 import {login} from '../../actions/userActions';
 import Loader from '../loader'
@@ -18,6 +18,7 @@ const LoginScreen = () => {
     console.log('user login', userLogin); 
     const {loading, userInfo, error, message} = userLogin;
     console.log('userInfo', userInfo); 
+    const nav=useNavigate();
     
     
 
@@ -27,9 +28,10 @@ const LoginScreen = () => {
         dispatch(login(email, password));      
     }
     useEffect(()=>{
-        if(userInfo){
+        if(userInfo&& userInfo.id){
             console.log('userInfo', userInfo);
-            localStorage.setItem('userInfo', JSON.stringify(userInfo));
+            // localStorage.setItem('userInfo', JSON.stringify(userInfo));
+            nav('/profile')
         }
     } , [dispatch, userInfo]);
     return ( 
@@ -58,7 +60,7 @@ const LoginScreen = () => {
                                 <Form.Check type="checkbox" label="Remember me" />
                             </FormGroup>
                             <FormGroup>
-                                <Form.Control type="submit" value="Login" />
+                                <Form.Control variant='primary' type="submit" value="Login" />
                             </FormGroup>
                         </Form>
                         <Row className='py-3'>
