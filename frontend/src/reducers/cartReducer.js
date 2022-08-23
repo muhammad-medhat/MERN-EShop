@@ -5,6 +5,7 @@ import {
 } from "../const/constants.js";
 
 export const cartReducer = (state = { cartItems: [] }, action) => {
+  debugger
   switch (action.type) {
     case CART_ADD_ITEM:
       //set the item to be the payload

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useParams, useLocation, Link } from "react-router-dom";
+import { useParams, useLocation, Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Row,
@@ -15,6 +15,8 @@ import Message from "../message";
 import "./cartScreen.css";
 const CartScreen = () => {
   const pid = useParams().id;
+  const nav = useNavigate()
+
   const location = useLocation();
   console.log("location", location);
   // const qty = new URLSearchParams(location.search).get('qty');
@@ -39,7 +41,9 @@ const CartScreen = () => {
     console.log(`remove ${id}`);
     dispatch(removeFromCart(id));
   };
-  const checkoutHandler = () => {
+  const checkoutHandler = (e) => {
+    e.preventDefault()
+    nav('/login/redirect=shipping')
     console.log(`checkoutHandler `);
   };
   
@@ -51,7 +55,7 @@ const CartScreen = () => {
             Empty Cart <Link to="/">Home</Link>
           </Message>
         ) : (
-          <ListGroup>
+          <ListGroup variant="flush">
             {cartItems.map((item) => {
               return (
                 <Row key={item.product} className="cart-product">
@@ -125,7 +129,7 @@ const CartScreen = () => {
               <Button
                 className="btn-block"
                 type="button"
-                disabled={cartItems.length <= 0}
+                disabled={cartItems.length === 0}
                 onClick={checkoutHandler}
               >
                 proceed to checkout

@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import Header from './components/partials/header';
 import Footer from './components/partials/footer'; 
@@ -7,8 +6,8 @@ import {Container} from 'react-bootstrap';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ProductScreen from './components/screens/productscreen';
 import CartScreen from './components/screens/cartScreen';
-import LoginScreen from './components/screens/loginScreen';
-import RegisterScreen from './components/screens/registerScreen';
+import LoginScreen from './components/screens/userLoginScreen';
+import RegisterScreen from './components/screens/userRegisterScreen';
 import UserProfileScreen from './components/screens/userProfileScreen';
 function App() {
   return (

@@ -23,21 +23,23 @@ const ProductScreen = () => {
   const { product, loading, error } = productDetails;
   const nav = useNavigate();
 
-  console.log("product details", productDetails);
+  // console.log("product details", productDetails);
 
   const [qty, setQty] = useState(1);
   const [total, setTotal] = useState(product.price);
 
   useEffect(() => {
+    console.log('useEffect...');
     dispatch(DetailsProduct(pid));
-    setQty(qty)
-    setTotal(total);
+      setQty(qty);
+      setTotal(total);
+
+
   }, [dispatch, pid]);
 
-
   const handleAddToCart = () => {
-    setQty(qty);
-    setTotal(qty * product.price);
+    // setQty(qty);
+    // setTotal(qty * product.price);
     console.log(`Add to cart ${qty} of ${product.id} for ${total}`);
     nav(`/cart/${product._id}?qty=${qty}`);
   };
@@ -106,11 +108,11 @@ const ProductScreen = () => {
 
                   {product.countInStock > 0 && (
                     <>
-                    {/* Bug: price not accurate */}
+                      {/* Bug: price not accurate */}
                       <ListGroup.Item>
                         <Row>
                           <Col>Price</Col>
-                          <Col>$ {total.toFixed(2)}</Col>
+                          <Col>$ {product.price}</Col>
                         </Row>
                       </ListGroup.Item>
 
@@ -137,18 +139,25 @@ const ProductScreen = () => {
                           </Col>
                         </Row>
                       </ListGroup.Item>
+
+                      <ListGroup.Item>
+                        <Row>
+                          <Col>
+                            <button
+                              className="btn btn-primary"
+                              disabled={product.countInStock <= 0}
+                              onClick={handleAddToCart}
+                            >
+                              Add to Cart
+                            </button>                          
+                          </Col>
+                        </Row>
+
+                    </ListGroup.Item>
                     </>
                   )}
 
-                  <ListGroup.Item>
-                    <button
-                      className="btn btn-primary"
-                      disabled={product.countInStock <= 0}
-                      onClick={handleAddToCart}
-                    >
-                      Add to Cart
-                    </button>
-                  </ListGroup.Item>
+                  
                   <ListGroup.Item>
                     <>{product.countInStock > 0 ? "" : "Out of Stock"}</>
                   </ListGroup.Item>
