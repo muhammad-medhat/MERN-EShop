@@ -1,11 +1,15 @@
 import {
   CART_ADD_ITEM,
+  CART_ADD_SHIPPING_ADDRESS,
   CART_REMOVE_ITEM,
   CART_UPDATE_ITEM,
 } from "../const/constants.js";
 
-export const cartReducer = (state = { cartItems: [] }, action) => {
-  debugger
+export const cartReducer = (
+  state = { cartItems: [], shippingAddress: {} },
+  action
+) => {
+  // debugger
   switch (action.type) {
     case CART_ADD_ITEM:
       //set the item to be the payload
@@ -51,16 +55,16 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
           cartItems: [...state.cartItems, item],
         };
       }
-      case CART_UPDATE_ITEM:
-        return {
-          ...state,
-          cartItems: state.cartItems.map((x) =>
-            x.product === action.payload.product
-              ? { ...x, qty: action.payload.qty }
-              : x
-          ),
-        };
-        
+    case CART_UPDATE_ITEM:
+      return {
+        ...state,
+        cartItems: state.cartItems.map((x) =>
+          x.product === action.payload.product
+            ? { ...x, qty: action.payload.qty }
+            : x
+        ),
+      };
+
     case CART_REMOVE_ITEM:
       // debugger
       // return the existing state with adjusted cardItems
@@ -68,6 +72,12 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
         ...state,
         // return a new cardItems array with the previous products spread and remove the item
         cartItems: state.cartItems.filter((x) => x.product !== action.payload),
+      };
+
+    case CART_ADD_SHIPPING_ADDRESS:
+      return {
+        ...state,
+        shippingAddress: action.payload,
       };
     default:
       return state;

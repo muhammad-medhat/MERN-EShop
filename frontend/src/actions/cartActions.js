@@ -3,6 +3,7 @@ import {
   CART_REMOVE_ITEM,
   CART_FAIL,
   CART_UPDATE_ITEM,
+  CART_ADD_SHIPPING_ADDRESS
 } from "../const/constants";
 // import axios from "axios";
 
@@ -64,7 +65,10 @@ export const removeFromCart = (id) => (dispatch, getState) => {
   dispatch({ type: CART_REMOVE_ITEM, payload: id });
   localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
 };
-// export const clearCart = () => (dispatch) => {
-//     dispatch({ type: CART_REMOVE_ITEM });
-//     localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
-// }
+export const addShippingAddress = (data) => (dispatch) => {
+    dispatch({ 
+      type: CART_ADD_SHIPPING_ADDRESS, 
+      payload: data
+    });
+    localStorage.setItem("shippingAddress", JSON.stringify(data));
+}

@@ -43,7 +43,7 @@ const CartScreen = () => {
   };
   const checkoutHandler = (e) => {
     e.preventDefault()
-    nav('/login/redirect=shipping')
+    nav('/shipping')
     console.log(`checkoutHandler `);
   };
   

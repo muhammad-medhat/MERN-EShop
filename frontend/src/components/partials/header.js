@@ -1,14 +1,21 @@
 import React from "react";
 import { Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 const Header = () => {
   const dispatch = useDispatch();
+  const nav = useNavigate()
+  const loc = useLocation()
+  // console.log('loc', loc);
   const userLogin = useSelector((state) => state.userLogin);
   console.log(userLogin);
   const { userInfo } = userLogin;
+  debugger
+  if(!userInfo && !(loc.pathname in ['/', '/login'])){
+    nav('/')
+  }
 
   const logoutHandler = () => {
     console.log("logoutHandler");

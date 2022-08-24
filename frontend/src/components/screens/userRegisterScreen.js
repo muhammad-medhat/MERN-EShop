@@ -79,9 +79,7 @@ const RegisterScreen = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </FormGroup>
-        <FormGroup controlId="rememberMe">
-          <Form.Check type="checkbox" label="Remember me" />
-        </FormGroup>
+
         <FormGroup>
           <Form.Control type="submit" value="Register" />
         </FormGroup>

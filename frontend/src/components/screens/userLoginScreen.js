@@ -32,7 +32,7 @@ const LoginScreen = () => {
     if (userInfo && userInfo.id) {
       console.log("userInfo", userInfo);
       // localStorage.setItem('userInfo', JSON.stringify(userInfo));
-      nav("/profile");
+      nav(-1);
     }
   }, [dispatch, userInfo]);
   return (
