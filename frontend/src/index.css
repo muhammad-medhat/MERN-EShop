@@ -4,6 +4,14 @@ main{
 .ml-auto{
   margin-left: auto !important;
 }
-h1, h2, h3, h4, h5, h6, input::placeholder{
+h1, h2, h3, h4, h5, h6, 
+input::placeholder, .prog{
   text-transform: capitalize;
+}
+.prog{
+  margin: 1rem;
+}
+.prog span {
+  /* border: solid; */
+  padding: 1rem;
 }

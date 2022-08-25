@@ -7,6 +7,7 @@ import { login } from "../../actions/userActions";
 import Loader from "../loader";
 import Message from "../message";
 import { addShippingAddress } from "../../actions/cartActions";
+import CheckoutSteps from "../partials/checkoutSteps";
 // usf
 
 const ShippingScreen = () => {
@@ -46,6 +47,7 @@ const ShippingScreen = () => {
   };
   return (
     <FormContainer>
+      <CheckoutSteps step1 step2 />
       <h2>shipping address</h2>
       <Form onSubmit={handleSubmit}>
         <FormGroup controlId="address">

@@ -1,82 +1,61 @@
 import React, { useEffect, useState } from "react";
 import { Form, Row, Col, FormControl, FormGroup } from "react-bootstrap";
 import FormContainer from "../formContainer";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { login } from "../../actions/userActions";
-import Loader from "../loader";
-import Message from "../message";
-import { addShippingAddress } from "../../actions/cartActions";
+
+import { addPaymentMethod } from "../../actions/cartActions";
+import CheckoutSteps from "../partials/checkoutSteps";
 // usf
 
 const PaymentScreen = () => {
-
-
-
   const dispatch = useDispatch();
-  const cart = useSelector(state => state.cart)
-  const {shippingAddress} = cart
-
-  const [address, setAddress] = useState(shippingAddress.address);
-  const [city, setCity] = useState(shippingAddress.city);
-  const [postalCode, setPostalCode] = useState(shippingAddress.postalCode);
-  const [country, setCountry] = useState(shippingAddress.country);
-
-  
+  const [paymentMethod, setPaymentMethod] = useState("paypal");
+  // useSelector
+  const cart = useSelector((state) => state.cart);
   const userLogin = useSelector((state) => state.userLogin);
-  const nav = useNavigate()
+  //destruction
+  const { shippingAddress } = cart;
+  const { userInfo } = userLogin; //checked in header
 
-  //   const qty = search ? Number(search.split("=")[1]) : 1
+  const nav = useNavigate();
 
-  useEffect(() => {
-    // check login
-    dispatch(addShippingAddress({
-      address, city, postalCode, country
-    }))
-    nav('/payment')
-  }, [dispatch]);
-  const handleSubmit = () => {};
+  if (!shippingAddress) {
+    nav("/shipping");
+  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(addPaymentMethod(paymentMethod));
+  };
   return (
     <FormContainer>
+      <CheckoutSteps step1 step2 step3 />
+      <h2>payment method</h2>
       <Form onSubmit={handleSubmit}>
-        <FormGroup controlId="address">
-          <Form.Label>address</Form.Label>
-          <FormControl
-            type="text"
-            placeholder="Enter address"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-          />
-        </FormGroup>
-
-        <FormGroup controlId="city">
-          <Form.Label>city</Form.Label>
-          <FormControl
-            type="text"
-            placeholder="Enter city"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-          />
-        </FormGroup>
-
-        <FormGroup controlId="postalCode">
-          <Form.Label>postal code</Form.Label>
-          <FormControl
-            type="text"
-            placeholder="Enter postal code"
-            value={postalCode}
-            onChange={(e) => setPostalCode(e.target.value)}
-          />
-        </FormGroup>
-
-        <FormGroup controlId="country">
-          <Form.Label>country</Form.Label>
-          <FormControl
-            type="text"
-            placeholder="Enter country"
-            value={country}
-            onChange={(e) => setCountry(e.target.value)}
-          />
+        <Form.Group>
+          <Form.Label as="legend">select method</Form.Label>
+          <Col>
+            <Form.Check
+              type="radio"
+              label="paypal or credit card"
+              id="paypal"
+              value="paypal"
+              name="paymentMethod"
+              checked
+              onChange={(e) => setPaymentMethod(e.target.value)}
+            />
+            <Form.Check
+              type="radio"
+              id="stripe"
+              label="stripe"
+              value="stripe"
+              name="paymentMethod"
+              onChange={(e) => setPaymentMethod(e.target.value)}
+            />
+          </Col>
+        </Form.Group>
+        <FormGroup>
+          <Form.Control type="submit" value="continue" />
         </FormGroup>
       </Form>
     </FormContainer>

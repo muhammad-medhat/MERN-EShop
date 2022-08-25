@@ -3,6 +3,7 @@ import {
   CART_ADD_SHIPPING_ADDRESS,
   CART_REMOVE_ITEM,
   CART_UPDATE_ITEM,
+  CART_ADD_PAYMENT_METHOD,
 } from "../const/constants.js";
 
 export const cartReducer = (
@@ -78,6 +79,12 @@ export const cartReducer = (
       return {
         ...state,
         shippingAddress: action.payload,
+      };
+    
+    case CART_ADD_PAYMENT_METHOD:
+      return {
+        ...state,
+        paymentMethod: action.payload,
       };
     default:
       return state;

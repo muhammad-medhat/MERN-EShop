@@ -3,7 +3,8 @@ import {
   CART_REMOVE_ITEM,
   CART_FAIL,
   CART_UPDATE_ITEM,
-  CART_ADD_SHIPPING_ADDRESS
+  CART_ADD_SHIPPING_ADDRESS, 
+  CART_ADD_PAYMENT_METHOD
 } from "../const/constants";
 // import axios from "axios";
 
@@ -71,4 +72,11 @@ export const addShippingAddress = (data) => (dispatch) => {
       payload: data
     });
     localStorage.setItem("shippingAddress", JSON.stringify(data));
+}
+export const addPaymentMethod = (data) => (dispatch) => {
+    dispatch({ 
+      type: CART_ADD_PAYMENT_METHOD, 
+      payload: data
+    });
+    localStorage.setItem("PaymentMethod", JSON.stringify(data));
 }

@@ -12,7 +12,7 @@ const Header = () => {
   const userLogin = useSelector((state) => state.userLogin);
   console.log(userLogin);
   const { userInfo } = userLogin;
-  debugger
+  // debugger
   if(!userInfo && !(loc.pathname in ['/', '/login'])){
     nav('/')
   }
