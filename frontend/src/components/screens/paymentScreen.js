@@ -26,6 +26,7 @@ const PaymentScreen = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(addPaymentMethod(paymentMethod));
+    nav('/placeorder')
   };
   return (
     <FormContainer>

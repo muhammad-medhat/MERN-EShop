@@ -11,6 +11,7 @@ import RegisterScreen from './components/screens/userRegisterScreen';
 import UserProfileScreen from './components/screens/userProfileScreen';
 import ShippingScreen from './components/screens/shippingScreen';
 import PaymentScreen from './components/screens/paymentScreen';
+import PlaceOrderScreen from './components/screens/palceOrderScreen';
 function App() {
   return (
     <BrowserRouter>
@@ -25,14 +26,11 @@ function App() {
                   <Route path='/cart/:id' element={<CartScreen />} />
                   <Route path='/cart/:id/?qty=:' element={<CartScreen />} />
                   <Route path='/login' element={<LoginScreen />} />
-                  {/* <Route
-                          path="/login/*"
-                          element={<Navigate to="/" replace />}
-                      /> */}
                   <Route path='/register' element={<RegisterScreen />} />
                   <Route path='/profile' element={<UserProfileScreen />} />
                   <Route path='/shipping' element={<ShippingScreen />} />
                   <Route path='/payment' element={<PaymentScreen />} />
+                  <Route path='/placeorder' element={<PlaceOrderScreen />} />
               </Routes>
             </main>
         </Container>               
