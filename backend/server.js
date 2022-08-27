@@ -3,10 +3,10 @@ import cors from "cors";
 import dotenv from "dotenv";
 import colors from "colors";
 import connectDB from "./config/db.js";
-// import products from './data/products.js'
 
 import productRoutes from "./routes/productRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
 import { errorHandler, notFound } from "./middlewares/errorMiddleware.js";
 
 const app = express();
@@ -16,7 +16,6 @@ connectDB();
 const corsOptions = {
   origin: "http://localhost:3000",
   optionsSuccessStatus: 200,
-  // exposedHeaders: ["Content-Range", 'X-Total-Count']
 };
 
 //   app.use(cors(corsOptions));
@@ -28,6 +27,7 @@ app.use(express.json()); // for parsing application/json
 
 app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/orders", orderRoutes);
 
 // Handle errors middleware
 app.use(errorHandler, notFound);
