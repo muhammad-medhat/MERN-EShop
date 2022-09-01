@@ -21,6 +21,7 @@ export const addOrderItems = asyncHandler(async (req, res) => {
     throw new Error("No Order Items");
   } else {
     const order = new Order({
+      user: req.user,
       orderItems,
       shippingAddress,
       paymentMethod,
@@ -29,7 +30,17 @@ export const addOrderItems = asyncHandler(async (req, res) => {
       shippingPrice,
       totalPrice,
     });
-    const createdOrder = order.save();
+    const createdOrder = await order.save();
     res.status(201).json(createdOrder);
   }
 });
+export const getOrderById = asyncHandler(async(req, res) => {
+  const id = req.params.id;
+  const order = await Order.findById(id)
+  // console.log(`Order: ${Order}`.green)
+  if(!order) {
+      return res.status(404).json({msg: 'Order not found'})
+  } else {
+      return res.json(order);
+  }
+})

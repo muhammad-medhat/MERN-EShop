@@ -1,40 +1,60 @@
-import React, { useEffect, useState } from "react";
-import {
-  Card,
-  Row,
-  Col,
-  Image,
-  ListGroup,
-  Form,
-  ListGroupItem,
-  Button,
-} from "react-bootstrap";
+import React, { useEffect } from "react";
+import { Card, Col, Form, Image, ListGroup, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams, useNavigate, Navigate } from "react-router-dom";
-import { DetailsProduct } from "../../actions/productActions";
-import Loader from "../loader";
+import { Link, useNavigate } from "react-router-dom";
+import { createOrder } from "../../actions/orderActions";
 import Message from "../message";
 import CheckoutSteps from "../partials/checkoutSteps";
 
-import Rating from "../rating";
 const PlaceOrderScreen = () => {
+  const dispatch = useDispatch();
+
+  const orderCreate = useSelector((state) => state.orderCreate);
+  const { order, success, error } = orderCreate;
+
+
   const cart = useSelector((s) => s.cart);
-  console.log("cart", cart);
+  const nav = useNavigate();
+
   const { shippingAddress, paymentMethod, cartItems } = cart;
   //summery
   const tax = 0.15;
-  debugger;
+  // debugger;
+  const summery = [];
   const itemsSum = Number(
     cartItems.reduce((acc, i) => i.price + acc, 0).toFixed(2)
   );
-  console.log("itemsSum typeof", typeof itemsSum);
   const taxSum = Number(
     cartItems.reduce((acc, i) => i.price * tax + acc, 0).toFixed(2)
   );
   const shipping = Number((Number(itemsSum) >= 100 ? 0 : 20).toFixed(2));
   const totalSum = Number(itemsSum + taxSum + shipping).toFixed(2);
+  summery.push([shipping, totalSum, taxSum, itemsSum]);
+  useEffect(() => {
+    if (order && !(Object.keys(order).length === 0)) {
+      nav(`/order/${order._id}`);
+      // eslint-disable-next-line
+    }
+  }, [dispatch, success, orderCreate]);
 
-  const handlePlaceOrder = () => {};
+  const handlePlaceOrder = (e) => {
+    e.preventDefault();
+   debugger;
+    const orderObject = {};
+
+    dispatch(
+      createOrder({
+        // ...cart,
+        // ...summery
+        orderItems: cart.cartItems,
+        shippingAddress: cart.shippingAddress,
+        paymentMethod: cart.paymentMethod,
+        itemsPrice: itemsSum,
+        taxPrice: taxSum,
+        shippingPrice: shipping,
+      })
+    );
+  };
 
   return (
     <>
@@ -116,12 +136,17 @@ const PlaceOrderScreen = () => {
                 </Row>
               </ListGroup.Item>
             </ListGroup>
-
+            <ListGroup.Item>
+              <ListGroup.Item>
+                {error && <Message variant="danger">{error}</Message>}
+              </ListGroup.Item>
+            </ListGroup.Item>
             <ListGroup.Item>
               <Form.Control
                 type="submit"
                 value="continue"
                 className="btn-block"
+                onClick={handlePlaceOrder}
                 disabled={cartItems.length === 0}
               />
             </ListGroup.Item>
