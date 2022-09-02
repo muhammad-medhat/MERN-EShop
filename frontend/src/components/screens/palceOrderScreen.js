@@ -39,7 +39,7 @@ const PlaceOrderScreen = () => {
 
   const handlePlaceOrder = (e) => {
     e.preventDefault();
-   debugger;
+  //  debugger;
     const orderObject = {};
 
     dispatch(
@@ -66,6 +66,7 @@ const PlaceOrderScreen = () => {
             <ListGroup.Item>
               <h3>shipping address</h3>
               <ListGroup>
+
                 <span>
                   {shippingAddress.address}, {shippingAddress.city},{" "}
                   {shippingAddress.postalCode}, {shippingAddress.country},{" "}
@@ -75,6 +76,8 @@ const PlaceOrderScreen = () => {
             <ListGroup.Item>
               <h3>payment method</h3>
               <ListGroup.Item>{paymentMethod}</ListGroup.Item>
+              {/* {order.isPaid? <Message variant='success'>Paid</Message>:
+              <Message variant='danger'>not Paid yet</Message>} */}
             </ListGroup.Item>
 
             <ListGroup.Item>

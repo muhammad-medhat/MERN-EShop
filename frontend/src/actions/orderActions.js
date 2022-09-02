@@ -2,7 +2,11 @@ import {
   ORDER_CREATE_SUCCESS,
   ORDER_CREATE_FAIL,
   ORDER_CREATE_REQUEST,
-} from "../const/constants.js";
+
+  ORDER_DETAILS_REQUEST,
+  ORDER_DETAILS_SUCCESS,
+  ORDER_DETAILS_FAIL,
+} from "../const/orderConstants.js";
 
 export const createOrder = (order) => async (dispatch, getState) => {
   try {
@@ -22,7 +26,7 @@ export const createOrder = (order) => async (dispatch, getState) => {
       body: JSON.stringify(order),
       
     };
-debugger
+// debugger
     const response = await fetch("/api/orders", config);
     if (response.status < 400) {
       const data = await response.json();
@@ -33,6 +37,43 @@ debugger
   } catch (error) {
     dispatch({
       type: ORDER_CREATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+
+
+
+export const getOrderDetails = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: ORDER_DETAILS_REQUEST,
+    });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+      method: "get",      
+    };
+// debugger
+    const response = await fetch(`/api/orders/${id}`, config);
+    if (response.status < 400) {
+      const data = await response.json();
+      dispatch({ type: ORDER_DETAILS_SUCCESS, payload: data });
+    } else {
+      throw new Error(response.status + ": " + response.statusText);
+    }
+  } catch (error) {
+    dispatch({
+      type: ORDER_DETAILS_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
