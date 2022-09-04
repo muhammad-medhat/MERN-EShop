@@ -23,10 +23,8 @@ const ShippingScreen = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const nav = useNavigate();
 
-  console.log("llllllll", userLogin);
   const { userInfo } = userLogin;
 
-  //   const qty = search ? Number(search.split("=")[1]) : 1
 
   const handleSubmit = () => {
     // check login

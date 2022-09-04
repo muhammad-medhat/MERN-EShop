@@ -23,13 +23,12 @@ const ProductScreen = () => {
   const { product, loading, error } = productDetails;
   const nav = useNavigate();
 
-  // console.log("product details", productDetails);
 
   const [qty, setQty] = useState(1);
   const [total, setTotal] = useState(product.price);
 
   useEffect(() => {
-    console.log('useEffect...');
+
     dispatch(DetailsProduct(pid));
       setQty(qty);
       setTotal(total);
@@ -40,7 +39,7 @@ const ProductScreen = () => {
   const handleAddToCart = () => {
     // setQty(qty);
     // setTotal(qty * product.price);
-    console.log(`Add to cart ${qty} of ${product.id} for ${total}`);
+    // console.log(`Add to cart ${qty} of ${product.id} for ${total}`);
     nav(`/cart/${product._id}?qty=${qty}`);
   };
 

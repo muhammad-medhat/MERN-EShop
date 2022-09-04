@@ -1,9 +1,9 @@
 import React from 'react';
 import { Alert } from 'react-bootstrap';
 const Message = ({variant, text, children}) => {
-    console.log('variant',variant)
-    console.log('text', text);
-    console.log('children', children);
+    // console.log('variant',variant)
+    // console.log('text', text);
+    // console.log('children', children);
     return ( 
         <>
         <Alert variant={variant}>

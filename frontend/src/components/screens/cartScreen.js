@@ -18,12 +18,12 @@ const CartScreen = () => {
   const nav = useNavigate()
 
   const location = useLocation();
-  console.log("location", location);
+  // console.log("location", location);
   // const qty = new URLSearchParams(location.search).get('qty');
 
   const { search } = useLocation();
   const qty = search ? Number(search.split("=")[1]) : 1;
-  console.log("qty", qty);
+  // console.log("qty", qty);
 
   const dispatch = useDispatch();
   // debugger
@@ -35,7 +35,7 @@ const CartScreen = () => {
       dispatch(addToCart(pid, qty));
     }
   }, [dispatch, pid, qty]);
-  console.log(cartItems);
+  // console.log(cartItems);
 
   const removeFromCart1 = (id) => {
     console.log(`remove ${id}`);
@@ -107,7 +107,7 @@ const CartScreen = () => {
 
       <Col md={4}>
           <ListGroup variant="flush">
-            <ListGroupItem>
+            <ListGroup.Item>
               <Row>
                 <Col xs={12} className="text-center font-bold">
                     <h2>order summery</h2>
@@ -117,14 +117,14 @@ const CartScreen = () => {
                   items
                 </Col>
               </Row>
-          </ListGroupItem>
+          </ListGroup.Item>
 
-          <ListGroupItem>
+          <ListGroup.Item>
             <Col className="font-bold">
               total $
               {cartItems.reduce((acc, item) => acc + item.qty * item.price, 0).toFixed(2)}            </Col>
-          </ListGroupItem>
-          <listGroupItem>
+          </ListGroup.Item>
+          <ListGroup.Item>
             <Col md={12} className="text-center">
               <Button
                 className="btn-block"
@@ -135,7 +135,7 @@ const CartScreen = () => {
                 proceed to checkout
               </Button>
             </Col>
-          </listGroupItem>
+          </ListGroup.Item>
         </ListGroup>
       </Col>
     </Row>

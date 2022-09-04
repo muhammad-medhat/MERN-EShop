@@ -36,7 +36,7 @@ const OrderScreen = () => {
     // console.log(order); 
   // debugger;
   useEffect(() => {
-      console.log(order); 
+      // console.log(order); 
 
     dispatch(getOrderDetails(id));
   }, []);

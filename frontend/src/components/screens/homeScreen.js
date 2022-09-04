@@ -11,16 +11,15 @@ import Message from '../message';
 const HomeScreen = () => {
     const dispatch=useDispatch();
     const productList = useSelector(state => state.productList)
-    console.log(productList);
     const{loading, products, error} = productList;
-    console.log(loading, products, error);
+    // console.log(loading, products, error);
 
     useEffect(() => {
 
         dispatch(ListProducts());
     }
     , [dispatch])
-console.log(error);
+// console.log(error);
     return ( 
         <>   
         {

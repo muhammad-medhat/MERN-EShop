@@ -10,7 +10,7 @@ const Header = () => {
   const loc = useLocation()
   // console.log('loc', loc);
   const userLogin = useSelector((state) => state.userLogin);
-  console.log(userLogin);
+  // console.log(userLogin);
   const { userInfo } = userLogin;
   // debugger
   if(!userInfo && !(loc.pathname in ['/', '/login'])){
