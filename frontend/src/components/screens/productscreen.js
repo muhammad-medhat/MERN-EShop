@@ -12,7 +12,7 @@ import { DetailsProduct } from "../../actions/productActions";
 import Loader from "../loader";
 import Message from "../message";
 
-import Rating from "../rating";
+import Rating from "../com/rating.js";
 const ProductScreen = () => {
   const pid = useParams().id;
   const url = `/api/products/${pid}`;
