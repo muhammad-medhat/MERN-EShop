@@ -2,13 +2,16 @@ import {
   ORDER_CREATE_SUCCESS,
   ORDER_CREATE_FAIL,
   ORDER_CREATE_REQUEST,
-
   ORDER_DETAILS_REQUEST,
   ORDER_DETAILS_SUCCESS,
   ORDER_DETAILS_FAIL,
+  ORDER_PAY_FAIL,
+  ORDER_PAY_SUCCESS,
+  ORDER_PAY_REQUEST,
+  ORDER_PAY_RESET,
 } from "../const/orderConstants.js";
 
-export const createOrder = (order) => async (dispatch, getState) => {
+export const createOrder = (order) => async (dispatch, getState) => {debugger
   try {
     dispatch({
       type: ORDER_CREATE_REQUEST,
@@ -24,9 +27,8 @@ export const createOrder = (order) => async (dispatch, getState) => {
       },
       method: "POST",
       body: JSON.stringify(order),
-      
     };
-// debugger
+    debugger
     const response = await fetch("/api/orders", config);
     if (response.status < 400) {
       const data = await response.json();
@@ -45,9 +47,6 @@ export const createOrder = (order) => async (dispatch, getState) => {
   }
 };
 
-
-
-
 export const getOrderDetails = (id) => async (dispatch, getState) => {
   try {
     dispatch({
@@ -61,9 +60,9 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
       headers: {
         Authorization: `Bearer ${userInfo.token}`,
       },
-      method: "get",      
+      method: "get",
     };
-// debugger
+    // debugger
     const response = await fetch(`/api/orders/${id}`, config);
     if (response.status < 400) {
       const data = await response.json();
@@ -81,3 +80,43 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
     });
   }
 };
+
+export const payOrder = (id, paymentResult) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: ORDER_PAY_REQUEST,
+    });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type":"application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+      method: "put",
+      body: JSON.stringify(paymentResult)
+    };
+    // debugger
+    const response = await fetch(`/api/orders/${id}/pay`, config);
+    if (response.status < 400) {
+      const data = await response.json();
+      dispatch({ type: ORDER_PAY_SUCCESS, payload: data });
+    } else {
+      throw new Error(response.status + ": " + response.statusText);
+    }
+  } catch (error) {
+    dispatch({
+      type: ORDER_PAY_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+// export const payReset = async(dispatch) => dispatch({
+//   type: ORDER_PAY_RESET
+// })

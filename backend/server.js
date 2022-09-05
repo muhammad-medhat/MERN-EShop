@@ -9,8 +9,8 @@ import userRoutes from "./routes/userRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import { errorHandler, notFound } from "./middlewares/errorMiddleware.js";
 
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import { fileURLToPath } from "url";
+import { dirname } from "path";
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -33,6 +33,9 @@ app.use(express.json()); // for parsing application/json
 app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/orders", orderRoutes);
+app.get("/api/config/paypal", (req, res) =>
+  res.send(process.env.PAYPAL_CLIENT_ID)
+);
 
 // Handle errors middleware
 app.use(errorHandler, notFound);
@@ -40,6 +43,7 @@ app.use(errorHandler, notFound);
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(
-    `${ __filename}:  Server is running on the ${process.env.NODE_ENV} mode on port ${port}`.red
+    `${__filename}:  Server is running on the ${process.env.NODE_ENV} mode on port ${port}`
+      .red
   );
 });

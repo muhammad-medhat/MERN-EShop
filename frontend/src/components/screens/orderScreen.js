@@ -10,36 +10,58 @@ import {
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams, useNavigate, Navigate } from "react-router-dom";
-import { getOrderDetails } from "../../actions/orderActions";
+import { getOrderDetails, payOrder,payReset } from "../../actions/orderActions";
 import Loader from "../loader";
 import Message from "../message";
+import { PayPalButton } from "react-paypal-button-v2";
+import { ORDER_PAY_RESET } from "../../const/orderConstants";
 
 const OrderScreen = () => {
-  const dispatch = useDispatch();
-  const orderDetailsSelector = useSelector((state) => state.orderDetails);
-  // console.log("orderderails", orderDetailsSelector);
-  const { loading, order, error } = orderDetailsSelector;
   const { id } = useParams();
+  const dispatch = useDispatch();
 
-  if(order){
-    // debugger
-   
-  }
-    // const {
-    //   // shippingAddress,
-    //   //order.orderItems,
-    //   // paymentMethod,
-    //   // shippingPrice,
-    //   totalPrice,
-    //   taxPrice,
-    // } = order;
-    // console.log(order); 
+  const orderDetailsSelector = useSelector((state) => state.orderDetails);
+  const { loading, order, error } = orderDetailsSelector;
+
+  const orderPaySelector = useSelector((state) => state.orderPay);
+  const { loading: loadingPay, success: successPay } = orderPaySelector;
+
+  const [sdkReady, setSdkReady] = useState(false);
   // debugger;
   useEffect(() => {
-      // console.log(order); 
+    debugger;
+    console.log("useEffect...");
+    const addPaypalScript = async (req, res) => {
+      const response = await fetch("/api/config/paypal");
+      const clientId = await response.text();
+      console.log(clientId);
+      const paypalUrl = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
+      const script = document.createElement("script");
+      script.src = paypalUrl;
+      script.async = true;
+      script.onload = () => {
+        setSdkReady(true);
+      };
+      document.body.appendChild(script);
+    };
+    if (!order||successPay) {
+      // dispatch(payReset())
+      dispatch(getOrderDetails(id));
+      dispatch({
+        type: ORDER_PAY_RESET
+      })
+    } else if(!order.isPaid){
+      if(!window.paypal){
+        addPaypalScript()
+      } else{
+        setSdkReady(true)
+      }
+    }
+  }, [dispatch, id, successPay, order]);
 
-    dispatch(getOrderDetails(id));
-  }, []);
+  function paymentSuccess() {
+
+  }
 
   return (
     <>
@@ -62,12 +84,8 @@ const OrderScreen = () => {
                     <ListGroup>
                       <ListGroup.Item>
                         <Row>
-                          <p>
-                            name: {order.user.name}
-                          </p>
-                          <p>
-                            email: {order.user.email}
-                          </p>
+                          <p>name: {order.user.name}</p>
+                          <p>email: {order.user.email}</p>
                           <span>
                             {order.shippingAddress.address},{" "}
                             {order.shippingAddress.city},{" "}
@@ -90,6 +108,11 @@ const OrderScreen = () => {
 
                   <ListGroup.Item>
                     <h3> order items</h3>
+                    {order.isDelivered ? (
+                      <Message variant="success">Delivered</Message>
+                    ) : (
+                      <Message variant="danger">not Delivered</Message>
+                    )}
                     {order.orderItems.length == 0 ? (
                       <Message>Empty Order</Message>
                     ) : (
@@ -131,11 +154,14 @@ const OrderScreen = () => {
                     <ListGroup.Item>
                       <h2>order summery</h2>
                     </ListGroup.Item>
+                    <ListGroup.Item>
+                      {JSON.stringify(order)}
+                    </ListGroup.Item>
 
                     <ListGroup.Item>
                       <Row>
                         <Col>Items total</Col>
-                        <Col>{order.totalPrice}</Col>
+                        <Col>{order.itemsPrice}</Col>
                       </Row>
                     </ListGroup.Item>
 
@@ -151,7 +177,25 @@ const OrderScreen = () => {
                         <Col>{order.taxPrice}</Col>
                       </Row>
                     </ListGroup.Item>
+                    <ListGroup.Item>
+                      <Row>
+                        <Col>Total Price</Col>
+                        <Col>{order.totalPrice}</Col>
+                      </Row>
+                    </ListGroup.Item>
                   </ListGroup>
+                  {!order.isPaid && (
+                    <ListGroup>
+                      <ListGroup.Item>
+                        {sdkReady && (
+                          <PayPalButton 
+                            amount={order.totalPrice}
+                            onSuccess={paymentSuccess} />
+                        )}                        
+                      </ListGroup.Item>
+                    </ListGroup>                    
+                  )}
+
                 </Card>
               </Col>
             </Row>
