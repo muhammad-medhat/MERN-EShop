@@ -12,7 +12,6 @@ const PlaceOrderScreen = () => {
   const orderCreate = useSelector((state) => state.orderCreate);
   const { order, success, error } = orderCreate;
 
-
   const cart = useSelector((s) => s.cart);
   const nav = useNavigate();
 
@@ -27,10 +26,11 @@ const PlaceOrderScreen = () => {
   const taxSum = Number(
     cartItems.reduce((acc, i) => i.price * tax + acc, 0).toFixed(2)
   );
-  const shipping = Number((Number(itemsSum) >= 100 ? 0 : 20).toFixed(2));
+  const shipping = Number((Number(itemsSum) >= 100 ? 20 : 50).toFixed(2));
   const totalSum = Number(itemsSum + taxSum + shipping).toFixed(2);
   summery.push([shipping, totalSum, taxSum, itemsSum]);
   useEffect(() => {
+    debugger;
     if (order && !(Object.keys(order).length === 0)) {
       nav(`/order/${order._id}`);
       // eslint-disable-next-line
@@ -39,7 +39,7 @@ const PlaceOrderScreen = () => {
 
   const handlePlaceOrder = (e) => {
     e.preventDefault();
-  //  debugger;
+    debugger;
     const orderObject = {};
 
     dispatch(
@@ -52,6 +52,7 @@ const PlaceOrderScreen = () => {
         itemsPrice: itemsSum,
         taxPrice: taxSum,
         shippingPrice: shipping,
+        totalPrice: totalSum,
       })
     );
   };
@@ -66,7 +67,6 @@ const PlaceOrderScreen = () => {
             <ListGroup.Item>
               <h3>shipping address</h3>
               <ListGroup>
-
                 <span>
                   {shippingAddress.address}, {shippingAddress.city},{" "}
                   {shippingAddress.postalCode}, {shippingAddress.country},{" "}
