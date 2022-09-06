@@ -13,7 +13,10 @@ import {
   USER_DETAILS_UPDATE_SUCCESS,
   USER_DETAILS_UPDATE_FAIL,
   USER_DETAILS_UPDATE_RESET,
-} from "../const/constants.js";
+  USER_LIST_REQUEST,
+  USER_LIST_SUCCESS,
+  USER_LIST_FAIL,
+} from "../const/userConstants.js";
 export const login = (email, password) => async (dispatch) => {
   try {
     dispatch({
@@ -166,6 +169,43 @@ export const updateUserDetails = (user) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: USER_DETAILS_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const usersList = () => async (dispatch, getState) => {
+  try {
+    // console.log('st', st);
+    dispatch({
+      type: USER_LIST_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+      method: "GET",
+    };
+
+    const response = await fetch(`/api/users`, config);
+    const data = await response.json();
+    dispatch({
+      type: USER_LIST_SUCCESS,
+      payload: data,
+    });
+
+    // localStorage.setItem("userInfo", JSON.stringify(data));
+  } catch (error) {
+    dispatch({
+      type: USER_LIST_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
