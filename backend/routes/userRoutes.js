@@ -3,13 +3,24 @@ import {
   userLogin,
   getUserProfile,
   createUser,
-  deleteUser,updateUserProfile
+  deleteUser,updateUserProfile, getUsers, getUserById, updateUserById
 } from "../controllers/usersController.js";
-import { protect } from "../middlewares/authMiddleware.js";
+import { protect, admin } from "../middlewares/authMiddleware.js";
 
 const router = Express.Router();
+//this route must be defined before get by id
+router.route("/profile")
+        .get(protect, getUserProfile)
+        .put(protect, updateUserProfile);
 
-router.route("/").post(createUser).delete(deleteUser);
+router.route("/")
+        .get(protect, admin, getUsers)
+        .post(protect, createUser)
+
+router.route('/:id')
+        .get(protect, admin, getUserById)
+        .delete(protect, admin, deleteUser)
+        .put(protect, admin, updateUserById)
 
 /**
  * @route POST /api/users/login
@@ -18,14 +29,9 @@ router.route("/").post(createUser).delete(deleteUser);
  */
 router.route("/login").post(userLogin);
 
-/**
- * @route GET /api/users/profile
- * @desc Get user profile
- * @access Private
- */
 
-router.route("/profile")
-        .get(protect, getUserProfile)
-        .put(protect, updateUserProfile);
+
+
+
 
 export default router;

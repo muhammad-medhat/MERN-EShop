@@ -11,7 +11,7 @@ export const protect = expressAsyncHandler(async (req, res, next) => {
     try {
       token = req.headers.authorization.split(" ")[1];
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      console.log(decoded);
+      // console.log(decoded);
       decoded
         ? (req.user = await User.findById(decoded.uid).select("-password"))
         : null;
@@ -25,3 +25,13 @@ export const protect = expressAsyncHandler(async (req, res, next) => {
   }
   next();
 });
+
+export const admin = (req, res, next) =>{
+
+  if(req.user && req.user.isAdmin){  
+    next()
+  } else {
+    req.status(400)
+    throw new Error('Admin Page')
+  }
+}
