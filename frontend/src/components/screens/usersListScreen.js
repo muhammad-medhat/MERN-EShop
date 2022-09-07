@@ -1,42 +1,70 @@
 import React, { useState, useEffect } from "react";
-import { Table, Form, Row, Col, FormControl, FormGroup } from "react-bootstrap";
+import { Table, Form, Row, Col, FormControl, FormGroup, Button } from "react-bootstrap";
 import FormContainer from "../formContainer";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserDetails, updateUserDetails } from "../../actions/userActions";
 import Loader from "../loader";
 import Message from "../message";
+import { userList, deleteUser } from "../../actions/userActions.js";
+import { LinkContainer } from "react-router-bootstrap";
 
 const UsersList = () => {
-    const dispatch=useDispatch();
-    const userList = useSelector(state => state.userList)
-    const{loading, users, error} = userList;
-    return ( 
-        <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th> Name</th>
-            <th>email</th>
-            <th>isAdmin</th>
+  const dispatch = useDispatch();
+  const usersList = useSelector((state) => state.userList);
+  const { loading, users, error } = usersList;  
+  
+  const userDelete = useSelector((state) => state.userDelete);
+  const { loading: loadingD, success: successD, errorD } = userDelete;  
+
+
+  console.log(usersList);
+
+  function deleteHandler(id){
+    dispatch(deleteUser(id))
+  }
+  useEffect(() => {
+    dispatch(userList());
+  }, [dispatch, successD]);
+  return (
+    <Table striped bordered hover>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th> Name</th>
+          <th>email</th>
+          <th>Admin</th>
+          <th>...</th>
+        </tr>
+      </thead>
+      <tbody>
+        {users && users.map((user, index) => (
+          <tr key={index}>
+            <td>{index}</td>
+            <td>{user.name}</td>
+            <td>{user.email}</td>
+            <td>
+              {user.isAdmin 
+              ? (<i className="fas fa-check"></i>)
+              : (<i className="fas fa-times"></i>)
+              }
+            </td>
+            <td>
+            <LinkContainer to={`users/${user._id}/edit`}>
+              <Button variant="primary">
+                  <i className="fas fa-edit"></i>
+              </Button>
+            </LinkContainer>
+            <Button variant="danger" onClick={()=>deleteHandler(user._id)}>
+                  <i className="fas fa-trash"></i>
+              </Button>
+
+            </td>
           </tr>
-        </thead>
-        <tbody>
-            {users.map((user, index) => (
-                <tr key={index}>
-                    <td>{index}</td>
-                    <td>{user.name}</td>
-                    <td>{user.email}</td>
-                    <td>{user.isAdmin ? 'Yes' : 'No'}</td>
-                </tr>
-            ))}
-
-
-            </tbody>
-            
+        ))}
+      </tbody>
     </Table>
+  );
+};
 
-     );
-}
- 
 export default UsersList;
