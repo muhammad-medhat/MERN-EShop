@@ -5,24 +5,31 @@ import {
   PRODUCTS_DETAILS_SUCCESS,
   PRODUCTS_DETAILS_FAIL,
   PRODUCTS_DETAILS_REQUEST,
-} from "../const/constants.js";
+  PRODUCT_DELETE_FAIL,
+  PRODUCT_DELETE_REQUEST,
+  PRODUCT_DELETE_SUCCESS,
+  PRODUCT_UPDATE_FAIL,
+  PRODUCT_UPDATE_REQUEST,
+  PRODUCT_UPDATE_RESET,
+  PRODUCT_UPDATE_SUCCESS,
+} from "../const/productConstants.js";
 /**
- * 
- * @param {*} state 
+ *
+ * @param {*} state
  * state is the current state of the application
  * will be set to the initial state if it is undefined
  * initial state is an empty array
- * @param {*} action 
+ * @param {*} action
  * action has type and payload
- * @returns 
+ * @returns
  */
 
 export const productListReducer = (state = { products: [] }, action) => {
-    //switch on type of action
+  //switch on type of action
   switch (action.type) {
     // case fetch request is being made
     // action will set the loading state to true (component will know it is loading)
-    // and initialize the products array 
+    // and initialize the products array
     case PRODUCTS_LIST_REQUEST:
       return { loading: true, products: [] };
 
@@ -41,13 +48,13 @@ export const productListReducer = (state = { products: [] }, action) => {
   }
 };
 
-
-export const productDetailsReducer = (state = { product: {reviews:[]} }, action) => {
+export const productDetailsReducer = (
+  state = { product: { reviews: [] } },
+  action
+) => {
   switch (action.type) {
-
     case PRODUCTS_DETAILS_REQUEST:
       return { loading: true, ...state };
-
 
     case PRODUCTS_DETAILS_SUCCESS:
       return { loading: false, product: action.payload };
@@ -63,3 +70,40 @@ export const productDetailsReducer = (state = { product: {reviews:[]} }, action)
 // export default productListReducer;
 
 /** */
+export const productDeleteReducer = (state = {}, action) => {
+  // debugger;
+  switch (action.type) {
+    case PRODUCT_DELETE_REQUEST:
+      return { loading: true };
+
+    case PRODUCT_DELETE_SUCCESS:
+      return { loading: false, success: true };
+
+    case PRODUCT_DELETE_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export const productUpdateReducer = (state = { product: {} }, action) => {
+  //debugger;
+  switch (action.type) {
+    case PRODUCT_UPDATE_REQUEST:
+      return { loading: true };
+
+    case PRODUCT_UPDATE_SUCCESS:
+      return { loading: false, success: true };
+    // return { loading: false, success: true, product: action.payload };
+
+    case PRODUCT_UPDATE_RESET:
+      return { product: {} };
+
+    case PRODUCT_UPDATE_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
