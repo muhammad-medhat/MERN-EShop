@@ -8,13 +8,12 @@ import {
   FormGroup,
   Button,
 } from "react-bootstrap";
-import FormContainer from "../formContainer";
+import FormContainer from "../../formContainer";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getUserDetails, updateUserDetails } from "../../actions/userActions";
-import Loader from "../loader";
-import Message from "../message";
-import { userList, deleteUser } from "../../actions/userActions.js";
+import { getUserDetails, updateUserDetails, userList, deleteUser } from "../../../actions/userActions";
+import Loader from "../../loader";
+import Message from "../../message";
 import { LinkContainer } from "react-router-bootstrap";
 
 const UsersList = () => {
@@ -73,7 +72,7 @@ const UsersList = () => {
                       )}
                     </td>
                     <td>
-                      <LinkContainer to={`users/${user._id}/edit`}>
+                      <LinkContainer to={`/admin/users/${user._id}/edit`}>
                         <Button variant="primary">
                           <i className="fas fa-edit"></i>
                         </Button>
