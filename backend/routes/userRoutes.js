@@ -15,7 +15,7 @@ router.route("/profile")
 
 router.route("/")
         .get(protect, admin, getUsers)
-        .post(protect, createUser)
+        .post( createUser) //unprotected route to allow register
 
 router.route('/:id')
         .get(protect, admin, getUserById)

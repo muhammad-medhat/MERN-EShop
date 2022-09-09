@@ -19,6 +19,10 @@ import {
   USER_DELETE_SUCCESS,
   USER_DELETE_FAIL,
   USER_DELETE_REQUEST,
+  USER_UPDATE_REQUEST,
+  USER_UPDATE_SUCCESS,
+  USER_UPDATE_FAIL,
+  
 } from "../const/userConstants.js";
 export const login = (email, password) => async (dispatch) => {
   try {
@@ -243,6 +247,46 @@ export const deleteUser = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: USER_DELETE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const updateUser = (user) => async (dispatch, getState) => {
+  try {debugger
+    dispatch({
+      type: USER_UPDATE_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+      method: "put",
+      body: JSON.stringify(user),
+    };
+
+    const response = await fetch(`/api/users/${user._id}`, config);
+    const data = await response.json();
+    dispatch({
+      type: USER_UPDATE_SUCCESS,
+      payload: data,
+    });
+    dispatch({
+      type: USER_DETAILS_SUCCESS,
+      payload: data,
+    });
+    // localStorage.setItem("userInfo", JSON.stringify(data));
+  } catch (error) {
+    dispatch({
+      type: USER_UPDATE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
