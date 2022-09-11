@@ -66,11 +66,11 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
       });
   
       const {
-        productLogin: { productInfo },
+        userLogin: { userInfo },
       } = getState();
       const config = {
         headers: {
-          Authorization: `Bearer ${productInfo.token}`,
+          Authorization: `Bearer ${userInfo.token}`,
         },
         method: "delete",
       };
@@ -101,12 +101,12 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
       });
   
       const {
-        productLogin: { productInfo },
+        userLogin: { userInfo },
       } = getState();
       const config = {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${productInfo.token}`,
+          Authorization: `Bearer ${userInfo.token}`,
         },
         method: "put",
         body: JSON.stringify(product),

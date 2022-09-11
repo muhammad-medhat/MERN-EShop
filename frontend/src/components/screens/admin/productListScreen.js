@@ -22,8 +22,8 @@ const ProductList = () => {
   const productList = useSelector((state) => state.productList);
   const { loading, products, error } = productList;
 
-  const userDelete = useSelector((state) => state.userDelete);
-  const { loading: loadingD, success: successD, errorD } = userDelete;
+  const productDelete = useSelector((state) => state.productDelete);
+  const { loading: loadingD, success: successD, errorD } = productDelete;
   // debugger
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -37,7 +37,7 @@ const ProductList = () => {
 
   function addHandler(id) {
     //delete product
-    // dispatch(deleteUser(id));
+    dispatch(deleteProduct(id));
   }
 
   useEffect(() => {

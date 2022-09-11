@@ -67,11 +67,12 @@ export const getUserProfile = asyncHandler(async (req, res) => {
  */
 export const updateUserProfile = asyncHandler(async (req, res) => {
   console.log("updateUserProfile");
-  const { name, email, password } = req.body;
+  const { name, email, password, isAdmin } = req.body;
   const user = await User.findById(req.user.id);
   user.name = name || user.name;
   user.email = email || user.email;
   user.password = password || user.password;
+  user.isAdmin = isAdmin || user.isAdmin
   const updatedUser = await user.save();
   if (!updatedUser) {
     throw new Error("User not found");
