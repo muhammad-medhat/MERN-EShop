@@ -14,37 +14,85 @@ import { useSelector, useDispatch } from "react-redux";
 import Loader from "../../loader";
 import Message from "../../message";
 import { LinkContainer } from "react-router-bootstrap";
-import { ListProducts, deleteProduct } from "../../../actions/productActions";
+import {
+  ListProducts,
+  deleteProduct,
+  initProduct,
+  createProduct,
+} from "../../../actions/productActions"; 
+import { PRODUCT_INIT_RESET } from "../../../const/productConstants";
 
 const ProductList = () => {
   const dispatch = useDispatch();
   const nav = useNavigate();
+  //Selectors
   const productList = useSelector((state) => state.productList);
   const { loading, products, error } = productList;
 
   const productDelete = useSelector((state) => state.productDelete);
-  const { loading: loadingD, success: successD, errorD } = productDelete;
-  // debugger
+  const {
+    loading: loadingDelete,
+    success: successDelete,
+    errorDelete,
+  } = productDelete;
+
+  const productCreate = useSelector((state) => state.productCreate);
+  const {
+    loading: loadingCreate,
+    success: successCreate,
+    errorCreate,
+  } = productCreate;
+
+  const productInit = useSelector((state) => state.productInit);
+  const {
+    loading: loadingInit,
+    success: successInit,
+    errorInit,
+    product: initializedProduct,
+  } = productInit;
+
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  console.log(productList);
+
+  // debugger
 
   function deleteHandler(id) {
     //delete product
     dispatch(deleteProduct(id));
   }
 
-  function addHandler(id) {
-    //delete product
-    dispatch(deleteProduct(id));
+  function addHandler(e) {
+    e.preventDefault();
+      dispatch(initProduct());
+      // debugger    
+      if (successInit) {
+        // nav(`/admin/products/${productInit._id}/edit`);
+      }
+  }
+  function logInfo(){
+      
+    console.group("Selectors");
+    console.log("List", productList);
+    console.log("Delete", productDelete);
+    console.log("Create", productCreate);
+    console.log("Init", productInit);
+    console.groupEnd();
   }
 
   useEffect(() => {
-    if (userInfo && userInfo.isAdmin) {
+    dispatch({type: PRODUCT_INIT_RESET})
+    if (!userInfo || !userInfo.isAdmin) {
+      nav("/login");
+      // 
+    }  
+    if(successInit){
+      nav(`/admin/products/${initializedProduct._id}/edit`);
+    } else {
       dispatch(ListProducts());
-    } else nav("/login");
-  }, [dispatch, successD, userInfo]);
+    }
+    logInfo()
+  }, [dispatch, successDelete, successInit, userInfo]);
   return (
     <>
       {loading ? (

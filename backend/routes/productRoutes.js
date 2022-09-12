@@ -4,7 +4,7 @@ import {
   getProductById,
   createProduct,
   deleteProductById,
-  updateProductById
+  updateProductById, initProduct
 } from "../controllers/productsController.js";
 import { protect, admin } from "../middlewares/authMiddleware.js";
 const router = Express.Router();
@@ -14,7 +14,9 @@ const router = Express.Router();
  * @desc Get all products
  * @access Public
  */
-router.route("/").get(getProducts).post(protect,admin, createProduct);
+router.route("/")
+      .get(getProducts)
+      .post(protect,admin, initProduct);
 
 /**
  * @route GET /api/products/:id

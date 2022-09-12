@@ -35,7 +35,7 @@ export const getProductById = asyncHandler(async(req, res) => {
  * @access Public
  */
  export const createProduct = asyncHandler(async (req, res) => {
-    const { name, price } = req.body;
+    const { name } = req.body;
     const productExist = await Product.findOne({ name });
     if (productExist) {
       res.status(400);
@@ -47,6 +47,22 @@ export const getProductById = asyncHandler(async(req, res) => {
       });
     }
   });
+
+ export const initProduct = asyncHandler(async (req, res) => {
+   const data = {
+     name: "Temp name",
+     price: 0.0,
+     description: "...",
+     category: "...",
+     brand: "...",
+     image: "images/sample.jpg",
+   };
+
+   const product = await Product.create({ ...data, user: req.user.id });
+   res.status(201).json({
+     ...product._doc,
+   });
+ });
 
   /**
  * @route DELETE /api/products/:id
@@ -79,7 +95,7 @@ export const updateProductById = asyncHandler(async(req, res) => {
         res.status(404)
         throw new Error ( 'Product not found')
     } else {
-        product = Object.assign(req.body, product)
+        Object.assign(product, req.body, )
         product.save()
         return res.json(product);
     }
