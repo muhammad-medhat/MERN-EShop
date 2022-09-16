@@ -64,36 +64,8 @@ const ProductEdit = () => {
   const [uploading, setUploading] = useState(false);
   /** End state variables */
 
-  const uploadHandler = async(e)=> {
-    debugger
-    const file = e.target.files[0]
-    const formData = new FormData()
-    formData.append('image', file)
-    console.log(formData);
-    for (var key of formData.entries()) {
-      console.log(key[0] + ', ' + key[1]);
-    }
-    setUploading(true)
-    try {
-      const config = {
-        // headers:{
-        //   'Content-Type': 'multipart/form-data'
-        // }, 
-        // method:'post',
-        body: formData
-      }
-      // const {data} = await axios.post('/api/upload', formData, config)
-      const res = await fetch('/api/upload', config)
-      const data = await res.text()
-      setImage(data)
-      setUploading(false)
-    } catch (error) {
-      console.error(error);
-      setUploading(false)
-    }
-  }
-
   function submitAdd(e) {
+    debugger;
     // debugger;
     e.preventDefault();
     dispatch(
@@ -107,9 +79,36 @@ const ProductEdit = () => {
         brand,
         category,
       })
-    );      
-    uploadHandler(e)
+    );
+  }
 
+  const uploadHandler = async(e)=> {
+    debugger
+    const file = e.target.files[0]
+    const formData = new FormData()
+    formData.append('image', file)
+    // console.log(formData);
+    // for (var key of formData.entries()) {
+    //   console.log(key[0] + ', ' + key[1]);
+    // }
+    setUploading(true)
+    try {
+      const config = {
+        headers:{
+          'Content-Type': 'multipart/form-data'
+        }, 
+        method:'post',
+        body: formData
+      }
+      // const {data} = await axios.post('/api/upload', formData, config)
+      const res = await fetch('/api/upload', config)
+      const data = await res.text()
+      setImage(data)
+      setUploading(false)
+    } catch (error) {
+      console.error(error);
+      setUploading(false)
+    }
   }
   useEffect(() => {
     // console.log('productDetails', productDetails);
@@ -157,11 +156,7 @@ const ProductEdit = () => {
             <span>Back to product list</span>
           </Link>
           <FormContainer>
-            <form 
-              action="/api/upload" 
-              encType="multipart/form-data" 
-              method="POST"
-              onSubmit={submitAdd}>
+            <Form onSubmit={submitAdd}>
               <FormGroup controlId="name">
                 <Form.Label>Name</Form.Label>
                 <FormControl
@@ -216,6 +211,7 @@ const ProductEdit = () => {
                   // id='image-file' 
                   label='select image' 
                   // custom
+                  onChange={uploadHandler}
                   />
                   {uploading && <Loader />}
 
@@ -244,9 +240,9 @@ const ProductEdit = () => {
               <FormGroup>
                 <Form.Label>add product</Form.Label>
 
-                <FormControl variant="primary" type="submit" value="Create" />
+                <FormControl variant="primary" type="submit" value="create" />
               </FormGroup>
-            </form>
+            </Form>
           </FormContainer>
         </>
       )}

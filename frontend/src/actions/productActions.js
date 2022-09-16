@@ -101,7 +101,8 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
   };
   
   export const updateProduct = (product) => async (dispatch, getState) => {
-    try {debugger
+    try {
+      //debugger
       dispatch({
         type: PRODUCT_UPDATE_REQUEST,
       });
