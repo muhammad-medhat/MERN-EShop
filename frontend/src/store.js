@@ -6,6 +6,9 @@ import {
   productListReducer,
   productDetailsReducer,
   productDeleteReducer,
+  productCreateReducer,
+  productInitReducer,
+  productUpdateReducer,
 } from "./reducers/productReducers";
 import { cartReducer } from "./reducers/cartReducer";
 import {
@@ -17,24 +20,32 @@ import {
   userDeleteReducer,
   userUpdateReducer,
 } from "./reducers/userReducers";
-import { orderCreateReducer, orderDetailsReducer, orderPayReducer } from "./reducers/orderReducers";
+import {
+  orderCreateReducer,
+  orderDetailsReducer,
+  orderPayReducer,
+} from "./reducers/orderReducers";
 
 const reducer = combineReducers({
   productList: productListReducer,
   productDetails: productDetailsReducer,
-  productDelete:productDeleteReducer, 
+  productDelete: productDeleteReducer,
+  productCreate: productCreateReducer,
+  productInit: productInitReducer,
+  productUpdate: productUpdateReducer,
 
   cart: cartReducer,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
   userDetails: userDetailsReducer,
   userDetailsUpdate: userDetailsUpdateReducer,
-  userList: userListReducer, 
-  userDelete:userDeleteReducer, 
+  userList: userListReducer,
+  userDelete: userDeleteReducer,
   userUpdate: userUpdateReducer,
+
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
-  orderPay: orderPayReducer
+  orderPay: orderPayReducer,
 });
 const cartItemsFromLocalStorage = localStorage.getItem("cartItems")
   ? JSON.parse(localStorage.getItem("cartItems"))
@@ -43,17 +54,16 @@ const userInfoFromLocalStorage = localStorage.getItem("userInfo")
   ? JSON.parse(localStorage.getItem("userInfo"))
   : null;
 
-  const shippingAddressFromLocalStorage = localStorage.getItem("shippingAddress")
+const shippingAddressFromLocalStorage = localStorage.getItem("shippingAddress")
   ? JSON.parse(localStorage.getItem("shippingAddress"))
   : {};
 
 const initialState = {
   cart: {
     cartItems: cartItemsFromLocalStorage,
-    shippingAddress: shippingAddressFromLocalStorage
-    
+    shippingAddress: shippingAddressFromLocalStorage,
   },
-  userLogin: {userInfo: userInfoFromLocalStorage,}
+  userLogin: { userInfo: userInfoFromLocalStorage },
 };
 const middleware = [thunk];
 const store = createStore(

@@ -16,6 +16,8 @@ import OrderScreen from './components/screens/orderScreen';
 import UserListScreen from './components/screens/admin/usersListScreen';
 import UserEditScreen from './components/screens/admin/userEditScreen';
 import ProductList from './components/screens/admin/productListScreen';
+import ProductCreate from './components/screens/admin/productCreateScreen';
+import ProductEdit from './components/screens/admin/productEditScreen';
 function App() {
   return (
     <BrowserRouter>
@@ -36,6 +38,8 @@ function App() {
                   <Route path='/payment' element={<PaymentScreen />} />
                   <Route path='/placeorder' element={<PlaceOrderScreen />} />
                   <Route path='/order/:id' element={<OrderScreen />} />              
+                  <Route path='/admin/products/:id/edit' element={<ProductEdit />} />              
+                  <Route path='/admin/products/create' element={<ProductCreate />} />              
                   <Route path='/admin/products' element={<ProductList />} />              
                   <Route path='/admin/users' element={<UserListScreen />} />              
                   <Route path='/admin/users/:id/edit' element={<UserEditScreen  />} />              

@@ -12,7 +12,13 @@ import {
  PRODUCT_UPDATE_FAIL,
  PRODUCT_UPDATE_REQUEST,
  PRODUCT_UPDATE_SUCCESS,
- PRODUCT_DETAILS_SUCCESS} 
+ PRODUCT_DETAILS_SUCCESS,
+ PRODUCT_CREATE_SUCCESS,
+ PRODUCT_CREATE_FAIL,
+ PRODUCT_CREATE_REQUEST,
+ PRODUCT_INIT_REQUEST,
+ PRODUCT_INIT_SUCCESS,
+ PRODUCT_INIT_FAIL} 
  from "../const/productConstants";
 // import axios from "axios";
 
@@ -66,11 +72,11 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
       });
   
       const {
-        productLogin: { productInfo },
+        userLogin: { userInfo },
       } = getState();
       const config = {
         headers: {
-          Authorization: `Bearer ${productInfo.token}`,
+          Authorization: `Bearer ${userInfo.token}`,
         },
         method: "delete",
       };
@@ -95,18 +101,19 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
   };
   
   export const updateProduct = (product) => async (dispatch, getState) => {
-    try {debugger
+    try {
+      //debugger
       dispatch({
         type: PRODUCT_UPDATE_REQUEST,
       });
   
       const {
-        productLogin: { productInfo },
+        userLogin: { userInfo },
       } = getState();
       const config = {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${productInfo.token}`,
+          Authorization: `Bearer ${userInfo.token}`,
         },
         method: "put",
         body: JSON.stringify(product),
@@ -118,6 +125,43 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
         type: PRODUCT_UPDATE_SUCCESS,
         payload: data,
       });
+
+      // localStorage.setItem("productInfo", JSON.stringify(data));
+    } catch (error) {
+      dispatch({
+        type: PRODUCT_UPDATE_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+  export const createProduct = (product) => async (dispatch, getState) => {
+    try {debugger
+      dispatch({
+        type: PRODUCT_CREATE_REQUEST,
+      });
+  
+      const {
+        userLogin: { userInfo },
+      } = getState();
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+        method: "post",
+        body: JSON.stringify(product),
+      };
+  
+      const response = await fetch(`/api/products/`, config);
+      const data = await response.json();
+      dispatch({
+        type: PRODUCT_CREATE_SUCCESS,
+        payload: data,
+      });
       dispatch({
         type: PRODUCT_DETAILS_SUCCESS,
         payload: data,
@@ -125,9 +169,46 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
       // localStorage.setItem("productInfo", JSON.stringify(data));
     } catch (error) {
       dispatch({
-        type: PRODUCT_UPDATE_FAIL,
+        type: PRODUCT_CREATE_FAIL,
         payload:
           error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+  export const initProduct = () => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: PRODUCT_INIT_REQUEST,
+      });
+  
+      const {
+        userLogin: { userInfo },
+      } = getState();
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+        method: "post",
+        body: JSON.stringify({}),
+      };
+
+      debugger
+  
+      const response = await fetch(`/api/products/`, config);
+      const data = await response.json();
+      dispatch({
+        type: PRODUCT_INIT_SUCCESS,
+        payload: data,
+      });
+
+    } catch (error) {
+      dispatch({
+        type: PRODUCT_INIT_FAIL,
+        payload: error.response && error.response.data.message
             ? error.response.data.message
             : error.message,
       });
