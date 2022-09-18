@@ -71,3 +71,18 @@ export const payOrder = asyncHandler(async (req, res) => {
     throw new Error( "Order not found" );
   }
 });
+
+/**
+ * @route GET /api/Orders
+ * @desc get all orders
+ * @access Private/Admin
+ */
+ export const getAllOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find({}).populate("user", "id name");
+  if (!orders) {
+    res.status(400)
+    throw new Error("Error")
+  } else {
+    return res.json(orders);
+  }
+});
