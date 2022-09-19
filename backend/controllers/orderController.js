@@ -55,7 +55,7 @@ export const payOrder = asyncHandler(async (req, res) => {
   const id = req.params.id;
   const order = await Order.findById(id);
   if (order) {
-    order.isPaid = true;
+    order.isdelivered = true;
     order.paidAt = Date.now();
     order.paymentResult = {
       id: req.body.id,
@@ -67,8 +67,8 @@ export const payOrder = asyncHandler(async (req, res) => {
 
     return res.json(updatedOrder);
   } else {
-    res.status(404)
-    throw new Error( "Order not found" );
+    res.status(404);
+    throw new Error("Order not found");
   }
 });
 
@@ -77,12 +77,48 @@ export const payOrder = asyncHandler(async (req, res) => {
  * @desc get all orders
  * @access Private/Admin
  */
- export const getAllOrders = asyncHandler(async (req, res) => {
+export const getAllOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find({}).populate("user", "id name");
   if (!orders) {
-    res.status(400)
-    throw new Error("Error")
+    res.status(400);
+    throw new Error("Error");
   } else {
     return res.json(orders);
   }
 });
+
+/**
+ * @route PUT /api/Orders/:id/deliver
+ * @desc Update Order delivery Status
+ * @access Private/Admin
+ */
+export const deliverOrder = asyncHandler(async (req, res) => {
+  const id = req.params.id;
+  const order = await Order.findById(id);
+  if (order) {
+    order.isDelivered = true;
+    order.deliveredAt = Date.now();
+    const updatedOrder = order.save();
+
+    return res.json(updatedOrder);
+  } else {
+    res.status(404);
+    throw new Error("Order not found");
+  }
+});
+
+export const updateDeliverOrder = asyncHandler(async (req, res) => {
+  const id = req.params.id;
+  const order = await Order.findById(id);
+  if (order) {
+    order.isDelivered = true;
+    order.deliveredAt = Date.now();
+    const updatedOrder = order.save();
+
+    return res.json(updatedOrder);
+  } else {
+    res.status(404);
+    throw new Error("Order not found");
+  }
+});
+

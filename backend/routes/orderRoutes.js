@@ -4,6 +4,7 @@ import {
   getAllOrders,
   getOrderById,
   payOrder,
+  deliverOrder
 } from "../controllers/orderController.js";
 import { admin, protect } from "../middlewares/authMiddleware.js";
 
@@ -14,5 +15,6 @@ router.route("/")
     .get(protect, admin, getAllOrders)
 router.route("/:id").get(protect, getOrderById);
 router.route("/:id/pay").put(protect, payOrder);
+router.route("/:id/deliver").put(protect, admin, deliverOrder);
 
 export default router;
