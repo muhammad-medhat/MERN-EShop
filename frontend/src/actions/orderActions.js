@@ -54,7 +54,7 @@ export const createOrder = (order) => async (dispatch, getState) => {debugger
 };
 
 export const getOrderDetails = (id) => async (dispatch, getState) => {
-  try {
+  try {debugger
     dispatch({
       type: ORDER_DETAILS_REQUEST,
     });
@@ -88,7 +88,7 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
 };
 
 export const payOrder = (id, paymentResult) => async (dispatch, getState) => {
-  try {
+  try {debugger
     dispatch({
       type: ORDER_PAY_REQUEST,
     });
