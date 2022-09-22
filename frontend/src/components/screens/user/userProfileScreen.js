@@ -46,7 +46,8 @@ const UserProfileScreen = () => {
     if (!userInfo) {
       nav("/login");
     } else {
-      if (!user || !user.name) {
+      const cond = [!user, !user.name,name==="",  name !== user.name]
+      if(!user || !user.name){
         dispatch(getUserDetails("profile"));
       } else {
         setName(user.name);

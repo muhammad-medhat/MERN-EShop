@@ -34,7 +34,9 @@ const UserOrders = (props) => {
         <Loader />
       ) : error ? (
         <Message variant="danger">{error}</Message>
-      ) : (
+      ) : ! orders.length
+        ?<Message variant={'danger'}>No Orders</Message>
+        : (
         <Table
           striped
           bordered
