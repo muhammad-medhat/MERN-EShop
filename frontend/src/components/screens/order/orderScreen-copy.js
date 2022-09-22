@@ -10,21 +10,27 @@ import {
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams, useNavigate, Navigate } from "react-router-dom";
-import { getOrderDetails, payOrder,payReset } from "../../actions/orderActions";
-import Loader from "../loader";
-import Message from "../message";
+import { getOrderDetails, payOrder,payReset } from "../../../actions/orderActions";
+import Loader from "../../loader";
+import Message from "../../message";
 import { PayPalButton } from "react-paypal-button-v2";
-import { ORDER_PAY_RESET } from "../../const/orderConstants";
+import { ORDER_PAY_RESET } from "../../../const/orderConstants";
+import ShippingAddress from "../../com/shippingAddress";
 
 const OrderScreen = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  /**
+   * Selectors
+   * ###########################
+   */
 
   const orderDetailsSelector = useSelector((state) => state.orderDetails);
   const { loading, order, error } = orderDetailsSelector;
 
   const orderPaySelector = useSelector((state) => state.orderPay);
   const { loading: loadingPay, success: successPay } = orderPaySelector;
+  // ############# End Selectors
 
   const [sdkReady, setSdkReady] = useState(false);
   // debugger;
@@ -50,6 +56,7 @@ const OrderScreen = () => {
       dispatch({
         type: ORDER_PAY_RESET
       })
+      dispatch(payOrder())
     } else if(!order.isPaid){
       if(!window.paypal){
         addPaypalScript()
@@ -72,7 +79,7 @@ const OrderScreen = () => {
       ) : (
         order && (
           <>
-            <h2> order {order._id}</h2>
+            {/* <h2> order {order._id}</h2> */}
             {/* {JSON.stringify(order)} */}
             <h2> order details</h2>
 
@@ -80,21 +87,7 @@ const OrderScreen = () => {
               <Col md={8}>
                 <ListGroup>
                   <ListGroup.Item>
-                    <h3>shipping address</h3>
-                    <ListGroup>
-                      <ListGroup.Item>
-                        <Row>
-                          <p>name: {order.user.name}</p>
-                          <p>email: {order.user.email}</p>
-                          <span>
-                            {order.shippingAddress.address},{" "}
-                            {order.shippingAddress.city},{" "}
-                            {order.shippingAddress.postalCode},{" "}
-                            {order.shippingAddress.country},{" "}
-                          </span>
-                        </Row>
-                      </ListGroup.Item>
-                    </ListGroup>
+                    <ShippingAddress order={order} />             
                   </ListGroup.Item>
                   <ListGroup.Item>
                     <h3>payment method</h3>
@@ -155,7 +148,7 @@ const OrderScreen = () => {
                       <h2>order summery</h2>
                     </ListGroup.Item>
                     <ListGroup.Item>
-                      {JSON.stringify(order)}
+                      {/* {JSON.stringify(order)} */}
                     </ListGroup.Item>
 
                     <ListGroup.Item>

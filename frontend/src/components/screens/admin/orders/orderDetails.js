@@ -1,78 +1,72 @@
 import React, { useEffect, useState } from "react";
 import {
-  Card,
-  Row,
-  Col,
+  Button,
+  Card, Col,
   Image,
-  ListGroup,
-  Form,
-  ListGroupItem,
+  ListGroup, Row
 } from "react-bootstrap";
+import { PayPalButton } from "react-paypal-button-v2";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams, useNavigate, Navigate } from "react-router-dom";
-import { getOrderDetails, payOrder,payReset } from "../../../../actions/orderActions";
+import { Link, useParams } from "react-router-dom";
+import { getOrderDetails,  deliverOrder} from "../../../../actions/orderActions";
+import { ORDER_DELIVER_RESET, ORDER_PAY_RESET } from "../../../../const/orderConstants";
 import Loader from "../../../loader";
 import Message from "../../../message";
-import { PayPalButton } from "react-paypal-button-v2";
-import { ORDER_PAY_RESET } from "../../../../const/orderConstants";
 
 const AdminOrderDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-
+  /**
+   * Selectors
+   * ####################################
+   */
   const orderDetailsSelector = useSelector((state) => state.orderDetails);
   const { loading, order, error } = orderDetailsSelector;
 
   const orderPaySelector = useSelector((state) => state.orderPay);
   const { loading: loadingPay, success: successPay } = orderPaySelector;
 
+  const orderDeliverSelector = useSelector((state) => state.orderDeliver);
+  const { loading: loadingDeliver, success: successDeliver } =
+    orderDeliverSelector;
+  /**
+   * End Selectors
+   * ####################################
+   */
+
   const [sdkReady, setSdkReady] = useState(false);
-  // debugger;
   useEffect(() => {
-    debugger;
+    // debugger;
     console.log("useEffect...");
-    const addPaypalScript = async (req, res) => {
-      const response = await fetch("/api/config/paypal");
-      const clientId = await response.text();
-      console.log(clientId);
-      const paypalUrl = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
-      const script = document.createElement("script");
-      script.src = paypalUrl;
-      script.async = true;
-      script.onload = () => {
-        setSdkReady(true);
-      };
-      document.body.appendChild(script);
-    };
-    if (!order||successPay) {
+    console.log("order", order);
+
+    if (!order || successDeliver || id !== order._id) {
       // dispatch(payReset())
       dispatch(getOrderDetails(id));
-      dispatch({
-        type: ORDER_PAY_RESET
-      })
-    } else if(!order.isPaid){
-      if(!window.paypal){
-        addPaypalScript()
-      } else{
-        setSdkReady(true)
-      }
-    }
-  }, [dispatch, id, successPay, order]);
+      dispatch({ type: ORDER_PAY_RESET });
+      dispatch({ type: ORDER_DELIVER_RESET });
+    } 
+  }, [dispatch, id, successDeliver, order]);
 
   function paymentSuccess() {
 
+  }
+  function handleDelivery(){
+    dispatch(deliverOrder(order))
   }
 
   return (
     <>
       {loading ? (
-        <Loader text="Loading products..." />
+        <Loader />
       ) : error ? (
         <Message variant="danger">{error}</Message>
       ) : (
         order && (
           <>
-            <h2> order {order._id}</h2>
+            <Link to="/admin/orders">back to orders</Link>
+
+            {/* <h2> order {order._id}</h2> */}
             {/* {JSON.stringify(order)} */}
             <h2> order details</h2>
 
@@ -155,16 +149,14 @@ const AdminOrderDetails = () => {
                       <h2>order summery</h2>
                     </ListGroup.Item>
                     <ListGroup.Item>
-                      {JSON.stringify(order)}
+                      {/* {JSON.stringify(order)} */}
                     </ListGroup.Item>
-
                     <ListGroup.Item>
                       <Row>
                         <Col>Items total</Col>
                         <Col>{order.itemsPrice}</Col>
                       </Row>
                     </ListGroup.Item>
-
                     <ListGroup.Item>
                       <Row>
                         <Col>shipping</Col>
@@ -184,18 +176,35 @@ const AdminOrderDetails = () => {
                       </Row>
                     </ListGroup.Item>
                   </ListGroup>
+                  {!order.isDelivered && (
+                    <ListGroup>
+                      <ListGroup.Item>
+                        <Row>
+                          <Col>
+                            <Button
+                              className="btn btn-block"
+                              onClick={handleDelivery}
+                            >
+                              Mark as out for delivery
+                            </Button>
+                          </Col>
+                        </Row>
+                      </ListGroup.Item>
+                    </ListGroup>
+                  )}
+
                   {!order.isPaid && (
                     <ListGroup>
                       <ListGroup.Item>
                         {sdkReady && (
-                          <PayPalButton 
+                          <PayPalButton
                             amount={order.totalPrice}
-                            onSuccess={paymentSuccess} />
-                        )}                        
+                            onSuccess={paymentSuccess}
+                          />
+                        )}
                       </ListGroup.Item>
-                    </ListGroup>                    
+                    </ListGroup>
                   )}
-
                 </Card>
               </Col>
             </Row>
