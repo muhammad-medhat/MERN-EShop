@@ -122,3 +122,20 @@ export const updateDeliverOrder = asyncHandler(async (req, res) => {
   }
 });
 
+/**
+ * @route GET /api/orders/my
+ * @desc Get user orders
+ * @access Private/user
+ */
+ export const getUserOrders = asyncHandler(async (req, res) => {
+  console.log("get user orders");
+  // console.log(req.user);
+  const orders = await Order.find({user: req.user.id})
+  if(orders){
+      res.status(200).json(orders)
+
+  } else {
+    res.status(400)
+    throw new Error('No Orders')
+  }
+});

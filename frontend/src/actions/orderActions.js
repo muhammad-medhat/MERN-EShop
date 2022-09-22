@@ -15,6 +15,9 @@ import {
   ORDER_DELIVER_FAIL,
   ORDER_DELIVER_SUCCESS,
   ORDER_DELIVER_REQUEST,
+  ORDER_LIST_MY_FAIL,
+  ORDER_LIST_MY_SUCCESS,
+  ORDER_LIST_MY_REQUEST,
 } from "../const/orderConstants.js";
 
 export const createOrder = (order) => async (dispatch, getState) => {debugger
@@ -54,7 +57,7 @@ export const createOrder = (order) => async (dispatch, getState) => {debugger
 };
 
 export const getOrderDetails = (id) => async (dispatch, getState) => {
-  try {debugger
+  try {
     dispatch({
       type: ORDER_DETAILS_REQUEST,
     });
@@ -156,8 +159,6 @@ export const listOrders = () => async (dispatch, getState) => {
   }   
 }
 
-
-
 export const deliverOrder = (order) => async (dispatch, getState) => {
   try {
     dispatch({
@@ -186,6 +187,37 @@ export const deliverOrder = (order) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: ORDER_DELIVER_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const listMyOrders = () => async (dispatch, getState) => {
+  try {
+    dispatch({type: ORDER_LIST_MY_REQUEST});
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    
+    const response = await fetch(`/api/orders/my`, config);
+    if (response.status < 400) {
+      const data = await response.json();
+      dispatch({ type: ORDER_LIST_MY_SUCCESS, payload: data });
+    } else {
+      throw new Error(response.status + ": " + response.statusText);
+    }
+  } catch (error) {
+    dispatch({
+      type: ORDER_LIST_MY_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

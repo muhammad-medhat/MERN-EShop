@@ -40,7 +40,7 @@ const AdminOrderDetails = () => {
     console.log("useEffect...");
     console.log("order", order);
 
-    if (!order || successDeliver ) {
+    if (!order || successDeliver || id !== order._id) {
       // dispatch(payReset())
       dispatch(getOrderDetails(id));
       dispatch({ type: ORDER_PAY_RESET });
@@ -64,7 +64,9 @@ const AdminOrderDetails = () => {
       ) : (
         order && (
           <>
-            <h2> order {order._id}</h2>
+            <Link to="/admin/orders">back to orders</Link>
+
+            {/* <h2> order {order._id}</h2> */}
             {/* {JSON.stringify(order)} */}
             <h2> order details</h2>
 

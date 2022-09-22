@@ -8,11 +8,12 @@ import ProductScreen from './components/screens/productscreen';
 import CartScreen from './components/screens/cartScreen';
 import LoginScreen from './components/screens/userLoginScreen';
 import RegisterScreen from './components/screens/userRegisterScreen';
-import UserProfileScreen from './components/screens/userProfileScreen';
+import UserProfileScreen from './components/screens/user/userProfileScreen';
 import ShippingScreen from './components/screens/shippingScreen';
 import PaymentScreen from './components/screens/paymentScreen';
 import PlaceOrderScreen from './components/screens/palceOrderScreen';
 import OrderScreen from './components/screens/order/orderScreen';
+
 import UserListScreen from './components/screens/admin/usersListScreen';
 import UserEditScreen from './components/screens/admin/userEditScreen';
 import ProductList from './components/screens/admin/productListScreen';
