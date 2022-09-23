@@ -9,7 +9,7 @@ import productRoutes from "./routes/productRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
-import { errorHandler, notFound } from "./middlewares/errorMiddleware.js";
+import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
 
 import { fileURLToPath } from "url";
 import { dirname } from "path";

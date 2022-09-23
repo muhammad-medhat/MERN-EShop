@@ -5,8 +5,8 @@ import {
   createProduct,
   deleteProductById,
   updateProductById, initProduct
-} from "../controllers/productsController.js";
-import { protect, admin } from "../middlewares/authMiddleware.js";
+} from "../controllers/productController.js";
+import { protect, admin } from "../middleware/authMiddleware.js";
 const router = Express.Router();
 
 /**

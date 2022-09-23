@@ -4,8 +4,8 @@ import {
   getUserProfile,
   createUser,
   deleteUser,updateUserProfile, getUsers, getUserById, updateUserById
-} from "../controllers/usersController.js";
-import { protect, admin } from "../middlewares/authMiddleware.js";
+} from "../controllers/userController.js";
+import { protect, admin } from "../middleware/authMiddleware.js";
 
 const router = Express.Router();
 //this route must be defined before get by id
