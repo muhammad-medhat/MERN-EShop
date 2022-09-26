@@ -4,31 +4,21 @@ import {
   getProductById,
   createProduct,
   deleteProductById,
-  updateProductById, initProduct
+  updateProductById,
+  initProduct,
+  addProductReview,
 } from "../controllers/productController.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 const router = Express.Router();
 
-/**
- * @route GET /api/products
- * @desc Get all products
- * @access Public
- */
-router.route("/")
-      .get(getProducts)
-      .post(protect,admin, initProduct);
+router.route("/").get(getProducts).post(protect, admin, initProduct);
 
-/**
- * @route GET /api/products/:id
- * @desc Get product by id
- * @access Public
- * @param {string} id - product id
- */
+router
+  .route("/:id")
+  .get(getProductById)
+  .delete(protect, deleteProductById)
+  .put(protect, updateProductById);
 
-// router.get('/:id', getProductById)
-router.route("/:id")
-    .get(getProductById)
-    .delete(protect,deleteProductById)
-    .put(protect, updateProductById);
+router.route("/:id/reviews").post(protect, addProductReview);
 
 export default router;
