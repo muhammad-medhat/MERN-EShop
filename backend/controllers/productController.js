@@ -108,23 +108,29 @@ export const updateProductById = asyncHandler(async (req, res) => {
 export const addProductReview = asyncHandler(async (req, res) => {
   console.log("addProductReview");
   const { id: pid } = req.params;
+  // console.log("req.body", req.body);
+  // console.log("pid", pid);
+
   const { title, content, rating } = req.body;
+
   const product = await Product.findById(pid);
+
   if (!product) {
     res.status(404);
     throw new Error("Product not found");
   } else {
     if (
+      product.reviews &&
       product.reviews.find((r) => r.user.toString() == req.user.id.toString())
     ) {
-      res.status(400).json({
-        message: "you reviewed this product!!",
-      });
+      res.status(400)
+      throw new Error("you reviewed this product!!");
     } else {
       const rev = { title, content, rating, user: req.user.id };
       product.reviews.push(rev);
       product.save();
-      return res.json(product);
+      res.status(200).json({ msg: "OK" });
+      //return res.json(product);
     }
   }
 });

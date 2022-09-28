@@ -20,6 +20,10 @@ import {
   PRODUCT_INIT_SUCCESS,
   PRODUCT_INIT_RESET,
   PRODUCT_INIT_FAIL,
+  PRODUCT_REVIEW_CREATE_REQUEST,
+  PRODUCT_REVIEW_CREATE_SUCCESS,
+  PRODUCT_REVIEW_CREATE_RESET,
+  PRODUCT_REVIEW_CREATE_FAIL,
 } from "../const/productConstants.js";
 /**
  *
@@ -148,6 +152,24 @@ export const productInitReducer = (state = { product: {} }, action) => {
       return { };
     
     case PRODUCT_INIT_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+export const productReviewCreateReducer = (state = { product: {} }, action) => {
+  switch (action.type) {
+    case PRODUCT_REVIEW_CREATE_REQUEST:
+      return { loading: true };
+
+    case PRODUCT_REVIEW_CREATE_SUCCESS:
+      return { loading: false, success: true };
+
+    case PRODUCT_REVIEW_CREATE_RESET:
+      return { };
+    
+    case PRODUCT_REVIEW_CREATE_FAIL:
       return { loading: false, error: action.payload };
 
     default:
