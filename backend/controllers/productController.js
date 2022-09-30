@@ -7,7 +7,15 @@ import Product from "../models/productModel.js";
  * @access Public
  */
 export const getProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find({});
+  //Mongodb Search
+  const keyword = req.query.keyword?{
+    name: {
+      $regex: req.query.keyword, 
+      $options: 'i'
+    }
+  } :  {}
+  // const products = await Product.find({...keyword}, {_id:1, name:1});
+  const products = await Product.find({...keyword});
   return res.json(products);
 });
 /**

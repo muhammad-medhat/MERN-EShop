@@ -30,6 +30,7 @@ function App() {
               <h1>MERN Shop</h1>
               <Routes>
                   <Route path='/' exact element={<HomeScreen />} />
+                  <Route path='/search/:keyword'  element={<HomeScreen />} />
                   <Route path='/products/:id' element={<ProductScreen />} />
                   <Route path='/cart' element={<CartScreen />} />
                   <Route path='/cart/:id' element={<CartScreen />} />
