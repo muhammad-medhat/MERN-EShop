@@ -7,6 +7,7 @@ import Product from "../models/productModel.js";
  * @access Public
  */
 export const getProducts = asyncHandler(async (req, res) => {
+
   //Mongodb Search
   const keyword = req.query.keyword?{
     name: {
@@ -14,15 +15,21 @@ export const getProducts = asyncHandler(async (req, res) => {
       $options: 'i'
     }
   } :  {}
-  // const products = await Product.find({...keyword}, {_id:1, name:1});
-  const products = await Product.find({...keyword});
-  return res.json(products);
+  //pagination
+  const perPage = 2
+  const pageNum = Number(req.query.page) || 1;
+  const count = await Product.countDocuments({...keyword})
+  
+  // const products = await Product.find({...keyword}, {_id:1, name:1})
+  const products = await Product.find({ ...keyword })
+    .limit(perPage)
+    .skip(perPage * (pageNum - 1));
+  return res.json({products, perPage, page:pageNum, pages: Math.ceil(count/perPage)});
 });
 /**
  * @route GET /api/products/:id
  * @desc Get product by id
  * @access Public
- * @param {string} id - product id
  */
 
 export const getProductById = asyncHandler(async (req, res) => {
