@@ -4,22 +4,24 @@ import { useDispatch, useSelector } from "react-redux";
 import Product from "../com/product/product";
 import { ListProducts } from "../../actions/productActions";
 import Loader from "../loader";
+import Paginate from '../paginate';
 import Message from "../message";
 import { useParams } from "react-router-dom";
 
 const HomeScreen = () => {
 
-  const {keyword} = useParams()
+  const { keyword, page = 1 } = useParams();
   console.log(keyword);
 
   const dispatch = useDispatch();
   const productList = useSelector((state) => state.productList);
-  const { loading, products, error } = productList;
+  const { loading, products, error, pages } = productList;
   // console.log(loading, products, error);
 
   useEffect(() => {
-    dispatch(ListProducts(keyword));
-  }, [dispatch, keyword]);
+    dispatch(ListProducts(keyword, page));
+    console.log(productList);
+  }, [dispatch, page, keyword]);
   // console.log(error);
   return (
     <>
@@ -33,11 +35,18 @@ const HomeScreen = () => {
           <Row>
             {products.map((product) => (
               <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-                {/* <Product key={product._id} {...product} /> */}
                 <Product product={product} />
               </Col>
             ))}
-          </Row>
+
+          </Row>            
+            <Paginate 
+              pages={pages}
+              page={page}
+              keyword={keyword ? keyword : ''}
+               />
+          
+     
         </>
       )}
     </>

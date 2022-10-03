@@ -32,20 +32,25 @@ import {
  * @returns
  */
 
-export const productListReducer = (state = { products: [] }, action) => {
+export const productListReducer = (state = { products: [], page: '' }, action) => {
   //switch on type of action
   switch (action.type) {
     // case fetch request is being made
     // action will set the loading state to true (component will know it is loading)
     // and initialize the products array
     case PRODUCTS_LIST_REQUEST:
-      return { loading: true, products: [] };
+      return { loading: true, products: [], page:'' };
 
     // case fetch request is successful
     // action will set the loading state to false (component will know it is not loading)
     // and set the products array to the payload of the action
     case PRODUCTS_LIST_SUCCESS:
-      return { loading: false, products: action.payload };
+      return {
+        loading: false,
+        products: action.payload.products,
+        page: action.payload.page,
+        pages: action.payload.pages,
+      };
 
     // case fetch request is unsuccessful (any error will be set to the error state)
     case PRODUCTS_LIST_FAIL:

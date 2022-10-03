@@ -30,7 +30,9 @@ function App() {
               <h1>MERN Shop</h1>
               <Routes>
                   <Route path='/' exact element={<HomeScreen />} />
-                  <Route path='/search/:keyword'  element={<HomeScreen />} />
+                  <Route path='/page/:page' exact element={<HomeScreen />} />
+                  <Route path='/search/:keyword' exact  element={<HomeScreen />} />
+                  <Route path='/search/:keyword/page/:page'  element={<HomeScreen />} />
                   <Route path='/products/:id' element={<ProductScreen />} />
                   <Route path='/cart' element={<CartScreen />} />
                   <Route path='/cart/:id' element={<CartScreen />} />
@@ -46,8 +48,11 @@ function App() {
                   <Route path='/admin/orders/:id' element={<AdminOrderDetails />} />              
                   <Route path='/admin/orders' element={<OrderList />} />              
                   <Route path='/admin/products/:id/edit' element={<ProductEdit />} />              
-                  <Route path='/admin/products/create' element={<ProductCreate />} />              
-                  <Route path='/admin/products' element={<ProductList />} />              
+                  <Route path='/admin/products/create' element={<ProductCreate />} />  
+
+                  <Route path='/admin/products' exact element={<ProductList /> } />              
+                  <Route path='/admin/products/page/:page' element={<ProductList />} />   
+
                   <Route path='/admin/users' element={<UserListScreen />} />              
                   <Route path='/admin/users/:id/edit' element={<UserEditScreen  />} />              
                 </Routes>

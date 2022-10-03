@@ -10,7 +10,7 @@ import {
 } from "react-bootstrap";
 import Image from "react-bootstrap/Image";
 import FormContainer from "../../formContainer";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import Loader from "../../loader";
 import Message from "../../message";
@@ -22,13 +22,16 @@ import {
   createProduct,
 } from "../../../actions/productActions"; 
 import { PRODUCT_INIT_RESET } from "../../../const/productConstants";
+import Paginate from '../../paginate';
+
 
 const ProductList = () => {
   const dispatch = useDispatch();
   const nav = useNavigate();
+  const {page=1} = useParams()
   //Selectors
   const productList = useSelector((state) => state.productList);
-  const { loading, products, error } = productList;
+  const { loading, products, error, pages } = productList;
 
   const productDelete = useSelector((state) => state.productDelete);
   const {
@@ -90,10 +93,10 @@ const ProductList = () => {
     if(successInit){
       nav(`/admin/products/${initializedProduct._id}/edit`);
     } else {
-      dispatch(ListProducts());
+      dispatch(ListProducts('', page));
     }
     logInfo()
-  }, [dispatch, successDelete, successInit, userInfo]);
+  }, [dispatch, successDelete, successInit, userInfo, page]);
   return (
     <>
       {loading ? (
@@ -114,7 +117,7 @@ const ProductList = () => {
             <thead>
               <tr>
                 <th>#</th>
-                <td>image</td>
+                {/* <td>image</td> */}
                 <th> Name</th>
                 <th>price</th>
                 <th>category</th>
@@ -127,7 +130,7 @@ const ProductList = () => {
                 products.map((product, index) => (
                   <tr key={index}>
                     <td>{index}</td>
-                    <td><Image src={product.image} alt={product.name} fluid rounded /></td>
+                    {/* <td><Image src={product.image} alt={product.name} fluid rounded /></td> */}
                     <td>{product.name}</td>
                     <td>$ {product.price}</td>
                     <td>{product.category} </td>
@@ -158,6 +161,12 @@ const ProductList = () => {
                 ))}
             </tbody>
           </Table>
+            <Paginate 
+              pages={pages}
+              page={page}
+              isAdmin
+              obj="products"
+               />
         </>
       )}
     </>

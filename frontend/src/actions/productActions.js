@@ -21,17 +21,20 @@ import {
 } from "../const/productConstants";
 // import axios from "axios";
 
-export const ListProducts = (keyword='') => async (dispatch) => {
+export const ListProducts = (keyword='', page='') => async (dispatch) => {
   try {
     dispatch({ type: PRODUCTS_LIST_REQUEST });
 
     //const { data } = await axios.get("/api/products");
 
-    const response = await fetch(`/api/products?keyword=${keyword}`);
+    const response = await fetch(`/api/products?keyword=${keyword}&page=${page}`);
     const data = await response.json();
-    // console.log('products action',data);
+    console.log('products action',data);
 
-    dispatch({ type: PRODUCTS_LIST_SUCCESS, payload: data });
+    dispatch({
+      type: PRODUCTS_LIST_SUCCESS,
+      payload: data
+    });
   } catch (error) {
     dispatch({
       type: PRODUCTS_LIST_FAIL,
@@ -193,8 +196,6 @@ export const initProduct = () => async (dispatch, getState) => {
       method: "post",
       body: JSON.stringify({}),
     };
-
-    debugger;
 
     const response = await fetch(`/api/products/`, config);
     const data = await response.json();
