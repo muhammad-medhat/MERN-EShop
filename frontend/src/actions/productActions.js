@@ -18,6 +18,9 @@ import {
   PRODUCT_INIT_REQUEST,
   PRODUCT_INIT_SUCCESS,
   PRODUCT_INIT_FAIL,
+  PRODUCT_TOP_REQUEST,
+  PRODUCT_TOP_SUCCESS,
+  PRODUCT_TOP_FAIL,
 } from "../const/productConstants";
 // import axios from "axios";
 
@@ -29,7 +32,7 @@ export const ListProducts = (keyword='', page='') => async (dispatch) => {
 
     const response = await fetch(`/api/products?keyword=${keyword}&page=${page}`);
     const data = await response.json();
-    console.log('products action',data);
+    // console.log('products action',data);
 
     dispatch({
       type: PRODUCTS_LIST_SUCCESS,
@@ -206,6 +209,29 @@ export const initProduct = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_INIT_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+export const getTopRatedProducts = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: PRODUCT_TOP_REQUEST,
+    });
+
+
+    const response = await fetch(`/api/products/top`);
+    const data = await response.json();
+    dispatch({
+      type: PRODUCT_TOP_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_TOP_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

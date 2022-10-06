@@ -20,6 +20,10 @@ import {
   PRODUCT_INIT_SUCCESS,
   PRODUCT_INIT_RESET,
   PRODUCT_INIT_FAIL,
+  PRODUCT_TOP_REQUEST,
+  PRODUCT_TOP_SUCCESS,
+  PRODUCT_TOP_RESET,
+  PRODUCT_TOP_FAIL,
 } from "../const/productConstants.js";
 /**
  *
@@ -153,6 +157,22 @@ export const productInitReducer = (state = { product: {} }, action) => {
       return { };
     
     case PRODUCT_INIT_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+export const productTopReducer = (state = { products: [] }, action) => {
+  //debugger;
+  switch (action.type) {
+    case PRODUCT_TOP_REQUEST:
+      return { loading: true, products:[] };
+
+    case PRODUCT_TOP_SUCCESS:
+      return { loading: false, products: action.payload };
+    
+    case PRODUCT_TOP_FAIL:
       return { loading: false, error: action.payload };
 
     default:

@@ -7,24 +7,30 @@ import Product from "../models/productModel.js";
  * @access Public
  */
 export const getProducts = asyncHandler(async (req, res) => {
-
   //Mongodb Search
-  const keyword = req.query.keyword?{
-    name: {
-      $regex: req.query.keyword, 
-      $options: 'i'
-    }
-  } :  {}
+  const keyword = req.query.keyword
+    ? {
+        name: {
+          $regex: req.query.keyword,
+          $options: "i",
+        },
+      }
+    : {};
   //pagination
-  const perPage = 2
+  const perPage = 5;
   const pageNum = Number(req.query.page) || 1;
-  const count = await Product.countDocuments({...keyword})
-  
+  const count = await Product.countDocuments({ ...keyword });
+
   // const products = await Product.find({...keyword}, {_id:1, name:1})
   const products = await Product.find({ ...keyword })
     .limit(perPage)
     .skip(perPage * (pageNum - 1));
-  return res.json({products, perPage, page:pageNum, pages: Math.ceil(count/perPage)});
+  return res.json({
+    products,
+    perPage,
+    page: pageNum,
+    pages: Math.ceil(count / perPage),
+  });
 });
 /**
  * @route GET /api/products/:id
@@ -142,4 +148,17 @@ export const addProductReview = asyncHandler(async (req, res) => {
       return res.json(product);
     }
   }
+});
+
+/**
+ * @route GET /api/products/top
+ * @desc Get top products
+ * @access Public
+ */
+export const getTopProducts = asyncHandler(async (req, res) => {
+  const limit = req.params.limit || 3
+  const products = await Product.find({}, {_id:1, name:1, image:1, rating:1})
+      .sort({ rating: -1 })
+      .limit(limit);
+  return res.json(products);
 });

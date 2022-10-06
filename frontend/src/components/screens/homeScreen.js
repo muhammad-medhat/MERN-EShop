@@ -4,14 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import Product from "../com/product/product";
 import { ListProducts } from "../../actions/productActions";
 import Loader from "../loader";
-import Paginate from '../paginate';
+import Paginate from "../paginate";
 import Message from "../message";
 import { useParams } from "react-router-dom";
+import ProductCarousel from "../com/product/productCarousel";
 
 const HomeScreen = () => {
-
   const { keyword, page = 1 } = useParams();
-  console.log(keyword);
 
   const dispatch = useDispatch();
   const productList = useSelector((state) => state.productList);
@@ -20,11 +19,10 @@ const HomeScreen = () => {
 
   useEffect(() => {
     dispatch(ListProducts(keyword, page));
-    console.log(productList);
   }, [dispatch, page, keyword]);
-  // console.log(error);
   return (
     <>
+      {!keyword && <ProductCarousel />}
       {loading ? (
         <Loader text="Loading products..." />
       ) : error ? (
@@ -38,15 +36,12 @@ const HomeScreen = () => {
                 <Product product={product} />
               </Col>
             ))}
-
-          </Row>            
-            <Paginate 
-              pages={pages}
-              page={page}
-              keyword={keyword ? keyword : ''}
-               />
-          
-     
+          </Row>
+          <Paginate
+            pages={pages}
+            page={page}
+            keyword={keyword ? keyword : ""}
+          />
         </>
       )}
     </>

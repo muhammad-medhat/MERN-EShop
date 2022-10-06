@@ -3,12 +3,12 @@ import { Pagination } from "react-bootstrap";
 import { LinkContainer, Link } from "react-router-bootstrap";
 
 const Paginate = ({ pages, page, keyword, isAdmin=false, obj='' }) => {
-  console.group('pagination props')
-  console.log(" pages", pages);
-  console.log(" page", page);
-  console.log("keyword", keyword);
-  console.log("admin", isAdmin);
-  console.groupEnd()
+  // console.group('pagination props')
+  // console.log(" pages", pages);
+  // console.log(" page", page);
+  // console.log("keyword", keyword);
+  // console.log("admin", isAdmin);
+  // console.groupEnd()
   return (
     pages > 1 && (
       <Pagination>
