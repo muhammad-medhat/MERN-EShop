@@ -8,6 +8,7 @@ import Paginate from "../paginate";
 import Message from "../message";
 import { useParams } from "react-router-dom";
 import ProductCarousel from "../com/product/productCarousel";
+import Meta from "../com/Meta";
 
 const HomeScreen = () => {
   const { keyword, page = 1 } = useParams();
@@ -29,6 +30,7 @@ const HomeScreen = () => {
         <Message variant="danger" text={error} />
       ) : (
         <>
+        <Meta />
           <h2>Latest Products</h2>
           <Row>
             {products.map((product) => (

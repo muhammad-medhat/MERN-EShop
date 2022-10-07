@@ -13,6 +13,7 @@ import Loader from "../loader";
 import Message from "../message";
 
 import Rating from "../com/rating.js";
+import Meta from "../com/Meta";
 const ProductScreen = () => {
   const pid = useParams().id;
   const url = `/api/products/${pid}`;
@@ -32,7 +33,7 @@ const ProductScreen = () => {
     dispatch(DetailsProduct(pid));
       setQty(qty);
       setTotal(total);
-
+console.log(product);
 
   }, [dispatch, pid]);
 
@@ -51,6 +52,10 @@ const ProductScreen = () => {
         <Message variant="danger" text={error} />
       ) : (
         <>
+          <Meta
+            title={product?.name}
+            description={product?.description}
+          />
           <Link to="/" className="p-3">
             <span>
               <i className="fa fa-arrow-left p-2 mb-2" aria-hidden="true"></i>
@@ -148,15 +153,13 @@ const ProductScreen = () => {
                               onClick={handleAddToCart}
                             >
                               Add to Cart
-                            </button>                          
+                            </button>
                           </Col>
                         </Row>
-
-                    </ListGroup.Item>
+                      </ListGroup.Item>
                     </>
                   )}
 
-                  
                   <ListGroup.Item>
                     <>{product.countInStock > 0 ? "" : "Out of Stock"}</>
                   </ListGroup.Item>
