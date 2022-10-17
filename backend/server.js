@@ -18,12 +18,14 @@ const app = express();
 dotenv.config();
 connectDB();
 
-//morgan configuration
-if (process.env.NODE_ENV === "development") {
-  app.use(morgan("dev"));
-}
 //   app.use(cors(corsOptions));
 app.use(express.json()); // for parsing application/json
+
+//the __dirname is available if we are using commonjs
+// since ES-modules is used in the system
+// we can mimic it using the following line
+const __dirname = path.resolve();
+
 
 /**
  * routes
@@ -36,13 +38,29 @@ app.use("/api/upload", uploadRoutes);
 app.get("/api/config/paypal", (req, res) =>
   res.send(process.env.PAYPAL_CLIENT_ID)
 );
-//making the uploads folder to be static
 
-//the __dirname is available if we are using commonjs
-// since ES-modules is used in the system
-// we can mimic it using the following line
-const __dirname = path.resolve();
+//making the uploads folder to be static
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
+
+// Deployment
+if (process.env.NODE_ENV === "production") {
+  const buildDir = path.join(__dirname, "frontend/build");
+  // console.log('build folder',buildDir);
+  app.use(express.static(buildDir));
+  app.get("*", (req, res) => {
+    const ind = path.resolve(__dirname, "frontend", "build", "index.html");
+    // console.log('index file',ind);
+    res.sendFile(ind);
+  });
+} else {
+  // console.log('development');
+  app.get("/", (req, res) => {
+    res.send("API is Running...");
+  });
+  //morgan configuration
+  app.use(morgan("dev"));  
+}
+//......... End Deployment ...........................................
 
 // Handle errors middleware
 app.use(errorHandler, notFound);

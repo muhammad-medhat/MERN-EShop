@@ -46,7 +46,7 @@ const UserProfileScreen = () => {
     if (!userInfo) {
       nav("/login");
     } else {
-      const cond = [!user, !user.name,name==="",  name !== user.name]
+      // const cond = [!user, !user.name,name==="",  name !== user.name]
       if(!user || !user.name){
         dispatch(getUserDetails("profile"));
       } else {
@@ -54,7 +54,7 @@ const UserProfileScreen = () => {
         setEmail(user.email);
       }
     }
-  }, [dispatch, userInfo, user]);
+  }, [dispatch, userInfo, user, name]);
   return (
     <>
       {error && <Message variant="danger">error: {error}</Message>}

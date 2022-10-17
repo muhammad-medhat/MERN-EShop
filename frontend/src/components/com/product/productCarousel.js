@@ -26,7 +26,7 @@ const ProductCarousel = () => {
   return loading ? (
     <Loader />
   ) : error ? (
-    <Message>{error}</Message>
+    <Message variant='danger'>{error}</Message>
   ) : (
     products && (
       <>
