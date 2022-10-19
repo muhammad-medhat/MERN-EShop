@@ -158,3 +158,6 @@ sketch
 
 2bootstrap.min.css
 notes.md
+
+#production
+frontend/build
