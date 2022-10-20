@@ -77,3 +77,7 @@ In the seeding process, there are two main steps: deleting existing data and cre
 
 - development server means to run both servers, execute from the root directory
 `npm run dev`
+
+### Deployment
+This app is deployed in heroku 
+https://md-mern-shop.herokuapp.com/
