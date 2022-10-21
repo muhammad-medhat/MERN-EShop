@@ -4,7 +4,7 @@ import {
   CART_REMOVE_ITEM,
   CART_UPDATE_ITEM,
   CART_ADD_PAYMENT_METHOD,
-} from "../const/constants.js";
+} from "../const/cartConstants.js";
 
 export const cartReducer = (
   state = { cartItems: [], shippingAddress: {} },

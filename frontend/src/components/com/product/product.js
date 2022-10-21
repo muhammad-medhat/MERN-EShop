@@ -4,8 +4,7 @@ import Rating from "../rating.js";
 import { Link } from "react-router-dom";
 import "./product.css";
 
-const Product = (props) => {
-  const { product } = props;
+const Product = ({product}) => {
   return (
     <>
       <Card className="product-card my-3 p-3 rounded">
@@ -25,7 +24,7 @@ const Product = (props) => {
           <Card.Text as="div">
             <Rating
               value={product.rating}
-              text={`Avarage: ${product.rating} from ${product.numReviews} reviews`}
+              text={`Avarage: ${Number(product.rating).toFixed(2)} from ${product.numReviews} reviews`}
             />
           </Card.Text>
 

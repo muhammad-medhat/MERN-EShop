@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Form, Row, Col, FormControl, FormGroup } from "react-bootstrap";
+import { Form, Row, Col, FormControl, FormGroup, Button } from "react-bootstrap";
 import FormContainer from "../formContainer";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -87,9 +87,9 @@ const ShippingScreen = () => {
             onChange={(e) => setCountry(e.target.value)}
           />
         </FormGroup>
-        <FormGroup>
-          <Form.Control type="submit" value="continue" />
-        </FormGroup>
+          <Button type="submit" variant="primary">
+            continue
+          </Button> 
       </Form>
     </FormContainer>
   );

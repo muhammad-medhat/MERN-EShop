@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Form, Row, Col, FormControl, FormGroup } from "react-bootstrap";
-import FormContainer from "../formContainer";
+import FormContainer from "../../formContainer";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
-import { addPaymentMethod } from "../../actions/cartActions";
-import CheckoutSteps from "../partials/checkoutSteps";
+import { addPaymentMethod } from "../../../actions/cartActions";
+import CheckoutSteps from "../../partials/checkoutSteps";
 // usf
 
 const PaymentScreen = () => {
@@ -25,6 +25,7 @@ const PaymentScreen = () => {
   }
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(e);
     dispatch(addPaymentMethod(paymentMethod));
     nav('/placeorder')
   };

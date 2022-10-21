@@ -64,7 +64,10 @@ const Rating = (props) => {
           }
         ></i>
       </span>
-      {text}
+      <h5>
+        {text}
+      </h5>
+      
     </>
   );
 };

@@ -5,12 +5,12 @@ import HomeScreen from './components/screens/homeScreen';
 import {Container} from 'react-bootstrap';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import ProductScreen from './components/screens/productscreen';
-import CartScreen from './components/screens/cartScreen';
-import LoginScreen from './components/screens/userLoginScreen';
+import CartScreen from './components/screens/cart/cartScreen';
+import LoginScreen from './components/screens/user/userLoginScreen';
 import RegisterScreen from './components/screens/userRegisterScreen';
 import UserProfileScreen from './components/screens/user/userProfileScreen';
 import ShippingScreen from './components/screens/shippingScreen';
-import PaymentScreen from './components/screens/paymentScreen';
+import PaymentScreen from './components/screens/order/paymentScreen';
 import PlaceOrderScreen from './components/screens/palceOrderScreen';
 import OrderScreen from './components/screens/order/orderScreen';
 

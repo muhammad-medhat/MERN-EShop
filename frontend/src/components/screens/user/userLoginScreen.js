@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { Form, Row, Col, FormControl, FormGroup } from "react-bootstrap";
-import FormContainer from "../formContainer";
+import FormContainer from "../../formContainer";
 import { Link, useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { login } from "../../actions/userActions";
-import Loader from "../loader";
-import Message from "../message";
+import { login } from "../../../actions/userActions";
+import Loader from "../../loader";
+import Message from "../../message";
 
 const LoginScreen = () => {
   const [email, setEmail] = React.useState("");
@@ -15,11 +15,10 @@ const LoginScreen = () => {
   const userLogin = useSelector((state) => state.userLogin);
   // console.log("user login", userLogin);
 
-  const { loading, userInfo, error, message } = userLogin;
+  const { loading, userInfo, error } = userLogin;
   // console.log("userInfo", userInfo);
   const nav = useNavigate();
 
-  const loc = useLocation();
   const searchParams = useSearchParams()
   console.log('searchParams', searchParams);
   // const redirect = location.search ? location.search.split('=')[1] : '/'

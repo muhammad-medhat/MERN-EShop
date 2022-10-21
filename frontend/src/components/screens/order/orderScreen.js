@@ -25,7 +25,7 @@ import PaymentMethod from "../../com/order/paymentMethod";
 import OrderItems from "../../com/order/orderItems";
 import OrderSummery from "../../com/order/orderSummery";
 
-const OrderScreen = () => {
+const OrderScreen = () => {debugger
   const { id } = useParams();
   const dispatch = useDispatch();
 

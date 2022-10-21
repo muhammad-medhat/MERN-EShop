@@ -6,12 +6,12 @@ import {
   addToCart,
   removeFromCart,
   updateCartItem,
-} from "../../actions/cartActions";
-import Message from "../message";
+} from "../../../actions/cartActions";
+import Message from "../../message";
 import "./cartScreen.css";
-import ProductRow from "../com/productRow";
+import ProductRow from "../../com/productRow";
 const CartScreen = () => {
-  const pid = useParams().id;
+  const {id: pid} = useParams()
   const nav = useNavigate();
 
   const { search } = useLocation();
@@ -41,7 +41,8 @@ const CartScreen = () => {
       <Col md={8}>
         {cartItems.length === 0 ? (
           <Message>
-            Empty Cart <Link to="/">Home</Link>
+            <h3>Empty Cart</h3>
+            <Link to="/">browse products</Link>
           </Message>
         ) : (
           <ListGroup variant="flush">
