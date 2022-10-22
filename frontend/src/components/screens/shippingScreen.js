@@ -26,12 +26,13 @@ const ShippingScreen = () => {
   const { userInfo } = userLogin;
 
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault()
     // check login
     if (!userInfo) {
       nav("/login");
     } else {
-      // debugger;
+      debugger;
       dispatch(
         addShippingAddress({
           address,
@@ -40,7 +41,8 @@ const ShippingScreen = () => {
           country,
         })
       );
-      nav("/payment");
+      if(shippingAddress)
+        nav("/payment");
     }
   };
   return (

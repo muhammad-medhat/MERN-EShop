@@ -122,7 +122,6 @@ const UserProfileScreen = () => {
 
             <Col md={9}>
               <h2>orders</h2>
-              ...orders list
               <UserOrders user={userInfo.id} />
             </Col>
           </Row>
