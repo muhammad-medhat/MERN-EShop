@@ -120,42 +120,8 @@ const OrderScreen = () => {debugger
                 </ListGroup>
               </Col>
               <Col md={4}>
-                {/* <OrderSummery order={order} /> */}
-                <Card>
-                  <ListGroup variant="flush">
-                    <ListGroup.Item>
-                      <h2>order summery</h2>
-                    </ListGroup.Item>
-                    <ListGroup.Item>
-                      {/* {JSON.stringify(order)} */}
-                    </ListGroup.Item>
+                <OrderSummery {...order} />
 
-                    <ListGroup.Item>
-                      <Row>
-                        <Col>Items total</Col>
-                        <Col>{order.itemsPrice}</Col>
-                      </Row>
-                    </ListGroup.Item>
-
-                    <ListGroup.Item>
-                      <Row>
-                        <Col>shipping</Col>
-                        <Col>{order.shippingPrice}</Col>
-                      </Row>
-                    </ListGroup.Item>
-                    <ListGroup.Item>
-                      <Row>
-                        <Col>Taxes</Col>
-                        <Col>{order.taxPrice}</Col>
-                      </Row>
-                    </ListGroup.Item>
-                    <ListGroup.Item>
-                      <Row>
-                        <Col>Total Price</Col>
-                        <Col>{order.totalPrice}</Col>
-                      </Row>
-                    </ListGroup.Item>
-                  </ListGroup>
                   {!order.isPaid && (
                     <ListGroup>
                       <ListGroup.Item>
@@ -170,7 +136,6 @@ const OrderScreen = () => {debugger
                       </ListGroup.Item>
                     </ListGroup>
                   )}
-                </Card>
               </Col>
             </Row>
           </>

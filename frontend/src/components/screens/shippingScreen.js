@@ -32,7 +32,6 @@ const ShippingScreen = () => {
     if (!userInfo) {
       nav("/login");
     } else {
-      debugger;
       dispatch(
         addShippingAddress({
           address,

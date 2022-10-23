@@ -1,75 +1,63 @@
-import React, { useState } from "react";
-import { ListGroup, Row, Col, Image, Card } from "react-bootstrap";
-import { PayPalButton } from "react-paypal-button-v2";
-import { useDispatch, useSelector } from "react-redux";
-import { payOrder } from "../../../actions/orderActions";
-import { Link } from "react-router-dom";
-import Loader from "../../loader";
-const OrderSummery = ({ order }) => {
-  const dispatch = useDispatch();
+import React, { useEffect } from "react";
+import { Card, Col, ListGroup, Row } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-  const [sdkReady, setSdkReady] = useState(false);
-  function paymentSuccess(paymentRes) {
-    console.log('pp res', paymentRes);
-    debugger
-    dispatch(payOrder(order._id, paymentRes));
-  }
+const OrderSummery = (props) => {
+  console.log("summery", props);
+  const { shippingPrice, totalPrice, taxPrice, itemsPrice } = props;
+  const cart = useSelector((s) => s.cart);
+  const nav = useNavigate();
+
+  // debugger;
+
+  // useEffect(() => {}, [props]);
 
   return (
     <>
       <Card>
         <ListGroup variant="flush">
           <ListGroup.Item>
-            <h2>order summery</h2>
+            <h2>order summery com</h2>
           </ListGroup.Item>
-          <ListGroup.Item>{/* {JSON.stringify(order)} */}</ListGroup.Item>
 
           <ListGroup.Item>
             <Row>
-              <Col>Items total</Col>
-              <Col>{order.itemsPrice}</Col>
+              <Col>Items sum</Col>
+              <Col>{itemsPrice}</Col>
+            </Row>
+          </ListGroup.Item>
+
+          <ListGroup.Item>
+            <Row>
+              <Col>Taxes 15%</Col>
+              <Col>{taxPrice}</Col>
             </Row>
           </ListGroup.Item>
 
           <ListGroup.Item>
             <Row>
               <Col>shipping</Col>
-              <Col>{order.shippingPrice}</Col>
+              <Col>{shippingPrice}</Col>
             </Row>
           </ListGroup.Item>
+
           <ListGroup.Item>
             <Row>
-              <Col>Taxes</Col>
-              <Col>{order.taxPrice}</Col>
-            </Row>
-          </ListGroup.Item>
-          <ListGroup.Item>
-            <Row>
-              <Col>Total Price</Col>
-              <Col>{order.totalPrice}</Col>
+              <Col>order total</Col>
+              <Col>{totalPrice}</Col>
             </Row>
           </ListGroup.Item>
         </ListGroup>
-        {!order.isPaid && (
-          <ListGroup>
-            <ListGroup.Item>
-              {sdkReady ? (
-                <Loader />
-              ) : (
-                <PayPalButton
-                  amount={order.totalPrice}
-                  onSuccess={paymentSuccess}
-                />
-              )}
-            </ListGroup.Item>
-          </ListGroup>
-        )}
+
+        <ListGroup.Item>
+          <ListGroup.Item>
+            {/* {error && <Message variant="danger">{error}</Message>} */}
+          </ListGroup.Item>
+        </ListGroup.Item>
       </Card>
     </>
   );
-};
-OrderSummery.defaultProps = {
-  color: "#ffc107",
 };
 
 export default OrderSummery;

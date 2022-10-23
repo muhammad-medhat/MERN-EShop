@@ -3,6 +3,7 @@ import { Card, Col, Form, Image, ListGroup, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { createOrder } from "../../actions/orderActions";
+import OrderSummery from "../com/order/orderSummery";
 import Message from "../message";
 import CheckoutSteps from "../partials/checkoutSteps";
 
@@ -18,43 +19,41 @@ const PlaceOrderScreen = () => {
   const { shippingAddress, paymentMethod, cartItems } = cart;
   //summery
   const tax = 0.15;
-  // debugger;
-  const summery = [];
-  const itemsSum = Number(
-    cartItems.reduce((acc, i) => i.price + acc, 0).toFixed(2)
+  const itemsPrice = Number(
+    cartItems.reduce((acc, i) => i.price * i.qty + acc, 0).toFixed(2)
   );
-  const taxSum = Number(
+  const taxPrice = Number(
     cartItems.reduce((acc, i) => i.price * tax + acc, 0).toFixed(2)
   );
-  const shipping = Number((Number(itemsSum) >= 100 ? 20 : 50).toFixed(2));
-  const totalSum = Number(itemsSum + taxSum + shipping).toFixed(2);
-  summery.push([shipping, totalSum, taxSum, itemsSum]);
+  const shippingPrice = Number(( itemsPrice >= 100 ? 20 : 50).toFixed(2));
+  const totalPrice = Number((itemsPrice + taxPrice + shippingPrice).toFixed(2));
+  const summery = { shippingPrice, totalPrice, taxPrice, itemsPrice };
   useEffect(() => {
     debugger;
-    if (order && !(Object.keys(order).length === 0)) {
+    // if (order && !(Object.keys(order).length === 0)) {
+    if(success){
       nav(`/order/${order._id}`);
       // eslint-disable-next-line
     }
-  }, [dispatch, success, orderCreate]);
+  }, [dispatch, success, orderCreate, order]);
+
 
   const handlePlaceOrder = (e) => {
     e.preventDefault();
     debugger;
-    const orderObject = {};
+    const orderObject = {
+      orderItems: cart.cartItems,
+      shippingAddress: cart.shippingAddress,
+      paymentMethod: cart.paymentMethod,
+      ...summery,
+    };
 
     dispatch(
       createOrder({
-        // ...cart,
-        // ...summery
-        orderItems: cart.cartItems,
-        shippingAddress: cart.shippingAddress,
-        paymentMethod: cart.paymentMethod,
-        itemsPrice: itemsSum,
-        taxPrice: taxSum,
-        shippingPrice: shipping,
-        totalPrice: totalSum,
+        ...orderObject,
       })
     );
+
   };
 
   return (
@@ -105,56 +104,17 @@ const PlaceOrderScreen = () => {
           </ListGroup>
         </Col>
         <Col md={4}>
-          <Card>
-            <ListGroup variant="flush">
-              <ListGroup.Item>
-                <h2>order summery</h2>
-              </ListGroup.Item>
-
-              <ListGroup.Item>
-                <Row>
-                  <Col>Items</Col>
-                  <Col>{itemsSum}</Col>
-                </Row>
-              </ListGroup.Item>
-
-              <ListGroup.Item>
-                <Row>
-                  <Col>Taxes</Col>
-                  <Col>{taxSum}</Col>
-                </Row>
-              </ListGroup.Item>
-
-              <ListGroup.Item>
-                <Row>
-                  <Col>shipping</Col>
-                  <Col>{shipping}</Col>
-                </Row>
-              </ListGroup.Item>
-
-              <ListGroup.Item>
-                <Row>
-                  <Col>order total</Col>
-                  <Col>{totalSum}</Col>
-                </Row>
-              </ListGroup.Item>
-            </ListGroup>
-            
-            <ListGroup.Item>
-              <ListGroup.Item>
-                {error && <Message variant="danger">{error}</Message>}
-              </ListGroup.Item>
-            </ListGroup.Item>
-            <ListGroup.Item>
-              <Form.Control
-                type="submit"
-                value="continue"
-                className="btn-block"
-                onClick={handlePlaceOrder}
-                disabled={cartItems.length === 0}
-              />
-            </ListGroup.Item>
-          </Card>
+          <OrderSummery {...summery} />
+          <ListGroup.Item>
+            <Form.Control
+              type="submit"
+              value="create order"
+              className="btn-block"
+              onClick={handlePlaceOrder}
+              disabled={cartItems.length === 0}
+              title="proceed to payment"
+            />
+          </ListGroup.Item>
         </Col>
       </Row>
     </>
