@@ -33,7 +33,7 @@ const CartScreen = () => {
   const checkoutHandler = (e) => {
     e.preventDefault();
     nav("/shipping");
-    console.log(`checkoutHandler `);
+    // console.log(`checkoutHandler `);
   };
 
   return (

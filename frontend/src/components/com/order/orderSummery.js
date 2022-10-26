@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const OrderSummery = (props) => {
-  console.log("summery", props);
+  // console.log("summery", props);
   const { shippingPrice, totalPrice, taxPrice, itemsPrice } = props;
   const cart = useSelector((s) => s.cart);
   const nav = useNavigate();

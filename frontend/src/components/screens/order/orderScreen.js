@@ -25,7 +25,7 @@ import PaymentMethod from "../../com/order/paymentMethod";
 import OrderItems from "../../com/order/orderItems";
 import OrderSummery from "../../com/order/orderSummery";
 
-const OrderScreen = () => {debugger
+const OrderScreen = () => {// debugger
   const { id } = useParams();
   const dispatch = useDispatch();
 
@@ -37,16 +37,17 @@ const OrderScreen = () => {debugger
 
   const [sdkReady, setSdkReady] = useState(false);
   function paymentSuccess(paymentRes) {
-    console.log("pp res", paymentRes);
+    // console.log("pp res", paymentRes);
     debugger;
     dispatch(payOrder(order._id, paymentRes));
   }
 
   useEffect(() => {
-    const addPaypalScript = async (req, res) => {
+    // console.log('useEffect...');
+    const addPaypalScript = async (req, res) => {    
       const response = await fetch("/api/config/paypal");
       const clientId = await response.text();
-      // console.log(clientId);
+      // console.log('paypal clientId',clientId);
       const paypalUrl = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
       const script = document.createElement("script");
       script.src = paypalUrl;
@@ -57,12 +58,12 @@ const OrderScreen = () => {debugger
       document.body.appendChild(script);
     };
 
-    if (!order || successPay || id !== order._id) {
+    if (!order || successPay ) {debugger
       dispatch({ type: ORDER_PAY_RESET });
 
-      //if the order is not loaded, or reload the order after payment
+      //if the order is not loaded, || reload the order after payment
       dispatch(getOrderDetails(id));
-      console.log("ods", orderDetailsSelector);
+      //console.log("order selector", orderDetailsSelector);
     } else if (!order.isPaid) {
       if (!window.paypal) {
         addPaypalScript();
@@ -70,7 +71,7 @@ const OrderScreen = () => {debugger
         setSdkReady(true);
       }
     }
-  }, [dispatch, id, successPay, order]);
+  }, [dispatch, id, successPay, order, sdkReady]);
 
   return (
     <>

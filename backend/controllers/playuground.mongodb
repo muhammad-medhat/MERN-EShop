@@ -5,13 +5,14 @@
 
 // Select the database to use.
 use('eshop');
-db.orders.find({}, {'user', ObjectId('631b61bc5628f10d3f52167e')}).pretty()
-db.test.find({"user" : ObjectId("631b61bc5628f10d3f52167e")
+// db.orders.find({}, {'user', ObjectId('631b61bc5628f10d3f52167e')}).pretty()
+// db.test.find({"user" : ObjectId("631b61bc5628f10d3f52167e")
 // db.orders.drop()
 
 // db.orders.updateMany({},{$set:{isPaid: true, isDelivered:false}});
-
-db.orders.find({},{_id:1, createdAt:1, isPaid:1, isDelivered:1, user:1}).pretty();
+// db.orders.deleteMany({})
+// db.orders.find({},{_id:1, createdAt:1, isPaid:1, isDelivered:1, user:1}).pretty();
+db.orders.find({}).pretty();
 
 // // Build an aggregation to view total sales for each product in 2014.
 // const aggregation = [

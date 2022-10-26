@@ -29,18 +29,18 @@ const PlaceOrderScreen = () => {
   const totalPrice = Number((itemsPrice + taxPrice + shippingPrice).toFixed(2));
   const summery = { shippingPrice, totalPrice, taxPrice, itemsPrice };
   useEffect(() => {
-    debugger;
+    //debugger;
     // if (order && !(Object.keys(order).length === 0)) {
     if(success){
       nav(`/order/${order._id}`);
       // eslint-disable-next-line
     }
-  }, [dispatch, success, orderCreate, order]);
+  }, [dispatch, orderCreate, order]);
 
 
   const handlePlaceOrder = (e) => {
     e.preventDefault();
-    debugger;
+    // debugger;
     const orderObject = {
       orderItems: cart.cartItems,
       shippingAddress: cart.shippingAddress,
@@ -114,6 +114,7 @@ const PlaceOrderScreen = () => {
               disabled={cartItems.length === 0}
               title="proceed to payment"
             />
+            {error && <Message variant='danger'>{error}</Message>}
           </ListGroup.Item>
         </Col>
       </Row>

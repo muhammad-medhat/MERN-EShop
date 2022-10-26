@@ -20,7 +20,9 @@ import {
   ORDER_LIST_MY_REQUEST,
 } from "../const/orderConstants.js";
 
-export const createOrder = (order) => async (dispatch, getState) => {debugger
+export const createOrder = (order) => async (dispatch, getState) => {
+  // debugger
+  //console.log('creating order...', order);
   try {
     dispatch({
       type: ORDER_CREATE_REQUEST,

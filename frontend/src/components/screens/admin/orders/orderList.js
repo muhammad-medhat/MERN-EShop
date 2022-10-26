@@ -23,7 +23,7 @@ const OrderList = () => {
   const nav = useNavigate();
 
   const orderList = useSelector((state) => state.orderList);
-  console.log(orderList);
+  // console.log(orderList);
   const { loading, success, error, orders } = orderList;
 
   const userLogin = useSelector((state) => state.userLogin);
@@ -41,7 +41,6 @@ const OrderList = () => {
       ) : error ? (
         <Message variant="danger">{error}</Message>
       ) : (
-        
         <Table striped bordered hover>
           <thead>
             <tr>
@@ -64,32 +63,37 @@ const OrderList = () => {
                   <td>$ {order.totalPrice}</td>
                   <td>
                     {order.isPaid ? (
-                      order.paidAt.substring(0, 10)
+                      <>
+                        <i
+                          className="fas fa-check"
+                          style={{ color: "green" }}
+                        ></i>{" "}
+                        <span> @ {order.paidAt.substring(0, 10)}</span>
+                      </>
                     ) : (
-                      <i
-                        className="fas fa-times danger"
-                        style={{ color: "red" }}
-                      ></i>
+                      <i className="fas fa-times" style={{ color: "red" }}></i>
                     )}
                   </td>
                   <td>
                     {order.isDelivered ? (
-                      order.deliveredAt.substring(0, 10)
+                      <>
+                        <i
+                          className="fas fa-check"
+                          style={{ color: "green" }}
+                        ></i>
+                        <span> @ {order.deliveredAt.substring(0, 10)}</span>
+                      </>
                     ) : (
                       <i
-                        className="fas fa-times danger"
+                        className="fas fa-times"
                         style={{ color: "red" }}
                       ></i>
                     )}
                   </td>
                   <td>
-                  <LinkContainer
-                    to={`/admin/orders/${order._id}`}
-                  >
-                    <Button variant="primary">
-                      details...
-                    </Button>
-                  </LinkContainer>
+                    <LinkContainer to={`/admin/orders/${order._id}`}>
+                      <Button variant="primary">details...</Button>
+                    </LinkContainer>
                   </td>
                 </tr>
               ))}

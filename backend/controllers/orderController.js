@@ -52,6 +52,7 @@ export const getOrderById = asyncHandler(async (req, res) => {
  * @access Private
  */
 export const payOrder = asyncHandler(async (req, res) => {
+  console.log('pay order');
   const id = req.params.id;
   const order = await Order.findById(id);
   if (order) {
@@ -63,9 +64,9 @@ export const payOrder = asyncHandler(async (req, res) => {
       update_time: req.body.update_time,
       email_address: req.body.payer.email_address,
     };
-    order.save();
+    const updated = await order.save();
 
-    return res.json(order);
+    return res.json(updated);
   } else {
     res.status(404);
     throw new Error("Order not found");
