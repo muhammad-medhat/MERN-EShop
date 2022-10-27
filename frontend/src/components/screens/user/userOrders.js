@@ -21,7 +21,7 @@ const UserOrders = (props) => {
   const myOrders = useSelector((state) => state.orderListMy);
   const { loading, success, error, orders } = myOrders;
 
-  const [isDelivered, setIsDelivered] = useState(true);
+  const [isDelivered, setIsDelivered] = useState(false);
   const [isPaid, setIsPaid] = useState(true);
 
   const switchDeliveredOrders = () => {

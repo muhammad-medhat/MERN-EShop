@@ -4,7 +4,8 @@ import {
   CART_FAIL,
   CART_UPDATE_ITEM,
   CART_ADD_SHIPPING_ADDRESS, 
-  CART_ADD_PAYMENT_METHOD
+  CART_ADD_PAYMENT_METHOD,
+  CART_RESET
 } from "../const/cartConstants";
 // import axios from "axios";
 
@@ -61,7 +62,6 @@ export const updateCartItem = (id, qty) => async (dispatch, getState) => {
     });
   }
 };
-
 export const removeFromCart = (id) => (dispatch, getState) => {
   dispatch({ type: CART_REMOVE_ITEM, payload: id });
   localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
@@ -80,3 +80,7 @@ export const addPaymentMethod = (data) => (dispatch) => {
     });
     localStorage.setItem("PaymentMethod", JSON.stringify(data));
 }
+export const clearCart = () => (dispatch) => {
+  dispatch({ type: CART_RESET});
+  localStorage.setItem("cartItems", JSON.stringify([]))
+};

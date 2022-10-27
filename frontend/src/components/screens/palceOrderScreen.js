@@ -30,7 +30,6 @@ const PlaceOrderScreen = () => {
   const summery = { shippingPrice, totalPrice, taxPrice, itemsPrice };
   useEffect(() => {
     //debugger;
-    // if (order && !(Object.keys(order).length === 0)) {
     if(success){
       nav(`/order/${order._id}`);
       // eslint-disable-next-line

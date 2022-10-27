@@ -19,6 +19,7 @@ import {
   ORDER_LIST_MY_SUCCESS,
   ORDER_LIST_MY_REQUEST,
 } from "../const/orderConstants.js";
+import { clearCart } from "./cartActions.js";
 
 export const createOrder = (order) => async (dispatch, getState) => {
   // debugger
@@ -114,6 +115,7 @@ export const payOrder = (id, paymentResult) => async (dispatch, getState) => {
     if (response.status < 400) {
       const data = await response.json();
       dispatch({ type: ORDER_PAY_SUCCESS, payload: data });
+      dispatch(clearCart())
     } else {
       throw new Error(response.status + ": " + response.statusText);
     }
