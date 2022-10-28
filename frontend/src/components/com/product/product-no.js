@@ -2,41 +2,40 @@ import React from "react";
 import { Card } from "react-bootstrap";
 import Rating from "../rating.js";
 import { Link } from "react-router-dom";
+import "./product.css";
 
 const Product = ({product}) => {
   return (
     <>
-      <Card className="product-card my-3 p-3 rounded">
+      <article className="product-card my-3 p-3 rounded">
         <Link to={`/products/${product._id}`}>
-          <Card.Img variant="top" src={product.image} alt={product.name} />
+          <img src={product.image} alt={product.name} />
         </Link>
 
-        <Card.Body>
+        <div className="card-body">
           <Link to={`/products/${product._id}`}>
             <Card.Title as="div" className="font-weight-bold">
               {product.name}
             </Card.Title>
           </Link>
 
-          {/* <Card.Text>{product.description}</Card.Text> */}
-
-          <Card.Text as="div">
+          <div>
             <Rating
               value={product.rating}
               text={`Avarage: ${Number(product.rating).toFixed(2)} from ${product.numReviews} reviews`}
             />
-          </Card.Text>
+          </div>
 
-          <Card.Text as="div">
+          <div>
             <small className="text-muted">
               Count In Stock: {product.countInStock}
             </small>
-          </Card.Text>
-          <Card.Text as="h3">
+          </div>
+          <h3>
             <small className="text-muted"> ${product.price}</small>
-          </Card.Text>
-        </Card.Body>
-      </Card>
+          </h3>
+        </div> {/* card-body*/}
+      </article>
     </>
   );
 };

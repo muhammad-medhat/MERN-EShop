@@ -3,6 +3,7 @@ const Rating = (props) => {
   const { value, color, text } = props;
   return (
     <>
+    <p>
       <span>
         <i
           style={{ color }}
@@ -27,7 +28,6 @@ const Rating = (props) => {
           }
         ></i>
       </span>
-
       <span>
         <i
           style={{ color }}
@@ -64,9 +64,12 @@ const Rating = (props) => {
           }
         ></i>
       </span>
-      <h5>
+    </p>
+
+
+      <span>
         {text}
-      </h5>
+      </span>
       
     </>
   );
