@@ -15,30 +15,34 @@ const ProductCarousel = () => {
   const topProducts = useSelector((state) => state.productTopRated);
   const { loading, products, error } = topProducts;
   // console.log('carousel...', loading, products, error);
-  const handleSelect = (i, e) =>{
+  const handleSelect = (i, e) => {
     // console.log(i, e);
-    setIndex(i)
-  }
-  useEffect(()=>{
-    dispatch(getTopRatedProducts())
-  }, [dispatch])
+    setIndex(i);
+  };
+  useEffect(() => {
+    dispatch(getTopRatedProducts());
+  }, [dispatch]);
 
   return loading ? (
     <Loader />
   ) : error ? (
-    <Message variant='danger'>{error}</Message>
+    <Message variant="danger">{error}</Message>
   ) : (
     products && (
       <>
         <Carousel pause="hover" activeIndex={index} onSelect={handleSelect}>
           {products.map((p, i) => (
             <Carousel.Item key={p._id}>
-              <Image fluid src={p.image} alt={p.name} />
+              <Link to={`/products/${p._id}`}>
+                <Image fluid src={p.image} alt={p.name} />
+              </Link>
               <Carousel.Caption>
-                <h3>{p.name}</h3>
-                <p>
+                <Link to={`/products/${p._id}`}>
+                  <h3>{p.name}</h3>
+                </Link>
+                <div>
                   <Rating value={p.rating} />
-                </p>
+                </div>
               </Carousel.Caption>
             </Carousel.Item>
           ))}

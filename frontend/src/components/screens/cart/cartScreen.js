@@ -10,8 +10,9 @@ import {
 import Message from "../../message";
 import "./cartScreen.css";
 import ProductRow from "../../com/productRow";
+import FormContainer from "../../formContainer";
 const CartScreen = () => {
-  const {id: pid} = useParams()
+  const { id: pid } = useParams();
   const nav = useNavigate();
 
   const { search } = useLocation();
@@ -27,36 +28,42 @@ const CartScreen = () => {
     if (pid) {
       dispatch(addToCart(pid, qty));
     }
+    console.log("ccccc", cartItems);
   }, [dispatch, pid, qty]);
-  // console.log(cartItems);
+  console.log(cartItems);
 
   const checkoutHandler = (e) => {
     e.preventDefault();
     nav("/shipping");
     // console.log(`checkoutHandler `);
   };
+  return cartItems?.length === 0 ? (
+    <Row>
+      <Col>
+      <FormContainer>
+        <Message>
+          <h3>Empty Cart</h3>
+          <Link to="/">browse products</Link>
+        </Message>        
+      </FormContainer>
 
-  return (
+      </Col>
+    </Row>
+  ) : (
     <Row>
       <Col md={8}>
-        {cartItems.length === 0 ? (
-          <Message>
-            <h3>Empty Cart</h3>
-            <Link to="/">browse products</Link>
-          </Message>
-        ) : (
-          <ListGroup variant="flush">
-            {cartItems.map((item) => {
-              return (
-                <ProductRow
-                  key={item.product}
-                  item={item}
-                  updateCartItem={updateCartItem}
-                  removeFromCart={removeFromCart}
-                />
-              );
-            })}
-          </ListGroup>
+        <ListGroup variant="flush">
+          {cartItems.map((item) => {
+            return (
+              <ProductRow
+                key={item.product}
+                item={item}
+                updateCartItem={updateCartItem}
+                removeFromCart={removeFromCart}
+              />
+            );
+          })}
+        </ListGroup>
         )}
       </Col>
 

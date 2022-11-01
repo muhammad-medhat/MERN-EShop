@@ -40,7 +40,7 @@ export const createOrder = (order) => async (dispatch, getState) => {
       method: "POST",
       body: JSON.stringify(order),
     };
-    debugger
+    // debugger
     const response = await fetch("/api/orders", config);
     if (response.status < 400) {
       const data = await response.json();
@@ -94,7 +94,7 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
 };
 
 export const payOrder = (id, paymentResult) => async (dispatch, getState) => {
-  try {debugger
+  try {
     dispatch({
       type: ORDER_PAY_REQUEST,
     });

@@ -38,7 +38,7 @@ const OrderScreen = () => {// debugger
   const [sdkReady, setSdkReady] = useState(false);
   function paymentSuccess(paymentRes) {
     // console.log("pp res", paymentRes);
-    debugger;
+    
     dispatch(payOrder(order._id, paymentRes));
   }
 
@@ -58,7 +58,7 @@ const OrderScreen = () => {// debugger
       document.body.appendChild(script);
     };
 
-    if (!order || successPay ) {debugger
+    if (!order || successPay ) {
       dispatch({ type: ORDER_PAY_RESET });
 
       //if the order is not loaded, || reload the order after payment

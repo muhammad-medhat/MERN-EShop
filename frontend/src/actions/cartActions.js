@@ -82,5 +82,6 @@ export const addPaymentMethod = (data) => (dispatch) => {
 }
 export const clearCart = () => (dispatch) => {
   dispatch({ type: CART_RESET});
-  localStorage.setItem("cartItems", JSON.stringify([]))
+  localStorage.removeItem("cartItems")
+  // localStorage.setItem("cartItems", JSON.stringify([]))
 };

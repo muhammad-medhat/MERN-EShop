@@ -33,14 +33,11 @@ const ProductScreen = () => {
     dispatch(DetailsProduct(pid));
       setQty(qty);
       setTotal(total);
-console.log(product);
 
   }, [dispatch, pid]);
 
   const handleAddToCart = () => {
-    // setQty(qty);
-    // setTotal(qty * product.price);
-    // console.log(`Add to cart ${qty} of ${product.id} for ${total}`);
+
     nav(`/cart/${product._id}?qty=${qty}`);
   };
 
