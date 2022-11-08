@@ -9,20 +9,23 @@ import {
   Button,
 } from "react-bootstrap";
 import Image from "react-bootstrap/Image";
-import FormContainer from "../../formContainer";
+import FormContainer from "../../../formContainer";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import Loader from "../../loader";
-import Message from "../../message";
+import Loader from "../../../loader";
+import Message from "../../../message";
 import { LinkContainer } from "react-router-bootstrap";
 import {
   ListProducts,
   deleteProduct,
   initProduct,
   createProduct,
-} from "../../../actions/productActions"; 
-import { PRODUCT_INIT_RESET } from "../../../const/productConstants";
-import Paginate from '../../paginate';
+} from "../../../../actions/productActions"; 
+import {
+  PRODUCT_INIT_RESET,
+  PRODUCT_CREATE_RESET,
+} from "../../../../const/productConstants";
+import Paginate from '../../../paginate';
 
 
 const ProductList = () => {
@@ -66,7 +69,7 @@ const ProductList = () => {
     dispatch(deleteProduct(id));
   }
 
-  function addHandler(e) {
+  function initHandler(e) {
     e.preventDefault();
       dispatch(initProduct());
       // debugger    
@@ -74,6 +77,15 @@ const ProductList = () => {
         // nav(`/admin/products/${productInit._id}/edit`);
       }
   }
+  function addHandler(e) {
+    e.preventDefault();
+      // debugger    
+      if (1) {
+        nav(`/admin/products/create`);
+      }
+  }
+
+
   function logInfo(){
       
     console.group("Selectors");
@@ -85,10 +97,11 @@ const ProductList = () => {
   }
 
   useEffect(() => {
+    // debugger
     dispatch({type: PRODUCT_INIT_RESET})
+
     if (!userInfo || !userInfo.isAdmin) {
       nav("/login");
-      // 
     }  
     if(successInit){
       nav(`/admin/products/${initializedProduct._id}/edit`);
@@ -107,6 +120,11 @@ const ProductList = () => {
         <>
           <h2>products</h2>
           <Row className="align-items-center">
+            <Col className="text-right">
+              <Button onClick={initHandler} className="my-3">
+                <i className="fas fa-plus"></i> add product
+              </Button>
+            </Col>
             <Col className="text-right">
               <Button onClick={addHandler} className="my-3">
                 <i className="fas fa-plus"></i> add product

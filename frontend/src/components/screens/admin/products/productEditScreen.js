@@ -1,28 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  Table,
-  // Form,
-  Row,
-  Col,
-  FormControl,
-  FormFile,
-  FormGroup,
-  Button,
+  FormControl, FormGroup, Image
 } from "react-bootstrap";
 import Form from 'react-bootstrap/Form';
 
 
-import FormContainer from "../../formContainer";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import Loader from "../../loader";
-import Message from "../../message";
-import { LinkContainer } from "react-router-bootstrap";
+import FormContainer from "../../../formContainer";
+import Loader from "../../../loader";
+import Message from "../../../message";
 
-import { DetailsProduct, updateProduct } from "../../../actions/productActions";
-import { PRODUCT_UPDATE_RESET } from "../../../const/productConstants";
+import { DetailsProduct, updateProduct } from "../../../../actions/productActions";
+import { PRODUCT_UPDATE_RESET } from "../../../../const/productConstants";
 
-import axios from 'axios'
 
 const ProductEdit = () => {
   const dispatch = useDispatch();
@@ -112,6 +103,7 @@ const ProductEdit = () => {
 
   }
   useEffect(() => {
+    debugger
     // console.log('productDetails', productDetails);
     // console.log('productDetails', successDetails);
     if (successUpdate) {
@@ -119,27 +111,32 @@ const ProductEdit = () => {
       dispatch({ type: PRODUCT_UPDATE_RESET });
       nav("/admin/products");
     } else {
-      dispatch(DetailsProduct(pid));
-      setName(details.name);
-      setPrice(details.price);
-      setDescription(details.description);
-      setImage(details.image);
-      setCountInStock(details.countInStock);
-      setBrand(details.brand);
-      setCategory(details.category);
+      if (successDetails) {
+        setName(details?.name);
+        setPrice(details?.price);
+        setDescription(details?.description);
+        setImage(details?.image);
+        setCountInStock(details?.countInStock);
+        setBrand(details?.brand);
+        setCategory(details?.category);
+      } else {
+        dispatch(DetailsProduct(pid));
+      }
+
     }
   }, [
     dispatch,
     userInfo,
     successUpdate,
     successDetails,
-    name,
-    price,
-    description,
-    image,
-    countInStock,
-    brand,
-    category,
+    details,pid,
+    // name,
+    // price,
+    // description,
+    // image,
+    // countInStock,
+    // brand,
+    // category,
   ]);
   return (
     <>
@@ -218,6 +215,7 @@ const ProductEdit = () => {
                   // custom
                   />
                   {uploading && <Loader />}
+                  <Image src={image} rounded />
 
               </FormGroup>
                 

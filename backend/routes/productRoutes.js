@@ -1,23 +1,23 @@
 import Express from "express";
 import {
-  getProducts,
-  getProductById,
-  createProduct,
-  deleteProductById,
-  updateProductById,
-  initProduct,
-  addProductReview,
-  getTopProducts,
+  addProductReview, 
+  createProduct, 
+  deleteProductById, 
+  getProductById, 
+  getProducts, 
+  getTopProducts, 
+  initProduct, 
+  updateProductById
 } from "../controllers/productController.js";
-import { protect, admin } from "../middleware/authMiddleware.js";
+import { admin, protect } from "../middleware/authMiddleware.js";
 const router = Express.Router();
 
 router.route("/")
-      .get(getProducts)
-      .post(protect, admin, initProduct);
+  .get(getProducts)
+  .post(protect, admin, createProduct);
 
-router.get('/top/:limit', getTopProducts)
-router.get('/top/', getTopProducts)
+router.get("/top/:limit", getTopProducts);
+router.get("/top/", getTopProducts);
 
 router
   .route("/:id")

@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from "react";
 import {
-  Table,
   Form,
-  Row,
-  Col,
+
   FormControl,
   FormGroup,
-  Button,
+  Image,
 } from "react-bootstrap";
-import FormContainer from "../../formContainer";
+import FormContainer from "../../../formContainer";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import Loader from "../../loader";
-import Message from "../../message";
-import { LinkContainer } from "react-router-bootstrap";
-import { createProduct } from "../../../actions/productActions";
+import Loader from "../../../loader";
+import Message from "../../../message";
+// import { LinkContainer } from "react-router-bootstrap";
+import { createProduct } from "../../../../actions/productActions";
+import { PRODUCT_CREATE_RESET } from "../../../../const/productConstants";
 
 const ProductCreate = () => {
   const dispatch = useDispatch();
@@ -26,23 +25,31 @@ const ProductCreate = () => {
   const {
     loading: loadingCreate,
     success: successCreate,
-    errorCreate,
+    error: errorCreate,
+    message: messageCreate
   } = productCreate;
   // debugger
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
+  /* State variables */
   const [name, setName] = useState("");
-  const [price, setPrice] = useState(0.0);
+  const [price, setPrice] = useState(0);
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
   const [countInStock, setCountInStock] = useState(0);
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
+  const [uploading, setUploading] = useState(false);
+  // temp variables
+  const [imgName, setImgName] = useState("");
+  const [tempImage, setTempImage] = useState("");
+  /** End state variables */
 
   function submitAdd(e) {
-    debugger
-    e.preventDefault();
+    e.preventDefault();    
+    debugger;
+
     dispatch(
       createProduct({
         name,
@@ -50,29 +57,69 @@ const ProductCreate = () => {
         price,
         category,
         brand,
+        countInStock,
         image,
       })
     );
   }
+  function upload(e) {
+    e.preventDefault();
+    debugger;
+    // const temp = URL.createObjectURL(e.target.files[0]);
+    // setTempImage(temp);
+    // setImgName(e.target.files[0].name);
+    showPreview(e)
+    setImage(e.target.value);
+  }
+  function showPreview(e){
+    if(e.target.files.length > 0){
+      var src = URL.createObjectURL(e.target.files[0]);
+      var preview = document.getElementById("pImage");
+      preview.src = src;
+      // preview.style.display = "block";
+    }
+  }
   useEffect(() => {
-    if (userInfo && userInfo.isAdmin) {
-    } else nav("/login");
-  }, [dispatch, successCreate, userInfo]);
+    if (!(userInfo && userInfo.isAdmin)) {
+      nav("/login");
+    }
+    if (successCreate) {
+      dispatch({ type: PRODUCT_CREATE_RESET });
+
+      debugger;
+      nav("/admin/products");
+    }
+    console.log(errorCreate);
+  }, [dispatch, successCreate, errorCreate, userInfo, nav]);
   return (
     <>
       {loadingCreate ? (
         <Loader />
-      ) : errorCreate ? (
-        <Message variant="danger">{errorCreate}</Message>
       ) : (
         <>
+          <Link to="/admin/products" className="p-3">
+            <span>
+              <i className="fa fa-arrow-left p-2 mb-2" aria-hidden="true"></i>
+            </span>
+
+            <span>Back to product list</span>
+          </Link>
+
+          {errorCreate ? <Message variant="danger">{errorCreate}</Message> : ""}
+          {messageCreate ? (
+            <Message variant="danger">{messageCreate}</Message>
+          ) : (
+            ""
+          )}
+
           <FormContainer>
-            <Form onSubmit={(e) => submitAdd}>
+            <Form onSubmit={(e) => submitAdd(e)} encType="multipart/form-data">
               <FormGroup controlId="name">
                 <Form.Label>Name</Form.Label>
                 <FormControl
                   type="text"
                   placeholder="product name"
+                  required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
@@ -83,6 +130,7 @@ const ProductCreate = () => {
                 <FormControl
                   as="textarea"
                   placeholder="product description"
+                  required
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 />
@@ -93,6 +141,7 @@ const ProductCreate = () => {
                 <FormControl
                   type="Number"
                   placeholder="product price"
+                  required
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
                 />
@@ -101,28 +150,20 @@ const ProductCreate = () => {
               <FormGroup controlId="category">
                 <Form.Label>category</Form.Label>
                 <FormControl
-                  type="Number"
+                  type="text"
                   placeholder="product category"
+                  required
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                />
-              </FormGroup>
-
-              <FormGroup controlId="image">
-                <Form.Label>image</Form.Label>
-                <FormControl
-                  type="Number"
-                  placeholder="product image"
-                  value={image}
-                  onChange={(e) => setImage(e.target.value)}
                 />
               </FormGroup>
 
               <FormGroup controlId="brand">
                 <Form.Label>brand</Form.Label>
                 <FormControl
-                  type="Number"
+                  type="text"
                   placeholder="product brand"
+                  required
                   value={brand}
                   onChange={(e) => setBrand(e.target.value)}
                 />
@@ -138,9 +179,27 @@ const ProductCreate = () => {
                 />
               </FormGroup>
 
+              <FormGroup controlId="image">
+                <Form.Label>image</Form.Label>
+                <FormControl
+                  type="file"
+                  placeholder="product image"
+                  value={image}
+                  required
+                  onChange={(e) => upload(e)}
+                />
+                {uploading && <Loader />}
+                <Image
+                  id="pImage"
+                  src={image}
+                  rounded
+                  style={{ width: "200px", height: "200px" }}
+                />
+                {/* {imgName} */}
+              </FormGroup>
+
               <FormGroup>
                 <Form.Label>add product</Form.Label>
-
                 <Form.Control variant="primary" type="submit" value="create" />
               </FormGroup>
             </Form>

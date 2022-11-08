@@ -1,26 +1,26 @@
+import { Container } from 'react-bootstrap';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
+import Footer from './components/partials/footer';
 import Header from './components/partials/header';
-import Footer from './components/partials/footer'; 
-import HomeScreen from './components/screens/homeScreen';
-import {Container} from 'react-bootstrap';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import ProductScreen from './components/screens/productscreen';
 import CartScreen from './components/screens/cart/cartScreen';
-import LoginScreen from './components/screens/user/userLoginScreen';
-import RegisterScreen from './components/screens/userRegisterScreen';
-import UserProfileScreen from './components/screens/user/userProfileScreen';
-import ShippingScreen from './components/screens/shippingScreen';
+import HomeScreen from './components/screens/homeScreen';
+import OrderScreen from './components/screens/order/orderScreen';
 import PaymentScreen from './components/screens/order/paymentScreen';
 import PlaceOrderScreen from './components/screens/palceOrderScreen';
-import OrderScreen from './components/screens/order/orderScreen';
+import ProductScreen from './components/screens/productscreen';
+import ShippingScreen from './components/screens/shippingScreen';
+import LoginScreen from './components/screens/user/userLoginScreen';
+import UserProfileScreen from './components/screens/user/userProfileScreen';
+import RegisterScreen from './components/screens/userRegisterScreen';
 
-import UserListScreen from './components/screens/admin/usersListScreen';
-import UserEditScreen from './components/screens/admin/userEditScreen';
-import ProductList from './components/screens/admin/productListScreen';
-import ProductCreate from './components/screens/admin/productCreateScreen';
-import ProductEdit from './components/screens/admin/productEditScreen';
-import OrderList from './components/screens/admin/orders/orderList';
 import AdminOrderDetails from './components/screens/admin/orders/orderDetails';
+import OrderList from './components/screens/admin/orders/orderList';
+import ProductCreate from './components/screens/admin/products/productCreateScreen';
+import ProductEdit from './components/screens/admin/products/productEditScreen';
+import ProductList from './components/screens/admin/products/productListScreen';
+import UserEditScreen from './components/screens/admin/userEditScreen';
+import UserListScreen from './components/screens/admin/usersListScreen';
 function App() {
   return (
     <BrowserRouter>
@@ -47,9 +47,9 @@ function App() {
 
                   <Route path='/admin/orders/:id' element={<AdminOrderDetails />} />              
                   <Route path='/admin/orders' element={<OrderList />} />              
+                  
                   <Route path='/admin/products/:id/edit' element={<ProductEdit />} />              
                   <Route path='/admin/products/create' element={<ProductCreate />} />  
-
                   <Route path='/admin/products' exact element={<ProductList /> } />              
                   <Route path='/admin/products/page/:page' element={<ProductList />} />   
 

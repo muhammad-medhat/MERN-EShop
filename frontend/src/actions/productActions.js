@@ -15,6 +15,7 @@ import {
   PRODUCT_CREATE_SUCCESS,
   PRODUCT_CREATE_FAIL,
   PRODUCT_CREATE_REQUEST,
+  PRODUCT_CREATE_RESET,
   PRODUCT_INIT_REQUEST,
   PRODUCT_INIT_SUCCESS,
   PRODUCT_INIT_FAIL,
@@ -24,32 +25,37 @@ import {
 } from "../const/productConstants";
 // import axios from "axios";
 
-export const ListProducts = (keyword='', page='') => async (dispatch) => {
-  try {
-    dispatch({ type: PRODUCTS_LIST_REQUEST });
+export const ListProducts =
+  (keyword = "", page = "") =>
+  async (dispatch) => {
+    try {
+      dispatch({ type: PRODUCTS_LIST_REQUEST });
 
-    //const { data } = await axios.get("/api/products");
+      //const { data } = await axios.get("/api/products");
 
-    const response = await fetch(`/api/products?keyword=${keyword}&page=${page}`);
-    const data = await response.json();
-    // console.log('products action',data);
+      const response = await fetch(
+        `/api/products?keyword=${keyword}&page=${page}`
+      );
+      const data = await response.json();
+      // console.log('products action',data);
 
-    dispatch({
-      type: PRODUCTS_LIST_SUCCESS,
-      payload: data
-    });
-  } catch (error) {
-    dispatch({
-      type: PRODUCTS_LIST_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
-};
+      dispatch({
+        type: PRODUCTS_LIST_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: PRODUCTS_LIST_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
 export const DetailsProduct = (id) => async (dispatch) => {
+  // debugger
   try {
     dispatch({ type: PRODUCTS_DETAILS_REQUEST });
 
@@ -144,9 +150,7 @@ export const updateProduct = (product) => async (dispatch, getState) => {
 export const createProduct = (product) => async (dispatch, getState) => {
   try {
     debugger;
-    dispatch({
-      type: PRODUCT_CREATE_REQUEST,
-    });
+    dispatch({ type: PRODUCT_CREATE_REQUEST });
 
     const {
       userLogin: { userInfo },
@@ -161,15 +165,19 @@ export const createProduct = (product) => async (dispatch, getState) => {
     };
 
     const response = await fetch(`/api/products/`, config);
-    const data = await response.json();
-    dispatch({
-      type: PRODUCT_CREATE_SUCCESS,
-      payload: data,
-    });
-    dispatch({
-      type: PRODUCT_DETAILS_SUCCESS,
-      payload: data,
-    });
+    if (response.status < 400) {
+      const data = await response.json();
+      dispatch({
+        type: PRODUCT_CREATE_SUCCESS,
+        payload: data,
+      });
+      dispatch({
+        type: PRODUCT_DETAILS_SUCCESS,
+        payload: data,
+      });
+    } else {
+      throw new Error(response.status + ": " + response.statusText);
+    }
     // localStorage.setItem("productInfo", JSON.stringify(data));
   } catch (error) {
     dispatch({
@@ -221,7 +229,6 @@ export const getTopRatedProducts = () => async (dispatch, getState) => {
     dispatch({
       type: PRODUCT_TOP_REQUEST,
     });
-
 
     const response = await fetch(`/api/products/top`);
     const data = await response.json();

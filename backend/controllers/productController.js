@@ -1,6 +1,6 @@
 import asyncHandler from "express-async-handler";
 import Product from "../models/productModel.js";
-
+import dotenv from "dotenv";
 /**
  * @route GET /api/products
  * @desc Get all products
@@ -17,7 +17,7 @@ export const getProducts = asyncHandler(async (req, res) => {
       }
     : {};
   //pagination
-  const perPage = 5;
+  const perPage = process.env.PER_PAGE;
   const pageNum = Number(req.query.page) || 1;
   const count = await Product.countDocuments({ ...keyword });
 
