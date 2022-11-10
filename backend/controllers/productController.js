@@ -97,7 +97,7 @@ export const deleteProductById = asyncHandler(async (req, res) => {
     return res.status(404).json({ msg: "Product not found" });
   } else {
     // console.log(product.user);
-    console.log(product.user.id);
+    // console.log(product.user.id);
     product.remove();
     return res.json(product);
   }

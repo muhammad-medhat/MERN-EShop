@@ -38,7 +38,9 @@ app.use("/api/upload", uploadRoutes);
 app.get("/api/config/paypal", (req, res) =>
   res.send(process.env.PAYPAL_CLIENT_ID)
 );
-
+// app.post('/api/upload', (req, res)=>{
+//   res.send('fffff')
+// })
 //making the uploads folder to be static
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 

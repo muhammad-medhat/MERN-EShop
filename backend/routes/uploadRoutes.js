@@ -1,11 +1,12 @@
 import path from "path";
 import express from "express";
 import multer from "multer";
+import { nextTick } from "process";
 const router = express.Router();
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, "/uploads/");
+    cb(null, "uploads/");
   },
   filename(req, file, cb) {
     cb(
@@ -16,6 +17,7 @@ const storage = multer.diskStorage({
 });
 
 function checkFileType(file, cb) {
+  // console.log('checkFileType', file);
   const filetypes = /jpg|jpeg|png/;
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
   const mimetype = filetypes.test(file.mimetype);
@@ -33,13 +35,25 @@ const upload = multer({
     checkFileType(file, cb);
   },
 });
+const uploads = multer({
+  dest: 'uploads'
+})
+
+// router.post('/',upload.single('image'), (req, res)=>{
+
+//   res.send(upload)
+// })
+// Multipart: Boundary not found
+
 
 router.post("/", upload.single("image"), (req, res) => {
   //passing upload middleware
   console.log("uploding...");
   console.log(req.body);
   // console.log(req);
+  // res.json(upload)
   res.send(`/${req.file.path}`);
+  
 });
 
 export default router;

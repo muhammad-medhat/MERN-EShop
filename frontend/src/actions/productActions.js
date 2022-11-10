@@ -149,7 +149,7 @@ export const updateProduct = (product) => async (dispatch, getState) => {
 
 export const createProduct = (product) => async (dispatch, getState) => {
   try {
-    debugger;
+    // debugger;
     dispatch({ type: PRODUCT_CREATE_REQUEST });
 
     const {

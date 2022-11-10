@@ -13,7 +13,6 @@ import Message from "../../../message";
 
 import { DetailsProduct, updateProduct } from "../../../../actions/productActions";
 import { PRODUCT_UPDATE_RESET } from "../../../../const/productConstants";
-import ProductForm from "./productForm";
 
 
 const ProductEdit = () => {
@@ -86,7 +85,7 @@ const ProductEdit = () => {
     }
   }
 
-  function submitUpdate(e) {
+  function submitAdd(e) {
     // debugger;
     e.preventDefault();
     dispatch(
@@ -169,29 +168,105 @@ const ProductEdit = () => {
               <li>{image}</li>
             </ul>
           </Message>
-          <ProductForm
-            action="edit"
-            title={name}           
-            actionCb={submitUpdate}
-            name={name}
-            price={price}
-            description={description}
-            image={image}
-            countInStock={countInStock}
-            brand={brand}
-            category={category}
-            uploading={uploading}
+          <FormContainer>
+            <form
+              action="/api/upload"
+              encType="multipart/form-data"
+              method="POST"
+              onSubmit={submitAdd}
+            >
+              <FormGroup controlId="name">
+                <Form.Label>Name</Form.Label>
+                <FormControl
+                  type="text"
+                  placeholder="product name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </FormGroup>
 
-            setName={setName}
-            setPrice={setPrice}
-            setDescription={setDescription}
-            setCountInStock={setCountInStock}
-            setBrand={setBrand}
-            setCategory={setCategory}
-            setImage={setImage}
-            // setImagePath={setImagePath}
-            setUploading={setUploading}
-          />
+              <FormGroup controlId="description">
+                <Form.Label>description</Form.Label>
+                <FormControl
+                  as="textarea"
+                  placeholder="product description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="price">
+                <Form.Label>price</Form.Label>
+                <FormControl
+                  type="Number"
+                  placeholder="product price"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="category">
+                <Form.Label>category</Form.Label>
+                <FormControl
+                  type="text"
+                  placeholder="product category"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="brand">
+                <Form.Label>brand</Form.Label>
+                <FormControl
+                  type="text"
+                  placeholder="product brand"
+                  value={brand}
+                  onChange={(e) => setBrand(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="countInStock">
+                <Form.Label>countInStock</Form.Label>
+                <FormControl
+                  type="number"
+                  placeholder="product countInStock"
+                  value={countInStock}
+                  onChange={(e) => setCountInStock(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="image">
+                <Form.Label>image</Form.Label>
+                {/* <FormControl
+                  type="text"
+                  placeholder="product image"
+                  value={image}
+                  disabled
+                  onChange={(e) => setImage(e.target.value)}
+                /> */}
+                <FormControl
+                  type="file"
+                  // id='image-file'
+                  onChange={(e) => showPreview(e)}
+                  label="select image"
+                  // custom
+                />
+                {uploading && <Loader />}
+                <Image
+                  id="pImage"
+                  src={image}
+                  rounded
+                  style={{ width: "200px", height: "200px" }}
+                />
+              </FormGroup>
+
+              <FormGroup>
+                <Form.Label>add product</Form.Label>
+
+                <FormControl variant="primary" type="submit" value="Create" />
+              </FormGroup>
+            </form>
+          </FormContainer>
         </>
       )}
     </>

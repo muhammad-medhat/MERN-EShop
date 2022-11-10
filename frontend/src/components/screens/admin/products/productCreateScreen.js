@@ -41,7 +41,7 @@ const ProductCreate = () => {
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
   const [image, setImage] = useState("");
-  const [imagePath, setImagePath] = useState();
+  // const [imagePath, setImagePath] = useState();
   const [file, setFile] = useState();
   const [uploading, setUploading] = useState(false);
   // temp variables
@@ -49,7 +49,7 @@ const ProductCreate = () => {
   const [tempImage, setTempImage] = useState("");
   /** End state variables */
   const uploadHandler = async(file)=> {
-    debugger
+    // debugger
     // const file = e.target.files[0]
     const formData = new FormData()
     formData.append('image', file)
@@ -66,6 +66,7 @@ const ProductCreate = () => {
         method:'post',
         body: formData
       }
+      console.log(config);
       // const {data} = await axios.post('/api/upload', formData, config)
       const res = await fetch('/api/upload', config)
       const data = await res.text()
@@ -78,7 +79,7 @@ const ProductCreate = () => {
   }
   function submitAdd(e) {
     e.preventDefault();    
-    debugger;
+    // debugger;
     uploadHandler(file)
     dispatch(
       createProduct({
@@ -99,7 +100,7 @@ const ProductCreate = () => {
     // setTempImage(temp);
     // setImgName(e.target.files[0].name);
     setImage(e.target.value.files[0].name);
-    setImagePath(e.target.value);
+    // setImagePath(e.target.value);???
   }
   function showPreview(e){
     if(e.target.files.length > 0){
@@ -119,7 +120,7 @@ const ProductCreate = () => {
     if (successCreate) {
       dispatch({ type: PRODUCT_CREATE_RESET });
 
-      debugger;
+      // debugger;
       nav("/admin/products");
     }
     console.log(errorCreate);
@@ -148,6 +149,7 @@ const ProductCreate = () => {
           <ProductForm
             action="create"
             title="creating new product"
+            actionCb={submitAdd}
             name={name}
             price={price}
             description={description}
@@ -164,7 +166,7 @@ const ProductCreate = () => {
             setBrand={setBrand}
             setCategory={setCategory}
             setImage={setImage}
-            setImagePath={setImagePath}
+            // setImagePath={setImagePath}
             setUploading={setUploading}
           />
         </>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
   Form,
-
   FormControl,
   FormGroup,
   Image,
@@ -19,6 +18,7 @@ const ProductForm = (props) => {
   const {
     title,
     action,
+    actionCb,
     name,
     price,
     description,
@@ -45,13 +45,13 @@ const ProductForm = (props) => {
   // const { loading, products, error } = productList;
 
   const uploadHandler = async (e) => {
-    debugger;
+    // debugger;
     // const file = e.target.files[0];
     const formData = new FormData();
     formData.append("image", file);
-    console.log(formData);
+    console.log('formData', formData);
     for (var key of formData.entries()) {
-      console.log(key[0] + ", " + key[1]);
+      console.log('entry', key[0] + ": " + key[1]);
     }
     setUploading(true);
     try {
@@ -73,22 +73,22 @@ const ProductForm = (props) => {
       setUploading(false);
     }
   };
-  function submitAdd(e) {
-    e.preventDefault();
-    debugger;
-    uploadHandler(e);
-    dispatch(
-      createProduct({
-        name,
-        description,
-        price,
-        category,
-        brand,
-        countInStock,
-        image,
-      })
-    );
-  }
+  // function submitAdd(e) {
+  //   e.preventDefault();
+  //   // debugger;
+  //   uploadHandler(e);
+  //   dispatch(
+  //     createProduct({
+  //       name,
+  //       description,
+  //       price,
+  //       category,
+  //       brand,
+  //       countInStock,
+  //       image,
+  //     })
+  //   );
+  // }
   function showPreview(e) {
     if (e.target.files.length > 0) {
       setFile(e.target.files[0]);
@@ -114,8 +114,10 @@ const ProductForm = (props) => {
     <FormContainer>
       <h1>{title}</h1>
 
-      {JSON.stringify(props)}
-      <Form onSubmit={(e) => submitAdd(e)}>
+      {
+        //JSON.stringify(props)
+      }
+      <Form onSubmit={actionCb} encType='multipart/form-data'>
         <FormGroup controlId="name">
           <Form.Label>Name</Form.Label>
           <FormControl
@@ -186,6 +188,7 @@ const ProductForm = (props) => {
           <FormControl
             type="file"
             placeholder="product image"
+            name="image"
             // value={image}
             // required
             onChange={(e) => showPreview(e)}
