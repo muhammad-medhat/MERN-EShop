@@ -1,78 +1,69 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
-  FormControl, FormGroup, Image
+  Form,
+
+  FormControl,
+  FormGroup,
+  Image,
 } from "react-bootstrap";
-import Form from 'react-bootstrap/Form';
-
-
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate, useParams } from "react-router-dom";
 import FormContainer from "../../../formContainer";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import Loader from "../../../loader";
 import Message from "../../../message";
+// import { LinkContainer } from "react-router-bootstrap";
+import { createProduct } from "../../../../actions/productActions";
+import { PRODUCT_CREATE_RESET } from "../../../../const/productConstants";
 
-import { DetailsProduct, updateProduct } from "../../../../actions/productActions";
-import { PRODUCT_UPDATE_RESET } from "../../../../const/productConstants";
-
-
-const ProductEdit = () => {
+const ProductCreate = () => {
   const dispatch = useDispatch();
   const nav = useNavigate();
-  const { id: pid } = useParams();
-  /**
-   * Selectors 
-   * */
+  // const productList = useSelector((state) => state.productList);
+  // const { loading, products, error } = productList;
 
-   const userLogin = useSelector((state) => state.userLogin);
-   const { userInfo } = userLogin;
+  const productCreate = useSelector((state) => state.productCreate);
+  const {
+    loading: loadingCreate,
+    success: successCreate,
+    error: errorCreate,
+    message: messageCreate
+  } = productCreate;
+  // debugger
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
-   const productDetails = useSelector((state) => state.productDetails);
-   const {
-     loading: loadingDetails,
-     success: successDetails,
-     error: errorDetails,
-     product: details,
-   } = productDetails;
-
-   const productUpdate = useSelector((state) => state.productUpdate);
-   const {
-     loading: loadingUpdate,
-     success: successUpdate,
-     error: errorUpdate,
-   } = productUpdate;
-/***   
- * End Selectors             
- *  */ 
-/**
- * State variables */
+  /* State variables */
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState("");
   const [countInStock, setCountInStock] = useState(0);
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
+  const [image, setImage] = useState("");
+  const [imagePath, setImagePath] = useState();
+  const [file, setFile] = useState();
   const [uploading, setUploading] = useState(false);
+  // temp variables
+  // const [imgName, setImgName] = useState("");
+  const [tempImage, setTempImage] = useState("");
   /** End state variables */
-
-  const uploadHandler = async()=> {
-    // debugger
-    const imgFileControl = document.getElementById('image-file')
-    const file = imgFileControl.files[0]
+  const uploadHandler = async(file)=> {
+    debugger
+    // const file = e.target.files[0]
     const formData = new FormData()
     formData.append('image', file)
     console.log(formData);
-    // for (var key of formData.entries()) {
-    //   console.log(key[0] + ', ' + key[1]);
-    // }
+    for (var key of formData.entries()) {
+      console.log(key[0] + ', ' + key[1]);
+    }
     setUploading(true)
     try {
       const config = {
         headers:{
-          'Content-Type': 'multipart/form-data', 
+          'Content-Type': 'multipart/form-data'
         }, 
         method:'post',
-        body: file
+        body: formData
       }
       // const {data} = await axios.post('/api/upload', formData, config)
       const res = await fetch('/api/upload', config)
@@ -84,75 +75,58 @@ const ProductEdit = () => {
       setUploading(false)
     }
   }
-
   function submitAdd(e) {
-    // debugger;
-    e.preventDefault();
+    e.preventDefault();    
+    debugger;
+    uploadHandler(file)
     dispatch(
-      updateProduct({
-        _id: pid,
+      createProduct({
         name,
-        price,
         description,
-        image,
-        countInStock,
-        brand,
+        price,
         category,
+        brand,
+        countInStock,
+        image,
       })
-    );      
-    uploadHandler(e)
-
+    );
   }
-  function showPreview(event){
-    if(event.target.files.length > 0){
-      var src = URL.createObjectURL(event.target.files[0]);
+  function upload(e) {
+    e.preventDefault();
+    debugger;
+    // const temp = URL.createObjectURL(e.target.files[0]);
+    // setTempImage(temp);
+    // setImgName(e.target.files[0].name);
+    setImage(e.target.value.files[0].name);
+    setImagePath(e.target.value);
+  }
+  function showPreview(e){
+    if(e.target.files.length > 0){
+      debugger
+      setImage(e.target.files[0].name)
+      setFile(e.target.files[0])
+      var src = URL.createObjectURL(e.target.files[0]);
       var preview = document.getElementById("pImage");
       preview.src = src;
       // preview.style.display = "block";
     }
   }
   useEffect(() => {
-    // debugger
-    // console.log('productDetails', productDetails);
-    // console.log('productDetails', successDetails);
-    if (successUpdate) {
-      console.log("Updated successful ly ");
-      dispatch({ type: PRODUCT_UPDATE_RESET });
-      nav("/admin/products");
-    } else {
-      if (successDetails) {
-        setName(details?.name);
-        setPrice(details?.price);
-        setDescription(details?.description);
-        setImage(details?.image);
-        setCountInStock(details?.countInStock);
-        setBrand(details?.brand);
-        setCategory(details?.category);
-      } else {
-        dispatch(DetailsProduct(pid));
-      }
-
+    if (!(userInfo && userInfo.isAdmin)) {
+      nav("/login");
     }
-  }, [
-    dispatch,
-    userInfo,
-    successUpdate,
-    successDetails,
-    details,pid,
-    // name,
-    // price,
-    // description,
-    // image,
-    // countInStock,
-    // brand,
-    // category,
-  ]);
+    if (successCreate) {
+      dispatch({ type: PRODUCT_CREATE_RESET });
+
+      debugger;
+      nav("/admin/products");
+    }
+    console.log(errorCreate);
+  }, [dispatch, successCreate, errorCreate, userInfo, nav]);
   return (
     <>
-      {loadingDetails ? (
+      {loadingCreate ? (
         <Loader />
-      ) : errorDetails ? (
-        <Message variant="danger">{errorDetails}</Message>
       ) : (
         <>
           <Link to="/admin/products" className="p-3">
@@ -162,24 +136,22 @@ const ProductEdit = () => {
 
             <span>Back to product list</span>
           </Link>
-          <Message>
-            <ul>
-              <li>{name}</li>
-              <li>{image}</li>
-            </ul>
-          </Message>
+
+          {errorCreate ? <Message variant="danger">{errorCreate}</Message> : ""}
+          {messageCreate ? (
+            <Message variant="danger">{messageCreate}</Message>
+          ) : (
+            ""
+          )}
+
           <FormContainer>
-            <form
-              action="/api/upload"
-              encType="multipart/form-data"
-              method="POST"
-              onSubmit={submitAdd}
-            >
+            <Form onSubmit={(e) => submitAdd(e)}>
               <FormGroup controlId="name">
                 <Form.Label>Name</Form.Label>
                 <FormControl
                   type="text"
                   placeholder="product name"
+                  required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
@@ -190,6 +162,7 @@ const ProductEdit = () => {
                 <FormControl
                   as="textarea"
                   placeholder="product description"
+                  required
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 />
@@ -200,6 +173,7 @@ const ProductEdit = () => {
                 <FormControl
                   type="Number"
                   placeholder="product price"
+                  required
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
                 />
@@ -210,6 +184,7 @@ const ProductEdit = () => {
                 <FormControl
                   type="text"
                   placeholder="product category"
+                  required
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                 />
@@ -220,6 +195,7 @@ const ProductEdit = () => {
                 <FormControl
                   type="text"
                   placeholder="product brand"
+                  required
                   value={brand}
                   onChange={(e) => setBrand(e.target.value)}
                 />
@@ -228,7 +204,7 @@ const ProductEdit = () => {
               <FormGroup controlId="countInStock">
                 <Form.Label>countInStock</Form.Label>
                 <FormControl
-                  type="number"
+                  type="Number"
                   placeholder="product countInStock"
                   value={countInStock}
                   onChange={(e) => setCountInStock(e.target.value)}
@@ -237,35 +213,28 @@ const ProductEdit = () => {
 
               <FormGroup controlId="image">
                 <Form.Label>image</Form.Label>
-                {/* <FormControl
-                  type="text"
-                  placeholder="product image"
-                  value={image}
-                  disabled
-                  onChange={(e) => setImage(e.target.value)}
-                /> */}
                 <FormControl
                   type="file"
-                  // id='image-file'
+                  placeholder="product image"
+                  value={imagePath}
+                  required
                   onChange={(e) => showPreview(e)}
-                  label="select image"
-                  // custom
                 />
                 {uploading && <Loader />}
                 <Image
                   id="pImage"
-                  src={image}
+                  src={tempImage}
                   rounded
                   style={{ width: "200px", height: "200px" }}
                 />
+                {/* {imgName} */}
               </FormGroup>
 
               <FormGroup>
                 <Form.Label>add product</Form.Label>
-
-                <FormControl variant="primary" type="submit" value="Create" />
+                <Form.Control variant="primary" type="submit" value="create" />
               </FormGroup>
-            </form>
+            </Form>
           </FormContainer>
         </>
       )}
@@ -273,4 +242,4 @@ const ProductEdit = () => {
   );
 };
 
-export default ProductEdit;
+export default ProductCreate;

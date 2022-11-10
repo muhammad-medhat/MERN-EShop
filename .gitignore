@@ -161,3 +161,6 @@ notes.md
 
 #production
 frontend/build
+
+.vscode
+backend\controllers\playuground.mongodb
