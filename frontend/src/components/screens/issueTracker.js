@@ -9,10 +9,11 @@ import Message from "../message";
 import { useParams } from "react-router-dom";
 import ProductCarousel from "../com/product/productCarousel";
 import Meta from "../com/Meta";
-import IssueForm from "./issues/issueForm";
 import Collapse from 'react-bootstrap/Collapse';
 import Button from 'react-bootstrap/Button';
 import FormContainer from "../formContainer";
+import IssueList from "./issues/issueList";
+import IssueForm from "./issues/issueForm";
 
 
 const IssueTrackerScreen = () => {
@@ -44,9 +45,9 @@ const IssueTrackerScreen = () => {
         <>
           <h2>issue tracker</h2>
 
-          <FormContainer>
+          <>
             <div className="container-fluid">
-              <div className="row">
+              <div className="row text-center" style={{}}>
                 <span className="col-xs-5">
                   <hr />
                 </span>
@@ -55,10 +56,9 @@ const IssueTrackerScreen = () => {
                   <span
                     onClick={changeState}
                     aria-controls="form"
-                    aria-expanded={open}                    
+                    aria-expanded={open}
                     className="px-2"
-                    style={{fontSize: 'larger'}}
-
+                    style={{ fontSize: "larger" }}
                   >
                     add issue
                   </span>
@@ -71,10 +71,13 @@ const IssueTrackerScreen = () => {
 
             <Collapse in={open}>
               <div id="form">
-                <IssueForm />
+                <FormContainer>
+                  <IssueForm />
+                </FormContainer>
               </div>
             </Collapse>
-          </FormContainer>
+            <IssueList />
+          </>
         </>
       )}
     </>

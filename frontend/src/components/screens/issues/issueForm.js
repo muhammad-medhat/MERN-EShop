@@ -6,10 +6,11 @@ import { useSelector, useDispatch } from "react-redux";
 // import Loader from "../../../loader";
 // import Message from "../../../message";
 // import { LinkContainer } from "react-router-bootstrap";
-// import { createIssue } from "../../../../actions/issueActions";
 // import { PRODUCT_CREATE_RESET } from "../../../../const/issueConstants";
 import "./issueStyle.css";
 import FormContainer from "../../formContainer";
+import { createIssue } from "../../../actions/issueActions";
+import { ISSUE_CREATE_RESET } from "../../../const/issueConstants";
 const IssueForm = (props) => {
   const [title, setTitle] = useState("");
   const [severity, setSeverity] = useState(0);
@@ -29,7 +30,15 @@ const IssueForm = (props) => {
     }
   }
   const submitHandler = () => {
-    
+    dispatch(
+      createIssue({
+        title,
+        severity,
+        description,
+        email,
+      })
+    );
+    dispatch({type: ISSUE_CREATE_RESET})
   };
   useEffect(() => {
     // debugger;
