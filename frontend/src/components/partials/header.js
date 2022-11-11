@@ -25,8 +25,8 @@ const Header = () => {
     nav("/login");
   };
   useEffect(()=>{
-    console.log('header useEffect...');
-    console.log('ccc', cartItemsFromLocalStorage);
+    // console.log('header useEffect...');
+    // console.log('ccc', cartItemsFromLocalStorage);
 
   }, [dispatch, cartItemsFromLocalStorage])
 
@@ -43,11 +43,16 @@ const Header = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ml-auto">
+              <LinkContainer to="/issues">
+                <Nav.Link>
+                  <i className="fa-solid fa-bug"></i> issues
+                </Nav.Link>
+              </LinkContainer>
               <LinkContainer to="/cart">
                 <Nav.Link>
                   <i className="fas fa-shopping-cart"></i> Cart
                   {cartItemsFromLocalStorage?.length > 0
-                    ? ' (' + cartItemsFromLocalStorage.length + ')'
+                    ? " (" + cartItemsFromLocalStorage.length + ")"
                     : ""}
                 </Nav.Link>
               </LinkContainer>

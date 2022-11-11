@@ -21,6 +21,7 @@ import ProductEdit from './components/screens/admin/products/productEditScreen';
 import ProductList from './components/screens/admin/products/productListScreen';
 import UserEditScreen from './components/screens/admin/userEditScreen';
 import UserListScreen from './components/screens/admin/usersListScreen';
+import IssueTrackerScreen from './components/screens/issueTracker';
 function App() {
   return (
     <BrowserRouter>
@@ -55,6 +56,7 @@ function App() {
 
                   <Route path='/admin/users' element={<UserListScreen />} />              
                   <Route path='/admin/users/:id/edit' element={<UserEditScreen  />} />              
+                  <Route path='/issues' element={<IssueTrackerScreen />} />              
                 </Routes>
             </main>
         </Container>               

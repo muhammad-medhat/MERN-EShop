@@ -165,3 +165,4 @@ frontend/build
 .vscode
 backend\controllers\playuground.mongodb
 uploads
+q.md
