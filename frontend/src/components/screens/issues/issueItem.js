@@ -1,31 +1,38 @@
-import React, { useState, useEffect } from "react";
-import { Card, Form, FormControl, FormGroup, Image } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import React, {  } from "react";
+import { Card } from "react-bootstrap";
 // import Loader from "../../../loader";
 // import Message from "../../../message";
 // import { LinkContainer } from "react-router-bootstrap";
 // import { PRODUCT_CREATE_RESET } from "../../../../const/issueConstants";
-import "./issueStyle.css";
-import FormContainer from "../../formContainer";
-import { createIssue } from "../../../actions/issueActions";
-import { ISSUE_CREATE_RESET } from "../../../const/issueConstants";
+// import "./issueStyle.css";
 const IssueItem = (props) => {
   const { title, severity, description, email } = props.issue;
 
   const severityClasses = {
-    l: "info",
-    m: "warning",
-    h: "danger",
+    l: {class: "info", title: "low"},
+    m: {class: "warning", title: "medium"},
+    h: {class: "danger", title: "high"}
   };
 
   return (
     <>
-      <Card>
-        <Card.Body >
-          <Card.Title className={severityClasses[severity]}>{title}</Card.Title>
-          <Card.Text>{description}</Card.Text>
-          <Card.Text>{email}</Card.Text>
+      <Card className="bug">
+        <Card.Body>
+          <Card.Title
+            className={`bg-${severityClasses[severity].class} p-1 rounded`}
+          >
+            <span className="severity m-1">
+              [{severityClasses[severity].title}]
+            </span>
+
+            {title}
+          </Card.Title>
+          <Card.Text>
+            <div className="bug-info">
+              <p>{description}</p>
+              {email ? <p className="email">{email} </p> : ""}
+            </div>
+          </Card.Text>
         </Card.Body>
       </Card>{" "}
     </>

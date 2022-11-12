@@ -2,3 +2,24 @@ form {
     display: flex;
     flex-direction: column;
 }
+.severity{
+    font-size: small;
+    font-weight: bold;
+}
+.bug .card-title{
+   box-shadow: 2px 0px 9px 4px #000;
+}
+.bug .email{
+    text-transform: none;
+}
+.card-title.bg-info,
+.card-title.bg-warning,
+.card-title.bg-danger{
+    color: #fff;
+}
+.bug-info{
+    background-color: #fff;
+    box-shadow: 2px 0px 9px 4px #000;
+    padding: 0.5rem;
+    border-radius: 5px;
+}

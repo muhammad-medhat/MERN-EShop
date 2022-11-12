@@ -14,6 +14,7 @@ import Button from 'react-bootstrap/Button';
 import FormContainer from "../formContainer";
 import IssueList from "./issues/issueList";
 import IssueForm from "./issues/issueForm";
+// import './issues/issueStyle.css'
 
 
 const IssueTrackerScreen = () => {
