@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Form, Row, Col, FormControl, FormGroup, Button } from "react-bootstrap";
-import FormContainer from "../formContainer";
+import FormContainer from "../../formContainer";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { login } from "../../actions/userActions";
-import Loader from "../loader";
-import Message from "../message";
-import { addShippingAddress } from "../../actions/cartActions";
-import CheckoutSteps from "../partials/checkoutSteps";
+import { login } from "../../../actions/userActions";
+import Loader from "../../loader";
+import Message from "../../message";
+import { addShippingAddress } from "../../../actions/cartActions";
+import CheckoutSteps from "../../partials/checkoutSteps";
 // usf
 
 const ShippingScreen = () => {
@@ -54,6 +54,7 @@ const ShippingScreen = () => {
           <FormControl
             type="text"
             placeholder="Enter address"
+            required
             value={address}
             onChange={(e) => setAddress(e.target.value)}
           />
@@ -64,6 +65,7 @@ const ShippingScreen = () => {
           <FormControl
             type="text"
             placeholder="Enter city"
+            required
             value={city}
             onChange={(e) => setCity(e.target.value)}
           />
@@ -74,6 +76,7 @@ const ShippingScreen = () => {
           <FormControl
             type="text"
             placeholder="Enter postal code"
+            required
             value={postalCode}
             onChange={(e) => setPostalCode(e.target.value)}
           />
@@ -84,6 +87,7 @@ const ShippingScreen = () => {
           <FormControl
             type="text"
             placeholder="Enter country"
+            required
             value={country}
             onChange={(e) => setCountry(e.target.value)}
           />

@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import { Card, Col, Form, Image, ListGroup, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { createOrder } from "../../actions/orderActions";
-import OrderSummery from "../com/order/orderSummery";
-import Message from "../message";
-import CheckoutSteps from "../partials/checkoutSteps";
+import { createOrder } from "../../../actions/orderActions";
+import OrderSummery from "../../com/order/orderSummery";
+import Message from "../../message";
+import CheckoutSteps from "../../partials/checkoutSteps";
 
 const PlaceOrderScreen = () => {//debugger
   const dispatch = useDispatch();
