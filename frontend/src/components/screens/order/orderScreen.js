@@ -24,8 +24,9 @@ import ShippingAddress from "../../com/order/shippingAddress";
 import PaymentMethod from "../../com/order/paymentMethod";
 import OrderItems from "../../com/order/orderItems";
 import OrderSummery from "../../com/order/orderSummery";
+import useLocalStorage from "../../../hooks/useLocalStorage";
 
-const OrderScreen = () => {// debugger
+const OrderScreen = () => { //debugger
   const { id } = useParams();
   const dispatch = useDispatch();
 
@@ -36,10 +37,12 @@ const OrderScreen = () => {// debugger
   const { loading: loadingPay, success: successPay } = orderPaySelector;
 
   const [sdkReady, setSdkReady] = useState(false);
+  const nav = useNavigate();
+  // const [cartItems, setCartItems] = useLocalStorage('cartItems')
   function paymentSuccess(paymentRes) {
-    // console.log("pp res", paymentRes);
-    
+    // console.log("pp res", paymentRes);  
     dispatch(payOrder(order._id, paymentRes));
+    nav('/paymentsuccess')
   }
 
   useEffect(() => {
@@ -129,10 +132,10 @@ const OrderScreen = () => {// debugger
                         {!sdkReady ? (
                           <Loader />
                         ) : (
-                          <PayPalButton
-                            amount={order.totalPrice}
-                            onSuccess={paymentSuccess}
-                          />
+                              <PayPalButton
+                              amount={order.totalPrice}
+                              onSuccess={paymentSuccess}
+                            />                       
                         )}
                       </ListGroup.Item>
                     </ListGroup>

@@ -1,11 +1,12 @@
-import React from "react";
-import { Route, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
-import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
+import { Navbar, Nav, Container, NavDropdown, Badge } from "react-bootstrap";
 import { logout } from "../../actions/userActions";
 import SearchBox from "../com/searchBox";
 import { useEffect } from "react";
+import useLocalStorage from "../../hooks/useLocalStorage";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -13,10 +14,16 @@ const Header = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const cartItemsFromLocalStorage = localStorage.getItem("cartItems")
+  // const {value: cartItems} = useLocalStorage('cartItems')
+
+  // const [cartItems, setCartItems] = useLocalStorage('cartItems')
+  const [itemsQty, setItemsQty] = useState(0);
+
+  const cartItems = localStorage.getItem("cartItems")
     ? JSON.parse(localStorage.getItem("cartItems"))
     : [];
-  // console.log(cartItemsFromLocalStorage);
+  //console.log(cartItems);
+  
 
   const nav = useNavigate();
 
@@ -24,11 +31,20 @@ const Header = () => {
     dispatch(logout());
     nav("/login");
   };
+
+
   useEffect(()=>{
     // console.log('header useEffect...');
-    // console.log('ccc', cartItemsFromLocalStorage);
-
-  }, [dispatch, cartItemsFromLocalStorage])
+    // debugger;
+    // console.log("items count", itemsQty);
+    // console.log("cartItems", cartItems);
+    cartItems?.length > 0
+      ? setItemsQty(() => {
+          return cartItems.reduce((acc, x) => acc + x.qty, 0);
+        })
+      : setItemsQty(0);
+    // console.log("items count", itemsQty);
+  }, [dispatch, cartItems, itemsQty])
 
   return (
     <header>
@@ -48,12 +64,15 @@ const Header = () => {
                   <i className="fa-solid fa-bug"></i> issues
                 </Nav.Link>
               </LinkContainer>
+
               <LinkContainer to="/cart">
-                <Nav.Link>
+
+                <Nav.Link >
                   <i className="fas fa-shopping-cart"></i> Cart
-                  {cartItemsFromLocalStorage?.length > 0
-                    ? " (" + cartItemsFromLocalStorage.length + ")"
-                    : ""}
+                  <Badge className="mx-1" pill bg="primary">
+                    {itemsQty||0}                    
+                  </Badge>
+
                 </Nav.Link>
               </LinkContainer>
               {userInfo ? (

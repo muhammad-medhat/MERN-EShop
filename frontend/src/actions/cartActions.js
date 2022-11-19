@@ -10,7 +10,10 @@ import {
 // import axios from "axios";
 
 export const addToCart = (id, qty) => async (dispatch, getState) => {
+  //debugger
   try {
+    //cart is saved in localStorage
+    //fetch req to get product details
     const response = await fetch(`/api/products/${id}`);
     const data = await response.json();
 

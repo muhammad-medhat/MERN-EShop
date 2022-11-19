@@ -12,23 +12,24 @@ import "./cartScreen.css";
 import ProductRow from "../../com/productRow";
 import FormContainer from "../../formContainer";
 const CartScreen = () => {
+  // debugger
   const { id: pid } = useParams();
   const nav = useNavigate();
 
   const { search } = useLocation();
   const qty = search ? Number(search.split("=")[1]) : 1;
-  // console.log("qty", qty);
+  console.log("search", search);
 
   const dispatch = useDispatch();
   // debugger
   const cart = useSelector((state) => state.cart);
-  const { cartItems } = cart;
+  const { cartItems=[]} = cart; //default to an empty array
 
   useEffect(() => {
     if (pid) {
       dispatch(addToCart(pid, qty));
     }
-    console.log("ccccc", cartItems);
+    console.log("cartItems", cartItems);
   }, [dispatch, pid, qty]);
   console.log(cartItems);
 
@@ -37,6 +38,9 @@ const CartScreen = () => {
     nav("/shipping");
     // console.log(`checkoutHandler `);
   };
+  // return(
+  //   <>{JSON.stringify(cartItems)}</>
+  // )
   return cartItems?.length === 0 ? (
     <Row>
       <Col>
@@ -53,7 +57,7 @@ const CartScreen = () => {
     <Row>
       <Col md={8}>
         <ListGroup variant="flush">
-          {cartItems.map((item) => {
+          {cartItems && cartItems.map((item) => {
             return (
               <ProductRow
                 key={item.product}

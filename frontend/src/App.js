@@ -22,6 +22,7 @@ import ProductList from './components/screens/admin/products/productListScreen';
 import UserEditScreen from './components/screens/admin/userEditScreen';
 import UserListScreen from './components/screens/admin/usersListScreen';
 import IssueTrackerScreen from './components/screens/issueTracker';
+import PaymentSuccessScreen from './components/screens/order/paymentSuccessScreen';
 function App() {
   return (
     <BrowserRouter>
@@ -45,6 +46,7 @@ function App() {
                   <Route path='/payment' element={<PaymentScreen />} />
                   <Route path='/placeorder' element={<PlaceOrderScreen />} />
                   <Route path='/order/:id' element={<OrderScreen />} />    
+                  <Route path='/paymentsuccess' element={<PaymentSuccessScreen />} />    
 
                   <Route path='/admin/orders/:id' element={<AdminOrderDetails />} />              
                   <Route path='/admin/orders' element={<OrderList />} />              

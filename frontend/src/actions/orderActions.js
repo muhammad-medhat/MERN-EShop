@@ -115,6 +115,7 @@ export const payOrder = (id, paymentResult) => async (dispatch, getState) => {
     if (response.status < 400) {
       const data = await response.json();
       dispatch({ type: ORDER_PAY_SUCCESS, payload: data });
+      dispatch({ type: ORDER_PAY_RESET });
       dispatch(clearCart())
     } else {
       throw new Error(response.status + ": " + response.statusText);

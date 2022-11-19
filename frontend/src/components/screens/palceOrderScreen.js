@@ -7,11 +7,11 @@ import OrderSummery from "../com/order/orderSummery";
 import Message from "../message";
 import CheckoutSteps from "../partials/checkoutSteps";
 
-const PlaceOrderScreen = () => {
+const PlaceOrderScreen = () => {//debugger
   const dispatch = useDispatch();
 
   const orderCreate = useSelector((state) => state.orderCreate);
-  const { order, success, error } = orderCreate;
+  const { order, success:successCreate, error: errorCreate } = orderCreate;
 
   const cart = useSelector((s) => s.cart);
   const nav = useNavigate();
@@ -30,7 +30,7 @@ const PlaceOrderScreen = () => {
   const summery = { shippingPrice, totalPrice, taxPrice, itemsPrice };
   useEffect(() => {
     //debugger;
-    if(success){
+    if(successCreate){
       nav(`/order/${order._id}`);
       // eslint-disable-next-line
     }
@@ -113,7 +113,7 @@ const PlaceOrderScreen = () => {
               disabled={cartItems.length === 0}
               title="proceed to payment"
             />
-            {error && <Message variant='danger'>{error}</Message>}
+            {errorCreate && <Message variant='danger'>{errorCreate}</Message>}
           </ListGroup.Item>
         </Col>
       </Row>
