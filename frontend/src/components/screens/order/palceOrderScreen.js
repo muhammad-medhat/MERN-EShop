@@ -3,20 +3,26 @@ import { Card, Col, Form, Image, ListGroup, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { createOrder } from "../../../actions/orderActions";
+import useLocalStorage from "../../../hooks/useLocalStorage";
 import OrderSummery from "../../com/order/orderSummery";
 import Message from "../../message";
 import CheckoutSteps from "../../partials/checkoutSteps";
 
-const PlaceOrderScreen = () => {//debugger
+const PlaceOrderScreen = () => {
+  //debugger
   const dispatch = useDispatch();
 
   const orderCreate = useSelector((state) => state.orderCreate);
-  const { order, success:successCreate, error: errorCreate } = orderCreate;
+  const { order, success: successCreate, error: errorCreate } = orderCreate;
 
   const cart = useSelector((s) => s.cart);
   const nav = useNavigate();
 
-  const { shippingAddress, paymentMethod, cartItems } = cart;
+  const [shippingAddress] = useLocalStorage("shippingAddress");
+  const [paymentMethod] = useLocalStorage("paymentMethod");
+  const [cartItems] = useLocalStorage("cartItems");
+
+  //const {  shippingAddress, paymentMethod, cartItems } = cart;
   //summery
   const tax = 0.15;
   const itemsPrice = Number(
@@ -25,34 +31,31 @@ const PlaceOrderScreen = () => {//debugger
   const taxPrice = Number(
     cartItems.reduce((acc, i) => i.price * tax + acc, 0).toFixed(2)
   );
-  const shippingPrice = Number(( itemsPrice >= 100 ? 20 : 50).toFixed(2));
+  const shippingPrice = Number((itemsPrice >= 100 ? 20 : 50).toFixed(2));
   const totalPrice = Number((itemsPrice + taxPrice + shippingPrice).toFixed(2));
   const summery = { shippingPrice, totalPrice, taxPrice, itemsPrice };
   useEffect(() => {
     //debugger;
-    if(successCreate){
+    if (successCreate) {
       nav(`/order/${order._id}`);
       // eslint-disable-next-line
     }
-  }, [dispatch, orderCreate, order]);
-
+  }, [dispatch, orderCreate, order, paymentMethod]);
 
   const handlePlaceOrder = (e) => {
     e.preventDefault();
     // debugger;
     const orderObject = {
-      orderItems: cart.cartItems,
-      shippingAddress: cart.shippingAddress,
-      paymentMethod: cart.paymentMethod,
+      orderItems: cartItems,
+      shippingAddress: shippingAddress,
+      paymentMethod: paymentMethod,
       ...summery,
     };
-
     dispatch(
       createOrder({
         ...orderObject,
       })
     );
-
   };
 
   return (
@@ -113,7 +116,8 @@ const PlaceOrderScreen = () => {//debugger
               disabled={cartItems.length === 0}
               title="proceed to payment"
             />
-            {errorCreate && <Message variant='danger'>{errorCreate}</Message>}
+            {errorCreate && <Message variant="danger">{errorCreate}</Message>}
+            {errorCreate && <Message variant="danger">{errorCreate}</Message>}
           </ListGroup.Item>
         </Col>
       </Row>

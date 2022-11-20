@@ -6,17 +6,25 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { addPaymentMethod } from "../../../actions/cartActions";
 import CheckoutSteps from "../../partials/checkoutSteps";
+import useLocalStorage from "../../../hooks/useLocalStorage";
+import { useEffect } from "react";
 // usf
 
 const PaymentScreen = () => {
   const dispatch = useDispatch();
-  const [paymentMethod, setPaymentMethod] = useState("paypal");
+  // const [paymentMethod, setPaymentMethod] = useState("paypal");
   // useSelector
-  const cart = useSelector((state) => state.cart);
+  // const cart = useSelector((state) => state.cart);
   const userLogin = useSelector((state) => state.userLogin);
   //destruction
-  const { shippingAddress } = cart;
+  // const { shippingAddress } = cart;
   const { userInfo } = userLogin; //checked in header
+
+  const [paymentMethod, setPaymentMethod] = useLocalStorage(
+    "paymentMethod",
+    "paypal"
+  );
+  const [shippingAddress] = useLocalStorage("shippingAddress", {});
 
   const nav = useNavigate();
 
@@ -26,9 +34,12 @@ const PaymentScreen = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // console.log(e);
-    dispatch(addPaymentMethod(paymentMethod));
-    nav('/placeorder')
+    // dispatch(addPaymentMethod(paymentMethod));
+    nav("/placeorder");
   };
+  useEffect(() => {
+    setPaymentMethod(paymentMethod);
+  }, [paymentMethod]);
   return (
     <FormContainer>
       <CheckoutSteps step1 step2 step3 />
