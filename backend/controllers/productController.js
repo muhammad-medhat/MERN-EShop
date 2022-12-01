@@ -156,9 +156,12 @@ export const addProductReview = asyncHandler(async (req, res) => {
  * @access Public
  */
 export const getTopProducts = asyncHandler(async (req, res) => {
-  const limit = req.params.limit || 3
-  const products = await Product.find({}, {_id:1, name:1, image:1, rating:1})
-      .sort({ rating: -1 })
-      .limit(limit);
+  const limit = req.params.limit || 3;
+  const products = await Product.find(
+    {},
+    { _id: 1, name: 1, image: 1, rating: 1 }
+  )
+    .sort({ rating: -1 })
+    .limit(limit);
   return res.json(products);
 });

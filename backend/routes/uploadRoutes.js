@@ -36,8 +36,8 @@ const upload = multer({
   },
 });
 const uploads = multer({
-  dest: 'uploads'
-})
+  dest: "uploads",
+});
 
 // router.post('/',upload.single('image'), (req, res)=>{
 
@@ -45,15 +45,23 @@ const uploads = multer({
 // })
 // Multipart: Boundary not found
 
-
-router.post("/", upload.single("image"), (req, res) => {
+router.post("/", upload.single("image"), (req, res, next) => {
   //passing upload middleware
   console.log("uploding...");
-  console.log(req.body);
-  // console.log(req);
+  // console.log(".body", req.body);
+  // console.log(".file", req.file);
   // res.json(upload)
+  const file = req.file;
+  if (!file) {
+    console.log("ffffffffff", file);
+    const error = new Error("Please upload a file");
+    error.httpStatusCode = 400;
+    return next(error);
+  }
+  //res.send(file);
+
+  console.log("rrrrrrrrrrrrrrrr", `/${req.file.path}`);
   res.send(`/${req.file.path}`);
-  
 });
 
 export default router;

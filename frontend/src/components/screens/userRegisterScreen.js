@@ -15,15 +15,18 @@ const RegisterScreen = () => {
   const [msg, setMsg] = useState("");
 
   const dispatch = useDispatch();
+  debugger;
   const userRegister = useSelector((state) => state.userRegister);
-  const { loading, userInfo, error, message } = userRegister;
+  const { loading, userInfo, error } = userRegister;
   console.log("userInfo", userInfo);
+  const { message } = userInfo;
 
   const submitRegister = (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       setMsg("Password and Confirm Password do not match");
     } else {
+      debugger;
       dispatch(register(name, email, password));
     }
   };
@@ -32,11 +35,12 @@ const RegisterScreen = () => {
       console.log("userInfo", userInfo);
       localStorage.setItem("userInfo", JSON.stringify(userInfo));
     }
-  }, [dispatch, userInfo]);
+  }, [dispatch, userInfo, name, email, password, confirmPassword]);
   return (
     <FormContainer>
       <h1>register your account</h1>
       {error && <Message variant="danger">{error}</Message>}
+      {message && <Message variant="danger">{message}</Message>}
       {msg && <Message variant="danger">{msg}</Message>}
       {loading && <Loader text="Loading product..." />}
       <Form onSubmit={submitRegister}>

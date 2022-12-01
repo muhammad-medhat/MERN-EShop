@@ -31,7 +31,7 @@ export const createUser = asyncHandler(async (req, res) => {
   const userExist = await User.findOne({ email });
   if (userExist) {
     res.status(400);
-    throw new Error("User already exists");
+    throw Error("User already exists");
   } else {
     const user = await User.create({ name, email, password });
     const token = generateTokenForUser(user);
@@ -72,7 +72,7 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
   user.name = name || user.name;
   user.email = email || user.email;
   user.password = password || user.password;
-  user.isAdmin = isAdmin || user.isAdmin
+  user.isAdmin = isAdmin || user.isAdmin;
   const updatedUser = await user.save();
   if (!updatedUser) {
     throw new Error("User not found");
@@ -89,22 +89,22 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
  * @desc update user by id
  * @access Private/admin
  */
-export const updateUserById = asyncHandler(async (req, res) =>{
+export const updateUserById = asyncHandler(async (req, res) => {
   const id = req.params.id;
   const user = await User.findById(id);
   // console.log(`user: ${user}`.green)
 
   if (!user) {
-    res.status(404)
-    throw  new Error("User not found" );
+    res.status(404);
+    throw new Error("User not found");
   } else {
-    const{name, email} =  req.body
-    user.name=name
-    user.email=email
-    user.save()
+    const { name, email } = req.body;
+    user.name = name;
+    user.email = email;
+    user.save();
     return res.json(user);
   }
-})
+});
 
 /**
  * @route POST /api/users/login
@@ -131,13 +131,12 @@ export const userLogin = asyncHandler(async (req, res) => {
   }
 });
 
-
 /**
  * @route GET /api/users
  * @desc Get all users
  * @access Private/Admin
  */
- export const getUsers = asyncHandler(async (req, res) => {
+export const getUsers = asyncHandler(async (req, res) => {
   const users = await User.find({});
   return res.json(users);
 });

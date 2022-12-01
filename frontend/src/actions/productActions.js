@@ -176,7 +176,9 @@ export const createProduct = (product) => async (dispatch, getState) => {
         payload: data,
       });
     } else {
-      throw new Error(response.status + ": " + response.statusText);
+      dispatch({ type: PRODUCT_CREATE_FAIL });
+      debugger;
+      throw Error(response.status + ": " + response.statusText);
     }
     // localStorage.setItem("productInfo", JSON.stringify(data));
   } catch (error) {

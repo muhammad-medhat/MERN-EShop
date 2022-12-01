@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Form,
-  FormControl,
-  FormGroup,
-  Image,
-} from "react-bootstrap";
+import { Form, FormControl, FormGroup, Image } from "react-bootstrap";
 import FormContainer from "../../../formContainer";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -13,7 +8,7 @@ import Message from "../../../message";
 // import { LinkContainer } from "react-router-bootstrap";
 import { createProduct } from "../../../../actions/productActions";
 import { PRODUCT_CREATE_RESET } from "../../../../const/productConstants";
-import './productStyle.css'
+import "./productStyle.css";
 const ProductForm = (props) => {
   const {
     title,
@@ -36,88 +31,40 @@ const ProductForm = (props) => {
     setImage,
     setImagePath,
     setUploading,
-  } = props
-  const [preview, setPreview] = useState('');
-  const [file, setFile] = useState();
+    file,
+    setFile,
+  } = props;
+  const [preview, setPreview] = useState("");
+  // const [file, setFile] = useState("");
   const dispatch = useDispatch();
   const nav = useNavigate();
-  // const productList = useSelector((state) => state.productList);
-  // const { loading, products, error } = productList;
 
-  const uploadHandler = async (e) => {
-    // debugger;
-    // const file = e.target.files[0];
-    const formData = new FormData();
-    formData.append("image", file);
-    console.log('formData', formData);
-    for (var key of formData.entries()) {
-      console.log('entry', key[0] + ": " + key[1]);
-    }
-    setUploading(true);
-    try {
-      const config = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        method: "post",
-        body: formData,
-      };
-      console.log(config);
-      // const {data} = await axios.post('/api/upload', formData, config)
-      const res = await fetch("/api/upload", config);
-      const data = await res.text();
-      setImage(data);
-      setUploading(false);
-    } catch (error) {
-      console.error(error);
-      setUploading(false);
-    }
-  };
-  // function submitAdd(e) {
-  //   e.preventDefault();
-  //   // debugger;
-  //   uploadHandler(e);
-  //   dispatch(
-  //     createProduct({
-  //       name,
-  //       description,
-  //       price,
-  //       category,
-  //       brand,
-  //       countInStock,
-  //       image,
-  //     })
-  //   );
-  // }
   function showPreview(e) {
     if (e.target.files.length > 0) {
       setFile(e.target.files[0]);
     }
   }
   useEffect(() => {
-      // debugger;
-      if (!file) {
-        setPreview(undefined);
-        return;
-      } else {
-        const objectUrl = URL.createObjectURL(file);
-        setPreview(objectUrl);
-        setImage(file.name);
+    // debugger;
+    if (!file) {
+      setPreview(undefined);
+      return;
+    } else {
+      const objectUrl = URL.createObjectURL(file);
+      setPreview(objectUrl);
+      // setImage(file.name);
 
-        // free memory when ever this component is unmounted
-        // return () => URL.revokeObjectURL(objectUrl)
-      }
-
-
+      // free memory when ever this component is unmounted
+      // return () => URL.revokeObjectURL(objectUrl)
+    }
   }, [dispatch, file]);
   return (
     <FormContainer>
       <h1>{title}</h1>
-
       {
         //JSON.stringify(props)
       }
-      <Form onSubmit={actionCb} encType='multipart/form-data'>
+      <Form onSubmit={(e) => actionCb(e, file)} encType="multipart/form-data">
         <FormGroup controlId="name">
           <Form.Label>Name</Form.Label>
           <FormControl

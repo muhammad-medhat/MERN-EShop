@@ -26,7 +26,6 @@ app.use(express.json()); // for parsing application/json
 // we can mimic it using the following line
 const __dirname = path.resolve();
 
-
 /**
  * routes
  */
@@ -60,7 +59,7 @@ if (process.env.NODE_ENV === "production") {
     res.send("API is Running...");
   });
   //morgan configuration
-  app.use(morgan("dev"));  
+  app.use(morgan("dev"));
 }
 //......... End Deployment ...........................................
 
