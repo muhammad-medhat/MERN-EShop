@@ -167,3 +167,5 @@ backend\controllers\playuground.mongodb
 uploads
 q.md
 hooks1
+*.yaml
+*.gitignore
