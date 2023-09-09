@@ -40,7 +40,7 @@ bower_components
 .lock-wscript
 
 # Compiled binary addons (https://nodejs.org/api/addons.html)
-build/Release
+# build/Release
 
 # Dependency directories
 node_modules/
@@ -135,7 +135,6 @@ dist
 ### Node Patch ###
 # Serverless Webpack directories
 .webpack/
-
 # Optional stylelint cache
 
 # SvelteKit build / generate output
@@ -158,14 +157,4 @@ sketch
 
 2bootstrap.min.css
 notes.md
-
-#production
-frontend/build
-
-.vscode
-backend\controllers\playuground.mongodb
-uploads
-q.md
-hooks1
-*.yaml
-*.gitignore
+hook1
